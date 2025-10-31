@@ -6,12 +6,20 @@ import { ExperienceSection } from "@/components/experience-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { ContactSection } from "@/components/contact-section"
 import { getDictionary } from "@/lib/get-dictionary"
-import type { Locale } from "@/lib/i18n-config"
+import type { Locale } from '@/lib/i18n-config'
+import { fetchContributionGraph, getFeaturedProjects, getUserStats } from '@/lib/github'
 
 export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
   const dict = await getDictionary(locale)
 
+  const featuredRepos = ["cloudflare-access-webhook-redirect", "s3-bucket-perma-link", "helm-charts"]
+  const [projects, stats, contributionGraph] = await Promise.all([
+    getFeaturedProjects("Timmi6790", featuredRepos),
+    getUserStats("Timmi6790"),
+    fetchContributionGraph("Timmi6790"),
+  ])
+  
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -41,7 +49,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <div className="snap-start">
           <AboutSection dict={dict} />
           <SkillsSection dict={dict} />
-          <ProjectsSection dict={dict} />
+          <ProjectsSection dict={dict} projects={projects} stats={stats} contributionGraph={contributionGraph} />
           <ExperienceSection dict={dict} />
           <TestimonialsSection dict={dict} />
           <ContactSection dict={dict} locale={locale} />

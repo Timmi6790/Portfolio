@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github, Star, GitFork } from "lucide-react"
 import Image from "next/image"
+import { GitHubProject } from '@/lib/github'
 
 interface Project {
   name: string
@@ -19,12 +20,16 @@ interface Project {
 
 interface ProjectsSectionProps {
   dict: any
+  projects: GitHubProject[]
+  stats: {
+    repositories: number
+    stars: number
+    forks: number
+  }
+  contributionGraph: string | null
 }
 
-export function ProjectsSection({ dict }: ProjectsSectionProps) {
-  // Featured projects - you can customize this list
-  const featuredProjects = ["DiscordBot", "StatsPlugin", "ExternalModules"]
-
+export function ProjectsSection({ dict, projects, stats, contributionGraph }: ProjectsSectionProps) {
   return (
     <section id="projects" className="min-h-screen py-20 px-4 md:px-8 bg-gradient-to-b from-background to-muted/20">
       <div className="max-w-7xl mx-auto">
@@ -43,7 +48,7 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
                 <Github className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <p className="text-3xl font-bold">50+</p>
+                <p className="text-3xl font-bold">{stats.repositories}</p>
                 <p className="text-sm text-muted-foreground">{dict.projects.stats.repositories}</p>
               </div>
             </div>
@@ -55,7 +60,7 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
                 <Star className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <p className="text-3xl font-bold">100+</p>
+                <p className="text-3xl font-bold">{stats.stars}</p>
                 <p className="text-sm text-muted-foreground">{dict.projects.stats.stars}</p>
               </div>
             </div>
@@ -67,7 +72,7 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
                 <GitFork className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <p className="text-3xl font-bold">30+</p>
+                <p className="text-3xl font-bold">{stats.forks}</p>
                 <p className="text-sm text-muted-foreground">{dict.projects.stats.forks}</p>
               </div>
             </div>
@@ -76,7 +81,7 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
 
         {/* Featured Projects */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {dict.projects.featured.map((project: any, index: number) => (
+          {projects.map((project, index) => (
             <Card
               key={index}
               className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/50 flex flex-col"
@@ -92,7 +97,7 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
                 <p className="text-muted-foreground mb-4 flex-1">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.topics.map((topic: string) => (
+                  {project.topics.map((topic) => (
                     <Badge key={topic} variant="secondary" className="text-xs">
                       {topic}
                     </Badge>
@@ -103,23 +108,23 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Star className="h-4 w-4" />
-                      {project.stars}
+                      {project.stargazers_count}
                     </span>
                     <span className="flex items-center gap-1">
                       <GitFork className="h-4 w-4" />
-                      {project.forks}
+                      {project.forks_count}
                     </span>
                   </div>
 
                   <div className="flex gap-2">
                     <Button size="sm" variant="ghost" asChild>
-                      <a href={project.url} target="_blank" rel="noopener noreferrer">
+                      <a href={project.html_url} target="_blank" rel="noopener noreferrer">
                         <Github className="h-4 w-4" />
                       </a>
                     </Button>
-                    {project.demo && (
+                    {project.homepage && (
                       <Button size="sm" variant="ghost" asChild>
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                        <a href={project.homepage} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-4 w-4" />
                         </a>
                       </Button>
@@ -136,14 +141,20 @@ export function ProjectsSection({ dict }: ProjectsSectionProps) {
           <Card className="p-6 overflow-hidden">
             <h3 className="text-2xl font-bold mb-6">{dict.projects.contributions}</h3>
             <div className="w-full overflow-x-auto">
-              <Image
-                src="https://ghchart.rshah.org/2563eb/Timmi6790"
-                alt="GitHub Contribution Graph"
-                width={800}
-                height={150}
-                className="w-full h-auto dark:invert"
-                unoptimized
-              />
+              {contributionGraph ? (
+                <Image
+                  src={contributionGraph}
+                  alt="GitHub Contribution Graph"
+                  width={800}
+                  height={150}
+                  className="w-full h-auto dark:invert"
+                  unoptimized
+                />
+              ) : (
+                <div className="w-full h-32 flex items-center justify-center text-muted-foreground">
+                  <p>Unable to load contribution graph</p>
+                </div>
+              )}
             </div>
           </Card>
         </div>

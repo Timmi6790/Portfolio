@@ -1,7 +1,5 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster } from "sonner"
 import "../globals.css"
 import { Geist, Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from "next/font/google"
@@ -112,8 +110,6 @@ export default async function RootLayout({
           {children}
           <CookieBanner translations={dict.cookies} />
           <Toaster position="bottom-right" />
-          <Analytics />
-          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

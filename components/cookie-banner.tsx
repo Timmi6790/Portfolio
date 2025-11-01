@@ -6,8 +6,11 @@ import { Card } from '@/components/ui/card'
 import { X } from 'lucide-react'
 import { CookiesDictionary } from '@/lib/dictionary'
 
-
-export function CookieBanner({ translations }: { translations: CookiesDictionary }) {
+export function CookieBanner({
+  translations,
+}: {
+  translations: CookiesDictionary
+}) {
   const [showBanner, setShowBanner] = useState(false)
   const [showCustomize, setShowCustomize] = useState(false)
   const [analytics, setAnalytics] = useState(false)

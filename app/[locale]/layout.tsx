@@ -2,11 +2,7 @@ import type React from 'react'
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 import '../globals.css'
-import {
-  Geist,
-  Geist_Mono,
-  Source_Serif_4,
-} from 'next/font/google'
+import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
 import { locales, type Locale } from '@/lib/i18n-config'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -130,7 +126,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="dark">
-      <body className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} font-sans antialiased`}>
+      <body
+        className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} font-sans antialiased`}
+      >
         <ThemeProvider defaultTheme="dark">
           <ThemeToggle />
           <LanguageSwitcher currentLocale={locale} />

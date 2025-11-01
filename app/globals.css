@@ -305,7 +305,10 @@ html[data-darkreader-scheme] .bg-clip-text.text-transparent {
   filter: none !important;
   mix-blend-mode: normal !important;
   /* Preserve the background gradient */
-  background-image: var(--tw-gradient-stops, linear-gradient(to right, #3b82f6, #60a5fa)) !important;
+  background-image: var(
+    --tw-gradient-stops,
+    linear-gradient(to right, #3b82f6, #60a5fa)
+  ) !important;
 }
 
 /* Fallback: if gradient still breaks, show in primary color */
@@ -324,7 +327,6 @@ html[data-darkreader-mode='dark'] [data-darkreader-inline-fill] {
   background-clip: text !important;
   -webkit-background-clip: text !important;
 }
-
 
 /* Dark Reader Compatibility Styles */
 @layer utilities {
@@ -403,4 +405,3 @@ html[data-darkreader-mode='dark'] .dark img[alt*='Contribution' i] {
   position: relative;
   z-index: 1;
 }
-

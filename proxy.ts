@@ -16,20 +16,15 @@ export function proxy(request: NextRequest) {
     const locale = getLocale(request) || 'en'
 
     // Redirect to URL with locale
-    return NextResponse.redirect(
-      new URL(`/${locale}${pathname}`, request.url)
-    )
+    return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url))
   }
 
   // Add security headers
   const response = NextResponse.next()
-  
+
   // Add cache control for static assets
   if (pathname.startsWith('/_next/static') || pathname.startsWith('/public')) {
-    response.headers.set(
-      'Cache-Control',
-      'public, max-age=31536000, immutable'
-    )
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable')
   }
 
   return response
@@ -70,4 +65,3 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\..*$).*)',
   ],
 }
-

@@ -18,20 +18,20 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <AlertTriangle className="h-6 w-6 text-destructive" />
+            <AlertTriangle className="text-destructive h-6 w-6" />
             <CardTitle>Something went wrong</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             An unexpected error occurred. Please try refreshing the page.
           </p>
           {error.digest && (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Error ID: {error.digest}
             </p>
           )}
@@ -52,4 +52,3 @@ export default function Error({
     </div>
   )
 }
-

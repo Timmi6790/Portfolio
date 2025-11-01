@@ -168,9 +168,7 @@ export function ProjectsSection({
         {/* GitHub Contribution Graph */}
         <div className="mt-16">
           <Card className="overflow-hidden p-6">
-            <h3 className="mb-6 text-2xl font-bold">
-              {dict.contributions}
-            </h3>
+            <h3 className="mb-6 text-2xl font-bold">{dict.contributions}</h3>
             <div className="w-full overflow-x-auto">
               {contributionGraph ? (
                 <Image

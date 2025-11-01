@@ -29,9 +29,7 @@ export function ContactSection({
         <div className="mx-auto max-w-2xl space-y-6">
           <Card className="border-2 shadow-xl">
             <CardContent className="p-8">
-              <h3 className="mb-6 text-2xl font-bold">
-                {dict.infoTitle}
-              </h3>
+              <h3 className="mb-6 text-2xl font-bold">{dict.infoTitle}</h3>
               <div className="space-y-6">
                 <div className="group hover:bg-muted/50 flex items-center gap-4 rounded-lg p-3 transition-all">
                   <div className="from-primary/10 to-primary/5 rounded-lg bg-gradient-to-br p-3 transition-transform duration-300 group-hover:scale-110">

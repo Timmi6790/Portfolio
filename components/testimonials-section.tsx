@@ -5,7 +5,11 @@ import { Quote } from 'lucide-react'
 import Image from 'next/image'
 import { TestimonialsDictionary } from '@/lib/dictionary'
 
-export function TestimonialsSection({ dict }: {dict: TestimonialsDictionary}) {
+export function TestimonialsSection({
+  dict,
+}: {
+  dict: TestimonialsDictionary
+}) {
   return (
     <section className="from-muted/20 to-background min-h-screen bg-gradient-to-b px-4 py-20 md:px-8">
       <div className="mx-auto max-w-7xl">

@@ -44,8 +44,9 @@ const getFeaturedProjectsUncached = async (
 
     // Filter out failed requests and return successful ones
     return projects
-      .filter((result): result is PromiseFulfilledResult<GitHubProject> =>
-        result.status === 'fulfilled'
+      .filter(
+        (result): result is PromiseFulfilledResult<GitHubProject> =>
+          result.status === 'fulfilled'
       )
       .map((result) => result.value)
   } catch (error) {
@@ -125,4 +126,3 @@ export async function fetchContributionGraph(
     return null
   }
 }
-

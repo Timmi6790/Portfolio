@@ -46,7 +46,6 @@
     "@radix-ui/react-toggle": "1.1.10",
     "@radix-ui/react-toggle-group": "1.1.11",
     "@radix-ui/react-tooltip": "1.2.8",
-    "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.1.1",
@@ -76,9 +75,14 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/prompt-cli": "^20.1.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.38.0",
     "@tailwindcss/postcss": "^4.1.16",
+    "cssnano": "^6.0.3",
+    "autoprefixer": "^10.4.17",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",

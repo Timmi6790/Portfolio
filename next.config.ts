@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
   output: 'standalone',
 
   // Enable strict mode for better development experience
@@ -22,15 +23,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
       },
-      {
-        protocol: 'https',
-        hostname: 'ghchart.rshah.org',
-      },
     ],
   },
 
   // Optimize CSS and fonts
   experimental: {
+    turbopackFileSystemCacheForDev: true,
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },

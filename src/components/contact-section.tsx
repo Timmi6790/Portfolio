@@ -5,8 +5,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Mail, Github, MapPin, Download, FileText } from 'lucide-react'
 import { siteConfig } from '@/lib/config'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
-export async function ContactSection({ locale }: { locale: string }) {
+export async function ContactSection({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'contact' })
 
   const resumePath = locale === 'de' ? '/resume-de.pdf' : '/resume-en.pdf'

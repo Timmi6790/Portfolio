@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Mail, Github, ArrowDown } from 'lucide-react'
 import { siteConfig } from '@/lib/config'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
-export async function HeroSection({ locale }: { locale: string }) {
+export async function HeroSection({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'hero' })
 
   return (

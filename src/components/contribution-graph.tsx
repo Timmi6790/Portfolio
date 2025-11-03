@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { Card } from '@/components/ui/card'
-import { useTranslations } from 'next-intl'
+import { type Locale, useTranslations } from 'next-intl'
 
 interface ContributionDay {
   date: string
@@ -11,7 +11,7 @@ interface ContributionDay {
 }
 
 interface ContributionGraphProps {
-  locale: string
+  locale: Locale
   data: ContributionDay[]
 }
 

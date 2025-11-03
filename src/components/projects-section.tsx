@@ -7,9 +7,10 @@ import { ExternalLink, Github, Star, GitFork } from 'lucide-react'
 import { type GitHubProject } from '@/lib/github'
 import { ContributionGraph } from '@/components/contribution-graph'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
 interface ProjectsSectionProps {
-  locale: string
+  locale: Locale
   githubUsername: string
   projects: GitHubProject[]
   stats: {

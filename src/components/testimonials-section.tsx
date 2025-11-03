@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Quote } from 'lucide-react'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
 interface TestimonialItem {
   name: string
@@ -13,7 +14,7 @@ interface TestimonialItem {
   quote: string
 }
 
-export async function TestimonialsSection({ locale }: { locale: string }) {
+export async function TestimonialsSection({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'testimonials' })
 
   const testimonials: TestimonialItem[] = t.raw('items')

@@ -52,3 +52,4 @@ Thumbs.db
 .node_repl_history
 .eslintcache
 storybook-static
+messages/*.d.json.ts

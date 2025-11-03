@@ -3,9 +3,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { ReactNode } from 'react'
 import { BackToHome } from '@/components/back_to_home'
+import { type Locale } from 'next-intl'
 
 interface LegalPageLayoutProps {
-  locale: string
+  locale: Locale
   title: string
   children: ReactNode
 }

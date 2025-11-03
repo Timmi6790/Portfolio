@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "next start",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "i18n-check": "i18n-check --unused src/ -f next-intl --source en --locales messages"
   },
   "dependencies": {
     "@commitlint/types": "latest",
@@ -76,6 +77,7 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
+    "@lingual/i18n-check": "latest",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/prompt-cli": "^20.1.0",

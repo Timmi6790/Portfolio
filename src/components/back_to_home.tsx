@@ -4,12 +4,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
-interface BackToHomeProps {
-  locale: string
-}
-
-export async function BackToHome({ locale }: BackToHomeProps) {
+export async function BackToHome({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'imprint' })
 
   return (

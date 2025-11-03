@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
-export async function LegalFooter({ locale }: { locale: string }) {
+export async function LegalFooter({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale })
 
   return (

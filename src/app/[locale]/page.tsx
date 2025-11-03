@@ -13,6 +13,7 @@ import { siteConfig } from '@/lib/config'
 import type { Metadata } from 'next'
 import { AboutSection } from '@/components/about-section'
 import { setRequestLocale } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -66,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home({
   params,
 }: Readonly<{
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }>) {
   const { locale } = await params
 

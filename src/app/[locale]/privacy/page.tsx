@@ -3,11 +3,12 @@
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import LegalPageLayout from '@/components/legal-page-layout'
+import { type Locale } from 'next-intl'
 
 export async function generateMetadata({
   params,
 }: Readonly<{
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }>): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'privacy' })
@@ -25,7 +26,7 @@ export async function generateMetadata({
 export default async function PrivacyPolicyPage({
   params,
 }: Readonly<{
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }>) {
   const { locale } = await params
 
@@ -51,15 +52,14 @@ export default async function PrivacyPolicyPage({
     text: t('cloudflare.text'),
   }
 
-  const sections = [
-    'general',
-    'logs',
-    'cloudflare',
-    'contact',
-    'rights',
-    'nocookies',
-    'changes',
-  ]
+  const sections = {
+    general: { title: t('general.title'), text: t('general.text') },
+    logs: { title: t('logs.title'), text: t('logs.text') },
+    contact: { title: t('contact.title'), text: t('contact.text') },
+    rights: { title: t('rights.title'), text: t('rights.text') },
+    nocookies: { title: t('nocookies.title'), text: t('nocookies.text') },
+    changes: { title: t('changes.title'), text: t('changes.text') },
+  }
 
   return (
     <LegalPageLayout title={t('title')} locale={locale}>
@@ -80,44 +80,38 @@ export default async function PrivacyPolicyPage({
         </p>
       </div>
 
-      {sections.map((key) => {
-        if (key === 'cloudflare') {
-          return (
-            <div key={key}>
-              <h2 className="mb-2 text-xl font-semibold">{cloudflare.title}</h2>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {cloudflare.pre} <strong>{cloudflare.strong}</strong>{' '}
-                {cloudflare.post}
-              </p>
-              <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
-                {cloudflare.provider}
-              </p>
-              <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
-                <a
-                  href={cloudflare.policyLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  {cloudflare.policyLink}
-                </a>
-              </p>
-              <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                {cloudflare.text}
-              </p>
-            </div>
-          )
-        }
+      <div>
+        <h2 className="mb-2 text-xl font-semibold">{cloudflare.title}</h2>
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {cloudflare.pre} <strong>{cloudflare.strong}</strong>{' '}
+          {cloudflare.post}
+        </p>
+        <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+          {cloudflare.provider}
+        </p>
+        <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+          <a
+            href={cloudflare.policyLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            {cloudflare.policyLink}
+          </a>
+        </p>
+        <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+          {cloudflare.text}
+        </p>
+      </div>
 
-        return (
-          <div key={key}>
-            <h2 className="mb-2 text-xl font-semibold">{t(`${key}.title`)}</h2>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {t(`${key}.text`)}
-            </p>
-          </div>
-        )
-      })}
+      {Object.entries(sections).map(([key, section]) => (
+        <div key={key}>
+          <h2 className="mb-2 text-xl font-semibold">{section.title}</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {section.text}
+          </p>
+        </div>
+      ))}
     </LegalPageLayout>
   )
 }

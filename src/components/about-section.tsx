@@ -3,8 +3,9 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { BookOpen, Code2 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
-export async function AboutSection({ locale }: { locale: string }) {
+export async function AboutSection({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'about' })
 
   return (

@@ -4,11 +4,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { siteConfig } from '@/lib/config'
 import LegalPageLayout from '@/components/legal-page-layout'
+import { type Locale } from 'next-intl'
 
 export async function generateMetadata({
   params,
 }: Readonly<{
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }>): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'imprint' })
@@ -26,7 +27,7 @@ export async function generateMetadata({
 export default async function ImprintPage({
   params,
 }: Readonly<{
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }>) {
   const { locale } = await params
 

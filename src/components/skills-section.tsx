@@ -3,6 +3,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getTranslations } from 'next-intl/server'
+import { type Locale } from 'next-intl'
 
 const skills = {
   expertise: ['Java', 'Spring Boot', 'Maven', 'Gradle'],
@@ -10,7 +11,7 @@ const skills = {
   tools: ['Git', 'GitHub', 'Docker', 'Linux'],
 }
 
-export async function SkillsSection({ locale }: { locale: string }) {
+export async function SkillsSection({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'skills' })
 
   return (

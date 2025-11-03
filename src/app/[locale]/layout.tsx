@@ -9,7 +9,7 @@ import { CookieBanner } from '@/components/cookie-banner'
 import { CommandPalette } from '@/components/command-palette'
 import { EasterEggs } from '@/components/easter-eggs'
 import { LanguageSwitcher } from '@/components/language-switcher'
-import { NextIntlClientProvider, hasLocale } from 'next-intl'
+import { NextIntlClientProvider, hasLocale, type Locale } from 'next-intl'
 import { routing } from '@/i18n/routing'
 import { siteConfig } from '@/lib/config'
 import { LegalFooter } from '@/components/legal-footer'
@@ -36,7 +36,7 @@ const sourceSerif = Source_Serif_4({
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }): Promise<Metadata> {
   const { locale } = await params
   return {
@@ -117,7 +117,7 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: Locale }>
 }>) {
   // Ensure that the incoming `locale` is valid
   const { locale } = await params

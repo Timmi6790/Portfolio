@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Setup base environment
-        uses: ./.github/actions/setup-base-environment
+        uses: ./.github/actions/build-dependency
 
       - name: Run bundle analyzer (Webpack)
         run: pnpm run analyze

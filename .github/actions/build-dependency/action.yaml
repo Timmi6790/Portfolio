@@ -1,0 +1,22 @@
+name: "Setup Node + PNPM Checkout + Build Dependency"
+description: "Checks out repo, sets up PNPM, Node.js and builds dependency"
+
+inputs:
+  node-version:
+    description: "Node.js version"
+    required: false
+  pnpm-version:
+    description: "PNPM version"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup base environment
+      uses: ./.github/actions/setup-base-environment
+      with:
+        node-version: ${{ inputs.node-version }}
+        pnpm-version: ${{ inputs.pnpm-version }}
+
+    - name: Install dependencies
+      run: pnpm install

@@ -15,7 +15,8 @@
     "lint:fix": "eslint . --fix",
     "start": "next start",
     "type-check": "tsc --noEmit",
-    "i18n-check": "i18n-check --unused src/ -f next-intl --source en --locales messages"
+    "i18n-check": "i18n-check --unused src/ -f next-intl --source en --locales messages",
+    "analyze": "cross-env NEXT_IGNORE_TURBOPACK=true ANALYZE=true next build --webpack"
   },
   "dependencies": {
     "@commitlint/types": "latest",
@@ -77,12 +78,13 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
-    "@lingual/i18n-check": "latest",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/prompt-cli": "^20.1.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.38.0",
+    "@lingual/i18n-check": "latest",
+    "@next/bundle-analyzer": "^16.0.1",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.2",
@@ -90,6 +92,7 @@
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "autoprefixer": "^10.4.17",
+    "cross-env": "^10.1.0",
     "cssnano": "^7.0.0",
     "eslint": "^9.38.0",
     "eslint-config-next": "16.0.1",

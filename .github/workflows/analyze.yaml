@@ -1,0 +1,27 @@
+name: Analyze Bundle
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Setup base environment
+        uses: ./.github/actions/build-dependency
+
+      - name: Run bundle analyzer (Webpack)
+        run: pnpm run analyze
+
+      - name: Analyze bundle sizes
+        uses: transferwise/actions-next-bundle-analyzer@v2

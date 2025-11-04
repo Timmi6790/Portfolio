@@ -4,6 +4,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Globe } from 'lucide-react'
 import { useLocale } from 'next-intl'
+import { getPathname } from '@/i18n/routing'
+import { type Route } from 'next'
 
 export function LanguageSwitcher() {
   const locale = useLocale()
@@ -13,8 +15,12 @@ export function LanguageSwitcher() {
 
   const switchLanguage = () => {
     const newLocale = locale === 'en' ? 'de' : 'en'
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`)
-    router.push(newPath)
+    router.push(
+      getPathname({
+        href: pathname,
+        locale: newLocale,
+      }) as Route
+    )
   }
 
   return (

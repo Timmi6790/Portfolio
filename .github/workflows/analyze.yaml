@@ -5,6 +5,7 @@ on:
     branches: [ main, develop ]
 
 permissions:
+  contents: read
   pull-requests: write
 
 jobs:

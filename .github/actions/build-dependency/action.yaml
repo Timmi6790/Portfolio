@@ -15,8 +15,8 @@ runs:
     - name: Setup base environment
       uses: ./.github/actions/setup-base-environment
       with:
-        node-version: ${{ inputs.node-version }}
-        pnpm-version: ${{ inputs.pnpm-version }}
+        node-version: ${{ inputs.node-version || '' }}
+        pnpm-version: ${{ inputs.pnpm-version || '' }}
 
     - name: Install dependencies
       shell: bash

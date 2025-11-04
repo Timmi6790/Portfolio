@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Setup base environment
-        uses: ./.github/workflows/setup-node.yaml
+        uses: ./.github/actions/setup-base-environment
 
       - name: Run bundle analyzer (Webpack)
         run: pnpm run analyze

@@ -1,0 +1,42 @@
+name: Analyze Bundle
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  analyze:
+    uses: ./.github/workflows/setup-node.yaml
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run bundle analyzer (Webpack)
+        run: pnpm run analyze
+
+      - name: Generate bundle summary
+        id: summary
+        run: |
+          # find top 5 largest js files in the analyzer output
+          echo "top_bundles<<EOF" >> $GITHUB_OUTPUT
+          find .next/analyze -name "*.js" -exec du -h {} + | sort -rh | head -n 5 >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `
+            ### 📦 Bundle Analysis Report
+            Top 5 largest JS files:
+            \`\`\`
+            ${{ steps.summary.outputs.top_bundles }}
+            \`\`\`
+            [Full analyzer report](https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts)
+            `;
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });

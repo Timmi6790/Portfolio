@@ -1,11 +1,24 @@
 import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
+const withNextIntl = createNextIntlPlugin({
+  experimental: {
+    createMessagesDeclaration: './messages/en.json',
+  },
+})
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 const nextConfig: NextConfig = {
   output: 'standalone',
 
   // Enable strict mode for better development experience
   reactStrictMode: true,
+
+  // Enable typed routes for better TypeScript support
+  typedRoutes: true,
 
   // Optimize images for better performance
   images: {
@@ -24,6 +37,7 @@ const nextConfig: NextConfig = {
 
   // Optimize CSS and fonts
   experimental: {
+    typedEnv: true,
     turbopackFileSystemCacheForDev: true,
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
@@ -65,9 +79,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-const withNextIntl = createNextIntlPlugin({
-  experimental: {
-    createMessagesDeclaration: './messages/en.json',
-  },
-})
-export default withNextIntl(nextConfig)
+export default withBundleAnalyzer(withNextIntl(nextConfig))

@@ -19,4 +19,5 @@ runs:
         pnpm-version: ${{ inputs.pnpm-version }}
 
     - name: Install dependencies
+      shell: bash
       run: pnpm install

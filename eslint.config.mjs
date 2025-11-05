@@ -8,6 +8,9 @@ import nextPlugin from '@next/eslint-plugin-next'
 import importPlugin from 'eslint-plugin-import'
 import securityPlugin from 'eslint-plugin-security'
 import sonarjs from 'eslint-plugin-sonarjs'
+import unicorn from 'eslint-plugin-unicorn'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import noSecrets from 'eslint-plugin-no-secrets'
 
 export default [
   {
@@ -33,6 +36,9 @@ export default [
       import: importPlugin,
       security: securityPlugin,
       sonarjs,
+      unicorn,
+      'jsx-a11y': jsxA11y,
+      'no-secrets': noSecrets,
     },
     languageOptions: {
       parser: tsParser,
@@ -49,13 +55,11 @@ export default [
       },
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
+      react: { version: 'detect' },
     },
     rules: {
       /**
-       * TypeScript strictness
+       * TypeScript
        */
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -63,6 +67,8 @@ export default [
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           ignoreRestSiblings: false,
+          args: 'all',
+          caughtErrors: 'all',
         },
       ],
       '@typescript-eslint/no-explicit-any': 'error',
@@ -106,18 +112,21 @@ export default [
       ],
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-indexed-object-style': ['error', 'record'],
+      '@typescript-eslint/prefer-readonly': 'error',
+      '@typescript-eslint/prefer-readonly-parameter-types': 'error',
 
       /**
-       * JS / base rules
+       * JavaScript / maintainability
        */
       'no-var': 'error',
       'prefer-const': 'error',
       'no-duplicate-imports': 'error',
       'no-unreachable': 'error',
       eqeqeq: ['error', 'always'],
-      'no-console': ['error'],
+      'no-console': 'error',
       complexity: ['error', 8],
-      'max-lines-per-function': ['error', 40],
+      'max-lines-per-function': ['error', 35],
+      'max-lines': ['error', 400],
       'max-params': ['error', 3],
       'max-depth': ['error', 3],
       'max-nested-callbacks': ['error', 3],
@@ -155,6 +164,8 @@ export default [
       ],
       'react/no-array-index-key': 'error',
       'react/jsx-no-literals': ['error', { allowedStrings: [] }],
+      'react/no-danger': 'error',
+      'react/no-danger-with-children': 'error',
 
       /**
        * Hooks
@@ -192,15 +203,13 @@ export default [
       'no-new-func': 'error',
       'no-script-url': 'error',
       '@typescript-eslint/no-implied-eval': 'error',
-      'react/no-danger': 'error',
-      'react/no-danger-with-children': 'error',
-      'react/jsx-no-script-url': 'error',
       'security/detect-object-injection': 'error',
       'security/detect-non-literal-fs-filename': 'error',
       'security/detect-non-literal-regexp': 'error',
+      'no-secrets/no-secrets': 'error',
 
       /**
-       * SonarJS - maintainability / smells
+       * SonarJS
        */
       'sonarjs/cognitive-complexity': ['error', 15],
       'sonarjs/no-duplicate-string': [
@@ -211,6 +220,30 @@ export default [
       'sonarjs/no-useless-catch': 'error',
       'sonarjs/prefer-immediate-return': 'error',
       'sonarjs/prefer-object-literal': 'error',
+
+      /**
+       * Unicorn
+       */
+      'unicorn/consistent-function-scoping': 'error',
+      'unicorn/prefer-optional-catch-binding': 'error',
+      'unicorn/throw-new-error': 'error',
+      'unicorn/no-array-reduce': 'warn',
+      'unicorn/prefer-includes': 'error',
+      'unicorn/prefer-query-selector': 'error',
+      'unicorn/prefer-string-starts-ends-with': 'error',
+
+      /**
+       * Accessibility
+       */
+      'jsx-a11y/alt-text': 'error',
+      'jsx-a11y/anchor-is-valid': 'error',
+      'jsx-a11y/click-events-have-key-events': 'error',
+      'jsx-a11y/no-noninteractive-element-interactions': 'error',
+      'jsx-a11y/no-static-element-interactions': 'error',
+      'jsx-a11y/aria-props': 'error',
+      'jsx-a11y/aria-proptypes': 'error',
+      'jsx-a11y/aria-role': 'error',
+      'jsx-a11y/aria-unsupported-elements': 'error',
     },
   },
 ]

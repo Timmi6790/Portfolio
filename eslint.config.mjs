@@ -1,9 +1,7 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
-import tsParser from '@typescript-eslint/parser'
-import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
 import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
 import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
 import nextPlugin from '@next/eslint-plugin-next'
 import importPlugin from 'eslint-plugin-import'
 import securityPlugin from 'eslint-plugin-security'
@@ -12,26 +10,85 @@ import unicorn from 'eslint-plugin-unicorn'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import noSecrets from 'eslint-plugin-no-secrets'
 
-export default [
+export default tseslint.config(
+  // ---------------------------------------------------------------------
+  // Ignore build/vendor outputs
+  // ---------------------------------------------------------------------
   {
-    ignores: [
-      '**/node_modules/',
-      '**/.next/',
-      '**/out/',
-      '**/public/',
-      '**/*.config.js',
-      '**/*.config.mjs',
-    ],
+    ignores: ['**/node_modules/', '**/.next/', '**/out/', '**/public/'],
   },
 
-  js.configs.recommended,
-
+  // ---------------------------------------------------------------------
+  // Disallow JS/CJS/MJS everywhere...
+  // ---------------------------------------------------------------------
   {
-    files: ['**/*.{ts,tsx,js,jsx}'],
+    files: ['**/*.{js,jsx,cjs,mjs}'],
+    ignores: ['eslint.config.mjs', 'postcss.config.mjs'], // ...except these two
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'Program',
+          message:
+            'JavaScript files are not allowed in this repo. Use TypeScript (.ts/.tsx).',
+        },
+      ],
+    },
+  },
+
+  // ---------------------------------------------------------------------
+  // Allow + lightly lint our two Node-side config files
+  // ---------------------------------------------------------------------
+  {
+    files: ['eslint.config.mjs', 'postcss.config.mjs'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: { ...globals.node },
+    },
+    rules: {
+      'no-duplicate-imports': 'error',
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+    },
+  },
+
+  // ---------------------------------------------------------------------
+  // Bring in the official TS presets (type-checked)
+  // NOTE: These include "files" globs for ts/tsx and expect a project.
+  // ---------------------------------------------------------------------
+  ...tseslint.configs.recommendedTypeChecked.map((c) => ({
+    ...c,
+    files: ['**/*.{ts,tsx}'],
+  })),
+  ...tseslint.configs.strictTypeChecked.map((c) => ({
+    ...c,
+    files: ['**/*.{ts,tsx}'],
+  })),
+  ...tseslint.configs.stylisticTypeChecked.map((c) => ({
+    ...c,
+    files: ['**/*.{ts,tsx}'],
+  })),
+  // ---------------------------------------------------------------------
+  // Our project-specific TS/React/Next hardening (ts/tsx only)
+  // This block *augments* the presets above.
+  // ---------------------------------------------------------------------
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      // Make the presets type-aware using your tsconfig
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
     plugins: {
-      '@typescript-eslint': typescriptEslint,
-      'react-hooks': reactHooks,
       react,
+      'react-hooks': reactHooks,
       next: nextPlugin,
       import: importPlugin,
       security: securityPlugin,
@@ -40,55 +97,50 @@ export default [
       'jsx-a11y': jsxA11y,
       'no-secrets': noSecrets,
     },
-    languageOptions: {
-      parser: tsParser,
-      ecmaVersion: 2024,
-      sourceType: 'module',
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-        project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
     settings: {
       react: { version: 'detect' },
+      'import/resolver': { typescript: { project: './tsconfig.json' } },
     },
     rules: {
-      /**
-       * TypeScript
-       */
+      // --- Strengthen/align with your “ultimate strict” stance ---
+
+      // Use TS-aware rule; base is off in the presets already
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
+          args: 'all',
+          ignoreRestSiblings: false,
+          caughtErrors: 'all',
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
-          ignoreRestSiblings: false,
-          args: 'all',
-          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
         },
       ],
+
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/strict-boolean-expressions': 'error',
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/strict-boolean-expressions': 'error',
       '@typescript-eslint/consistent-type-imports': [
         'error',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
+
+      // These are already quite strict in the presets, but we lock them to error:
       '@typescript-eslint/no-unsafe-assignment': 'error',
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
+
+      // Explicitness at module boundaries & arrows
       '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/explicit-function-return-type': [
         'error',
         { allowExpressions: false, allowTypedFunctionExpressions: false },
       ],
+
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         { accessibility: 'explicit' },
@@ -115,9 +167,7 @@ export default [
       '@typescript-eslint/prefer-readonly': 'error',
       '@typescript-eslint/prefer-readonly-parameter-types': 'error',
 
-      /**
-       * JavaScript / maintainability
-       */
+      // General maintainability
       'no-var': 'error',
       'prefer-const': 'error',
       'no-duplicate-imports': 'error',
@@ -135,9 +185,7 @@ export default [
       curly: ['error', 'all'],
       'no-param-reassign': 'error',
 
-      /**
-       * React / JSX
-       */
+      // React / JSX
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react/jsx-no-target-blank': 'error',
@@ -167,15 +215,11 @@ export default [
       'react/no-danger': 'error',
       'react/no-danger-with-children': 'error',
 
-      /**
-       * Hooks
-       */
+      // Hooks
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error',
 
-      /**
-       * Next.js
-       */
+      // Next.js
       'next/no-html-link-for-pages': ['error', 'src/app'],
       'next/no-img-element': 'error',
       'next/no-head-element': 'error',
@@ -185,9 +229,7 @@ export default [
       'next/next-script-for-ga': 'error',
       'next/no-css-tags': 'error',
 
-      /**
-       * Imports
-       */
+      // Imports
       'import/order': [
         'error',
         { alphabetize: { order: 'asc' }, 'newlines-between': 'always' },
@@ -195,9 +237,7 @@ export default [
       'import/no-duplicates': 'error',
       'import/no-cycle': 'error',
 
-      /**
-       * Security
-       */
+      // Security
       'no-eval': 'error',
       'no-implied-eval': 'error',
       'no-new-func': 'error',
@@ -208,9 +248,7 @@ export default [
       'security/detect-non-literal-regexp': 'error',
       'no-secrets/no-secrets': 'error',
 
-      /**
-       * SonarJS
-       */
+      // SonarJS
       'sonarjs/cognitive-complexity': ['error', 15],
       'sonarjs/no-duplicate-string': [
         'error',
@@ -221,9 +259,7 @@ export default [
       'sonarjs/prefer-immediate-return': 'error',
       'sonarjs/prefer-object-literal': 'error',
 
-      /**
-       * Unicorn
-       */
+      // Unicorn
       'unicorn/consistent-function-scoping': 'error',
       'unicorn/prefer-optional-catch-binding': 'error',
       'unicorn/throw-new-error': 'error',
@@ -232,9 +268,7 @@ export default [
       'unicorn/prefer-query-selector': 'error',
       'unicorn/prefer-string-starts-ends-with': 'error',
 
-      /**
-       * Accessibility
-       */
+      // A11y
       'jsx-a11y/alt-text': 'error',
       'jsx-a11y/anchor-is-valid': 'error',
       'jsx-a11y/click-events-have-key-events': 'error',
@@ -245,5 +279,5 @@ export default [
       'jsx-a11y/aria-role': 'error',
       'jsx-a11y/aria-unsupported-elements': 'error',
     },
-  },
-]
+  }
+)

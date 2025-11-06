@@ -73,6 +73,7 @@
     "sonner": "latest",
     "tailwind-merge": "^3.0.0",
     "tailwindcss-animate": "^1.0.7",
+    "typescript-eslint": "^8.46.3",
     "vaul": "^1.0.0",
     "vue-router": "latest",
     "zod": "4.1.12"

@@ -64,7 +64,7 @@ export const EasterEggs = () => {
           return 0
         }
 
-        setTimeout(() => setClickCount(0), 500)
+        setTimeout(() => { setClickCount(0); }, 500)
         return newCount
       })
     }

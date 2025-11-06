@@ -43,7 +43,7 @@ export const CommandPalette = () => {
     }
 
     document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
+    return () => { document.removeEventListener('keydown', down); }
   }, [])
 
   const runCommand = useCallback((command: () => void) => {
@@ -71,19 +71,19 @@ export const CommandPalette = () => {
 
         <CommandGroup heading={paletteT('navigation')}>
           <CommandItem
-            onSelect={() => runCommand(() => router.push(`/${locale}`))}
+            onSelect={() => { runCommand(() => { router.push(`/${locale}`); }); }}
           >
             <Home className="mr-2 h-4 w-4" />
             <span>{paletteT('home')}</span>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => router.push(`/${locale}/imprint`))}
+            onSelect={() => { runCommand(() => { router.push(`/${locale}/imprint`); }); }}
           >
             <FileText className="mr-2 h-4 w-4" />
             <span>{allT('imprint.title')}</span>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => router.push(`/${locale}/privacy`))}
+            onSelect={() => { runCommand(() => { router.push(`/${locale}/privacy`); }); }}
           >
             <CookieIcon className="mr-2 h-4 w-4" />
             <span>{allT('privacy.title')}</span>
@@ -92,25 +92,25 @@ export const CommandPalette = () => {
 
         <CommandGroup heading={paletteT('sections')}>
           <CommandItem
-            onSelect={() => runCommand(() => scrollToSection('about'))}
+            onSelect={() => { runCommand(() => { scrollToSection('about'); }); }}
           >
             <User className="mr-2 h-4 w-4" />
             <span>{allT('about.title')}</span>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => scrollToSection('skills'))}
+            onSelect={() => { runCommand(() => { scrollToSection('skills'); }); }}
           >
             <Code className="mr-2 h-4 w-4" />
             <span>{allT('skills.title')}</span>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => scrollToSection('projects'))}
+            onSelect={() => { runCommand(() => { scrollToSection('projects'); }); }}
           >
             <Briefcase className="mr-2 h-4 w-4" />
             <span>{allT('projects.title')}</span>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => scrollToSection('contact'))}
+            onSelect={() => { runCommand(() => { scrollToSection('contact'); }); }}
           >
             <MessageSquare className="mr-2 h-4 w-4" />
             <span>{allT('contact.title')}</span>
@@ -120,7 +120,7 @@ export const CommandPalette = () => {
         <CommandGroup heading={paletteT('actions')}>
           <CommandItem
             onSelect={() =>
-              runCommand(() => window.open(siteConfig.github, '_blank'))
+              { runCommand(() => window.open(siteConfig.github, '_blank')); }
             }
           >
             <Github className="mr-2 h-4 w-4" />
@@ -128,9 +128,9 @@ export const CommandPalette = () => {
           </CommandItem>
           <CommandItem
             onSelect={() =>
-              runCommand(
+              { runCommand(
                 () => (window.location.href = `mailto:${siteConfig.email}`)
-              )
+              ); }
             }
           >
             <Mail className="mr-2 h-4 w-4" />

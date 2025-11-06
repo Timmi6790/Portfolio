@@ -7,6 +7,7 @@ import type { JSX } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { FCNullable, FCStrict } from '@/types/fc'
+import type { Translations } from '@/types/i18n'
 
 // Hoisted utility to satisfy unicorn/consistent-function-scoping
 function goHome(): void {
@@ -83,7 +84,7 @@ const ErrorPage: FCStrict<ErrorPageProps> = ({
   error,
   reset,
 }: Readonly<ErrorPageProps>): JSX.Element => {
-  const t: ReturnType<typeof useTranslations> = useTranslations('error')
+  const t: Translations = useTranslations('error')
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">

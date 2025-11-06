@@ -15,7 +15,7 @@ interface Experience {
   description: string
 }
 
-export const ExperienceSection = ({ locale }: { locale: Locale }) => {
+export const ExperienceSection = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale, namespace: 'experience' })
 
   const experiences: Experience[] = t.raw('items')

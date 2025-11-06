@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { siteConfig } from '@/lib/config'
 
-export const SkillsSection = ({ locale }: { locale: Locale }) => {
+export const SkillsSection = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale, namespace: 'skills' })
 
   return (

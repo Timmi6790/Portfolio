@@ -1,4 +1,4 @@
-export type SiteConfig = {
+export interface SiteConfig {
   readonly name: string
   readonly fullName: string
   readonly description: string

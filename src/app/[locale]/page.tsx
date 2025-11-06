@@ -1,7 +1,8 @@
 import { type Locale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
+import React, { type JSX } from 'react'
 
-import { AboutSection } from '@/components/about-section'
+import AboutSection from '@/components/about-section'
 import { ContactSection } from '@/components/contact-section'
 import { ExperienceSection } from '@/components/experience-section'
 import { HeroSection } from '@/components/hero-section'
@@ -15,40 +16,63 @@ import {
   getUserStats,
 } from '@/lib/github'
 
-export default async function Home({
-  params,
-}: Readonly<{
-  params: Promise<{ locale: Locale }>
-}>) {
-  const { locale } = await params
+interface HomeProps {
+  readonly params: Readonly<Promise<{ locale: Locale }>>
+}
 
-  // Enable static rendering
+interface GitHubData {
+  projects: Awaited<ReturnType<typeof getFeaturedProjects>>
+  stats: Awaited<ReturnType<typeof getUserStats>>
+  contributionData: Awaited<ReturnType<typeof getContributionData>>
+}
+
+// Helper to fetch GitHub data
+const fetchGitHubData: () => Promise<
+  Readonly<GitHubData>
+> = async (): Promise<GitHubData> => {
+  const projects: Awaited<ReturnType<typeof getFeaturedProjects>> =
+    await getFeaturedProjects(
+      siteConfig.githubUsername,
+      siteConfig.featuredRepos
+    )
+  const stats: Awaited<ReturnType<typeof getUserStats>> = await getUserStats(
+    siteConfig.githubUsername
+  )
+  const contributionData: Awaited<ReturnType<typeof getContributionData>> =
+    await getContributionData(siteConfig.githubUsername)
+
+  return { projects, stats, contributionData }
+}
+
+const Home: React.FC<HomeProps> = async ({
+  params,
+}: Readonly<HomeProps>): Promise<JSX.Element> => {
+  const { locale }: { readonly locale: Locale } = await params
+
   setRequestLocale(locale)
 
-  // Fetch GitHub data in parallel for better performance
-  const [projects, stats, contributionData] = await Promise.all([
-    getFeaturedProjects(siteConfig.githubUsername, siteConfig.featuredRepos),
-    getUserStats(siteConfig.githubUsername),
-    getContributionData(siteConfig.githubUsername),
-  ])
+  const { projects, stats, contributionData }: GitHubData =
+    await fetchGitHubData()
 
   return (
     <main className="bg-background h-screen snap-y snap-mandatory overflow-y-scroll">
-        <HeroSection locale={locale} />
-        <div className="snap-start">
-          <AboutSection locale={locale} />
-          <SkillsSection locale={locale} />
-          <ProjectsSection
-            contributionData={contributionData}
-            githubUsername={siteConfig.githubUsername}
-            locale={locale}
-            projects={projects}
-            stats={stats}
-          />
-          <ExperienceSection locale={locale} />
-          <TestimonialsSection locale={locale} />
-          <ContactSection locale={locale} />
-        </div>
-      </main>
+      <HeroSection locale={locale} />
+      <div className="snap-start">
+        <AboutSection locale={locale} />
+        <SkillsSection locale={locale} />
+        <ProjectsSection
+          contributionData={contributionData}
+          githubUsername={siteConfig.githubUsername}
+          locale={locale}
+          projects={projects}
+          stats={stats}
+        />
+        <ExperienceSection locale={locale} />
+        <TestimonialsSection locale={locale} />
+        <ContactSection locale={locale} />
+      </div>
+    </main>
   )
 }
+
+export default Home

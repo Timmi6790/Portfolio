@@ -38,12 +38,10 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
 
-  async headers(): Promise<
-    Array<{
-      source: string
-      headers: Array<{ key: string; value: string }>
-    }>
-  > {
+  headers(): {
+    source: string
+    headers: { key: string; value: string }[]
+  }[] {
     return [
       {
         source: '/:path*',

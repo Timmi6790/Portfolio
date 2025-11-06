@@ -15,7 +15,7 @@ interface TestimonialItem {
   quote: string
 }
 
-export const TestimonialsSection = ({ locale }: { locale: Locale }) => {
+export const TestimonialsSection = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale, namespace: 'testimonials' })
 
   const testimonials: TestimonialItem[] = t.raw('items')

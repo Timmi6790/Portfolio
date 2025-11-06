@@ -24,8 +24,8 @@ export const ContributionGraph = ({ locale, data }: ContributionGraphProps) => {
 
   // Organize data by calendar weeks
   const { weeks, monthLabels } = useMemo(() => {
-    const weeks: Array<Array<ContributionDay | null>> = []
-    const monthLabels: Array<{ month: string; weekIndex: number }> = []
+    const weeks: (ContributionDay | null)[][] = []
+    const monthLabels: { month: string; weekIndex: number }[] = []
     let currentMonth = ''
 
     if (data.length === 0) {return { weeks: [], monthLabels: [] }}
@@ -45,7 +45,7 @@ export const ContributionGraph = ({ locale, data }: ContributionGraphProps) => {
     currentDate.setDate(currentDate.getDate() - currentDate.getDay())
 
     while (currentDate <= lastDate) {
-      const week: Array<ContributionDay | null> = []
+      const week: (ContributionDay | null)[] = []
 
       for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
         const dateStr =
@@ -203,8 +203,8 @@ export const ContributionGraph = ({ locale, data }: ContributionGraphProps) => {
                         style={{
                           animationDelay: `${(weekIndex * 7 + dayIndex) * 2}ms`,
                         }}
-                        onMouseEnter={(e) => handleMouseMove(e, day)}
-                        onMouseLeave={() => setHoveredDay(null)}
+                        onMouseEnter={(e) => { handleMouseMove(e, day); }}
+                        onMouseLeave={() => { setHoveredDay(null); }}
                       />
                     )
                   })}

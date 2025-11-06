@@ -1,9 +1,13 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { type JSX } from 'react'
 
-export default function Loading() {
-  const t = useTranslations('loading')
+import type { PageFC } from '@/types/fc'
+import type { Translations } from '@/types/i18n'
+
+const Loading: PageFC = (): JSX.Element => {
+  const t: Translations = useTranslations('loading')
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center">
@@ -19,3 +23,5 @@ export default function Loading() {
     </div>
   )
 }
+
+export default Loading

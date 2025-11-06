@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { Link } from '@/i18n/routing'
 
-export const LegalFooter = ({ locale }: { locale: Locale }) => {
+export const LegalFooter = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale })
 
   return (

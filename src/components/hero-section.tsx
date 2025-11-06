@@ -7,8 +7,7 @@ import { getTranslations } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/lib/config'
 
-
-export const HeroSection = ({ locale }: { locale: Locale }) => {
+export const HeroSection = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale, namespace: 'hero' })
 
   return (

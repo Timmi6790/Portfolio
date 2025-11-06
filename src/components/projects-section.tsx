@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { type GitHubProject } from '@/lib/github'
 
-
 interface ProjectsSectionProps {
   locale: Locale
   githubUsername: string
@@ -20,14 +19,14 @@ interface ProjectsSectionProps {
     stars: number
     forks: number
   }
-  contributionData: Array<{
+  contributionData: {
     date: string
     count: number
     level: 0 | 1 | 2 | 3 | 4
-  }>
+  }[]
 }
 
-export const ProjectsSection = ({
+export const ProjectsSection = async ({
   locale,
   githubUsername,
   projects,

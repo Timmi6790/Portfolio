@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { siteConfig } from '@/lib/config'
 
-
-export const ContactSection = ({ locale }: { locale: Locale }) => {
+export const ContactSection = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale, namespace: 'contact' })
 
   const resumePath = locale === 'de' ? '/resume-de.pdf' : '/resume-en.pdf'

@@ -115,7 +115,7 @@ interface ContributionWeek {
 const getContributionDataUncached = async (
   username: string
 ): Promise<
-  Array<{ date: string; count: number; level: 0 | 1 | 2 | 3 | 4 }>
+  { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 }[]
 > => {
   try {
     const to = new Date().toISOString()
@@ -176,11 +176,11 @@ const getContributionDataUncached = async (
       FOURTH_QUARTILE: 4,
     }
 
-    const days: Array<{
+    const days: {
       date: string
       count: number
       level: 0 | 1 | 2 | 3 | 4
-    }> = []
+    }[] = []
     for (const week of weeks as ContributionWeek[]) {
       for (const day of week.contributionDays) {
         days.push({

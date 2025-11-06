@@ -7,7 +7,7 @@ import { getTranslations } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/routing'
 
-export const BackToHome = ({ locale }: { locale: Locale }) => {
+export const BackToHome = async ({ locale }: { locale: Locale }) => {
   const t = await getTranslations({ locale, namespace: 'imprint' })
 
   return (

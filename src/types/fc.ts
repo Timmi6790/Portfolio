@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 /**
  * Types-only utilities for React components in a strict TS/ESLint setup.
  *
@@ -25,9 +23,15 @@ import type {
 
 export type NoProps = Readonly<Record<never, never>>
 
-export type NoChildren = { readonly children?: never }
-export type WithChildren = { readonly children?: ReactNode }
-export type WithRequiredChildren = { readonly children: ReactNode }
+export interface NoChildren {
+  readonly children?: never
+}
+export interface WithChildren {
+  readonly children?: Readonly<ReactNode>
+}
+export interface WithRequiredChildren {
+  readonly children: ReactNode
+}
 
 /** ------------------------------------------------------------------------
  *  Core FC shapes (no React.FC)
@@ -80,18 +84,20 @@ export type ForwardRefComponentWithChildren<P, R> = ForwardRefExoticComponent<
  */
 
 export type ForwardRefRender<P, R> =
-  /* eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types */
+   
   (props: Readonly<P & NoChildren>, ref: ForwardedRef<R>) => JSX.Element
 
 export type ForwardRefRenderWithChildren<P, R> =
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+   
   (props: Readonly<P & WithChildren>, ref: ForwardedRef<R>) => JSX.Element
 
 /** ------------------------------------------------------------------------
  *  Polymorphic "as" pattern
  *  --------------------------------------------------------------------- */
 
-export type AsProp<E extends ElementType> = { readonly as?: E }
+export interface AsProp<E extends ElementType> {
+  readonly as?: E
+}
 
 export type PolymorphicComponentProps<E extends ElementType, P> = Readonly<
   P & AsProp<E>
@@ -121,7 +127,7 @@ export type PolymorphicFCWithRequiredChildren<
  *  Next.js convenience aliases
  *  --------------------------------------------------------------------- */
 
-export type LayoutFC = FCWithRequiredChildren<NoProps>
+export type LayoutFC = FCWithRequiredChildren
 
 export type PageFC<P = NoProps> = FCStrict<P>
 export type AsyncPageFC<P = NoProps> = FCAsync<P>

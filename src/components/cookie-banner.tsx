@@ -81,7 +81,7 @@ export const CookieBanner = () => {
               <Button
                 className="flex-1"
                 variant="secondary"
-                onClick={() => setShowCustomize(true)}
+                onClick={() => { setShowCustomize(true); }}
               >
                 {t('customize')}
               </Button>
@@ -114,7 +114,7 @@ export const CookieBanner = () => {
                     checked={analytics}
                     className="peer sr-only"
                     type="checkbox"
-                    onChange={(e) => setAnalytics(e.target.checked)}
+                    onChange={(e) => { setAnalytics(e.target.checked); }}
                   />
                   <div className="bg-muted peer-focus:ring-primary/20 peer peer-checked:bg-primary h-6 w-11 rounded-full peer-focus:ring-4 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white" />
                 </label>
@@ -128,7 +128,7 @@ export const CookieBanner = () => {
               <Button
                 className="flex-1"
                 variant="outline"
-                onClick={() => setShowCustomize(false)}
+                onClick={() => { setShowCustomize(false); }}
               >
                 Back
               </Button>

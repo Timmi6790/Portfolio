@@ -3,11 +3,88 @@
 import { BookOpen, Code2 } from 'lucide-react'
 import { type Locale } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
+import { type JSX, type ReactNode } from 'react'
 
 import { Card, CardContent } from '@/components/ui/card'
+import type { AsyncPageFC, FCStrict } from '@/types/fc'
+import type { Translations } from '@/types/i18n'
 
-export const AboutSection = ({ locale }: { locale: Locale }) => {
-  const t = await getTranslations({ locale, namespace: 'about' })
+interface AboutSectionProps {
+  readonly locale: Locale
+}
+
+interface InfoCardProps {
+  readonly icon: ReactNode
+  readonly title: string
+  readonly description: ReactNode
+}
+
+interface AboutTranslations {
+  t: Translations
+  learningDescription: ReactNode
+  expertiseDescription: ReactNode
+}
+
+const InfoCard: FCStrict<InfoCardProps> = ({
+  icon,
+  title,
+  description,
+}: Readonly<InfoCardProps>): JSX.Element => (
+  <Card className="group hover:border-primary/50 border-2 transition-all duration-300 hover:shadow-xl">
+    <CardContent className="flex items-start gap-4 p-6">
+      <div className="from-primary/10 to-primary/5 rounded-lg bg-gradient-to-br p-3 transition-transform duration-300 group-hover:scale-110">
+        {icon}
+      </div>
+      <div>
+        <h3 className="text-foreground mb-2 text-xl font-semibold">{title}</h3>
+        <p className="text-muted-foreground leading-relaxed">{description}</p>
+      </div>
+    </CardContent>
+  </Card>
+)
+
+async function getAboutTranslations(
+  locale: Locale
+): Promise<AboutTranslations> {
+  const t: Translations = await getTranslations({
+    locale,
+    namespace: 'about',
+  })
+
+  const learningDescription: ReactNode = t.rich('learning.description', {
+    highlight: (chunks: Readonly<ReactNode>): JSX.Element => (
+      <span className="text-foreground font-medium">{chunks}</span>
+    ),
+  })
+
+  const expertiseDescription: ReactNode = t.rich('expertise.description', {
+    highlight: (chunks: ReactNode): JSX.Element => (
+      <span className="text-foreground font-medium">{chunks}</span>
+    ),
+  })
+
+  return { t, learningDescription, expertiseDescription }
+}
+
+interface CreateDescriptionParams {
+  readonly description: Readonly<ReactNode>
+}
+
+const createDescription: FCStrict<Readonly<CreateDescriptionParams>> = ({
+  description,
+}: Readonly<CreateDescriptionParams>): JSX.Element => {
+  return (
+    <div className="text-muted-foreground leading-relaxed">{description}</div>
+  )
+}
+
+const AboutSection: AsyncPageFC<AboutSectionProps> = async ({
+  locale,
+}: AboutSectionProps): Promise<JSX.Element> => {
+  const aboutTranslations: AboutTranslations =
+    await getAboutTranslations(locale)
+  const { t, learningDescription, expertiseDescription }: AboutTranslations =
+    aboutTranslations
 
   return (
     <section className="px-4 py-20" id="about">
@@ -20,51 +97,24 @@ export const AboutSection = ({ locale }: { locale: Locale }) => {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <Card className="group hover:border-primary/50 border-2 transition-all duration-300 hover:shadow-xl">
-            <CardContent className="flex items-start gap-4 p-6">
-              <div className="from-primary/10 to-primary/5 rounded-lg bg-gradient-to-br p-3 transition-transform duration-300 group-hover:scale-110">
-                <BookOpen className="text-primary h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-foreground mb-2 text-xl font-semibold">
-                  {t('learning.title')}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.rich('learning.description', {
-                    highlight: (chunks) => (
-                      <span className="text-foreground font-medium">
-                        {chunks}
-                      </span>
-                    ),
-                  })}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:border-primary/50 border-2 transition-all duration-300 hover:shadow-xl">
-            <CardContent className="flex items-start gap-4 p-6">
-              <div className="from-primary/10 to-primary/5 rounded-lg bg-gradient-to-br p-3 transition-transform duration-300 group-hover:scale-110">
-                <Code2 className="text-primary h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-foreground mb-2 text-xl font-semibold">
-                  {t('expertise.title')}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.rich('expertise.description', {
-                    highlight: (chunks) => (
-                      <span className="text-foreground font-medium">
-                        {chunks}
-                      </span>
-                    ),
-                  })}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <InfoCard
+            description={createDescription({
+              description: learningDescription,
+            })}
+            icon={<BookOpen className="text-primary h-6 w-6" />}
+            title={t('learning.title')}
+          />
+          <InfoCard
+            description={createDescription({
+              description: expertiseDescription,
+            })}
+            icon={<Code2 className="text-primary h-6 w-6" />}
+            title={t('expertise.title')}
+          />
         </div>
       </div>
     </section>
   )
 }
+
+export default AboutSection

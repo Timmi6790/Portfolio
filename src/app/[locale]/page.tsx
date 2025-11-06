@@ -16,12 +16,8 @@ import {
   getFeaturedProjects,
   getUserStats,
 } from '@/lib/github'
-import type { FCAsync, NoChildren } from '@/types/fc'
 import type { UnparsedLocalePageProps } from '@/types/i18n'
-
-interface HomeProps extends NoChildren {
-  readonly params: Promise<UnparsedLocalePageProps>
-}
+import type { PageParams, RoutePageFC } from '@/types/page'
 
 interface GitHubData {
   projects: Awaited<ReturnType<typeof getFeaturedProjects>>
@@ -47,9 +43,11 @@ const fetchGitHubData: () => Promise<
   return { projects, stats, contributionData }
 }
 
-const Home: FCAsync<HomeProps> = async ({
+type HomeProps = UnparsedLocalePageProps
+
+const Home: RoutePageFC<HomeProps> = async ({
   params,
-}: HomeProps): Promise<JSX.Element> => {
+}: PageParams<HomeProps>): Promise<JSX.Element> => {
   const locale: Locale = await ensureLocaleFromParams(params)
 
   setRequestLocale(locale)

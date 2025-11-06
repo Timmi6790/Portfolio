@@ -8,15 +8,16 @@ import type { JSX } from 'react'
 import LegalPageLayout from '@/components/legal-page-layout'
 import { ensureLocaleFromParams, maybeLocaleFromParams } from '@/i18n/locale'
 import { siteConfig } from '@/lib/config'
-import type { FCAsync, FCStrict, NoChildren } from '@/types/fc'
+import type { FCStrict } from '@/types/fc'
 import type { Translations, UnparsedLocalePageProps } from '@/types/i18n'
+import type { GenerateMetadataFC, PageParams, RoutePageFC } from '@/types/page'
 /* --------------------------------- meta --------------------------------- */
 
-export async function generateMetadata({
+export const generateMetadata: GenerateMetadataFC<
+  UnparsedLocalePageProps
+> = async ({
   params,
-}: {
-  params: Promise<UnparsedLocalePageProps>
-}): Promise<Metadata> {
+}: PageParams<UnparsedLocalePageProps>): Promise<Metadata> => {
   const locale: Locale | null = await maybeLocaleFromParams(params)
   if (locale === null) {
     return {}
@@ -88,13 +89,11 @@ const Section: FCStrict<SectionProps> = ({
 
 /* ---------------------------------- page ---------------------------------- */
 
-interface ImprintPageProps extends NoChildren {
-  readonly params: Promise<UnparsedLocalePageProps>
-}
+type ImprintPageProps = UnparsedLocalePageProps
 
-const ImprintPage: FCAsync<ImprintPageProps> = async ({
+const ImprintPage: RoutePageFC<ImprintPageProps> = async ({
   params,
-}: ImprintPageProps): Promise<JSX.Element> => {
+}: PageParams<ImprintPageProps>): Promise<JSX.Element> => {
   const locale: Locale = await ensureLocaleFromParams(params)
 
   setRequestLocale(locale)

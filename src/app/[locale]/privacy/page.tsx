@@ -7,21 +7,17 @@ import type { JSX } from 'react'
 
 import LegalPageLayout from '@/components/legal-page-layout'
 import { ensureLocaleFromParams, maybeLocaleFromParams } from '@/i18n/locale'
-import type { FCAsync, FCStrict, NoChildren } from '@/types/fc'
+import type { FCStrict } from '@/types/fc'
 import type { Translations, UnparsedLocalePageProps } from '@/types/i18n'
+import type { GenerateMetadataFC, PageParams, RoutePageFC } from '@/types/page'
 
 /* --------------------------------- metadata -------------------------------- */
-
-interface PrivacyMetaParams {
-  readonly params: Promise<UnparsedLocalePageProps>
-}
-
-type GenerateMeta = (a: PrivacyMetaParams) => Promise<Metadata>
-
-export const generateMetadata: GenerateMeta = async (
-  props: PrivacyMetaParams
-): Promise<Metadata> => {
-  const locale: Locale | null = await maybeLocaleFromParams(props.params)
+export const generateMetadata: GenerateMetadataFC<
+  UnparsedLocalePageProps
+> = async ({
+  params,
+}: PageParams<UnparsedLocalePageProps>): Promise<Metadata> => {
+  const locale: Locale | null = await maybeLocaleFromParams(params)
   if (locale === null) {
     return {}
   }
@@ -144,14 +140,12 @@ const Sections: (props: SectionsProps) => JSX.Element[] = ({
 
 /* ----------------------------------- page ---------------------------------- */
 
-interface PrivacyPageProps extends NoChildren {
-  readonly params: Promise<UnparsedLocalePageProps>
-}
+type PrivacyPageProps = UnparsedLocalePageProps
 
 // eslint-disable-next-line max-lines-per-function
-const PrivacyPolicyPage: FCAsync<PrivacyPageProps> = async ({
+const PrivacyPolicyPage: RoutePageFC<PrivacyPageProps> = async ({
   params,
-}: PrivacyPageProps): Promise<JSX.Element> => {
+}: PageParams<PrivacyPageProps>): Promise<JSX.Element> => {
   const locale: Locale = await ensureLocaleFromParams(params)
 
   setRequestLocale(locale)

@@ -17,11 +17,16 @@ import { LanguageSwitcher } from '@/components/language-switcher'
 import { LegalFooter } from '@/components/legal-footer'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { ensureLocaleFromParams } from '@/i18n/locale'
+import { ensureLocaleFromParams, maybeLocaleFromParams } from '@/i18n/locale'
 import { getPathname, routing } from '@/i18n/routing'
 import { siteConfig } from '@/lib/config'
-import type { FCAsyncWithChildren, WithChildren } from '@/types/fc'
-import type { LocalePageProps, UnparsedLocalePageProps } from '@/types/i18n'
+import type { UnparsedLocalePageProps } from '@/types/i18n'
+import type {
+  GenerateMetadataFC,
+  PageParams,
+  PageParamsWithChildren,
+  RoutePageWithChildrenFC,
+} from '@/types/page'
 
 /* ---------- fonts ---------- */
 const geist: NextFontWithVariable = Geist({
@@ -66,19 +71,15 @@ const buildAlternateLocales: (current: Locale) => string = (
 }
 
 /* ---------- generateMetadata ---------- */
-
-interface GenerateMetadataParams {
-  readonly params: Promise<LocalePageProps>
-}
-
-type GenerateMetadataFn = (
-  args: Readonly<GenerateMetadataParams>
-) => Promise<Metadata>
-
-export const generateMetadata: GenerateMetadataFn = async (
-  args: Readonly<GenerateMetadataParams>
-): Promise<Metadata> => {
-  const { locale }: { locale: Locale } = await args.params
+export const generateMetadata: GenerateMetadataFC<
+  UnparsedLocalePageProps
+> = async ({
+  params,
+}: PageParams<UnparsedLocalePageProps>): Promise<Metadata> => {
+  const locale: Locale | null = await maybeLocaleFromParams(params)
+  if (locale === null) {
+    return {}
+  }
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -149,14 +150,12 @@ export const generateStaticParams: GenerateStaticParams =
   }
 
 /* ---------- layout ---------- */
-interface RootLayoutProps extends WithChildren {
-  readonly params: Readonly<Promise<UnparsedLocalePageProps>>
-}
+type RootLayoutProps = UnparsedLocalePageProps
 
-const RootLayout: FCAsyncWithChildren<RootLayoutProps> = async ({
+const RootLayout: RoutePageWithChildrenFC<RootLayoutProps> = async ({
   children,
   params,
-}: RootLayoutProps): Promise<JSX.Element> => {
+}: PageParamsWithChildren<RootLayoutProps>): Promise<JSX.Element> => {
   const locale: Locale = await ensureLocaleFromParams(params)
 
   setRequestLocale(locale)

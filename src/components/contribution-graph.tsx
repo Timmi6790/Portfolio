@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 'use client'
 
-import { type Locale, useTranslations } from 'next-intl'
 import React, {
   type Dispatch,
   type JSX,
@@ -10,19 +9,21 @@ import React, {
   useState,
 } from 'react'
 
+import { type Locale, useTranslations } from 'next-intl'
+
 import { Card } from '@/components/ui/card'
-import { panic } from '@/lib/utils'
+import { panic } from '@/lib/utilities'
 import type { FCStrict } from '@/types/fc'
 import {
   CONTRIBUTION_LEVELS,
   type ContributionLevel,
   type ContributionPoint,
 } from '@/types/github'
-import type { LocalePageProps, Translations } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* =============================== Types =============================== */
 
-interface ContributionGraphProps extends LocalePageProps {
+interface ContributionGraphProperties extends LocalePageProperties {
   readonly data: readonly ContributionPoint[]
 }
 
@@ -37,13 +38,13 @@ interface MonthLabel {
 }
 
 interface WeekModel {
-  readonly key: string
   readonly days: readonly (ContributionPoint | null)[]
+  readonly key: string
 }
 
 interface CalendarModel {
-  readonly weeks: readonly WeekModel[]
   readonly monthLabels: readonly MonthLabel[]
+  readonly weeks: readonly WeekModel[]
 }
 
 /* ============================ Pure Helpers =========================== */
@@ -66,16 +67,16 @@ const levelClass: (level: ContributionLevel) => string = (
   return 'bg-emerald-700 dark:bg-emerald-500 hover:bg-emerald-800 dark:hover:bg-emerald-400 border border-emerald-800/50 dark:border-emerald-400/30'
 }
 
-const isoDate: (d: Date) => string = (d: Date): string =>
-  d.toISOString().split('T')[0] ?? d.toISOString()
+const isoDate: (date: Date) => string = (date: Date): string =>
+  date.toISOString().split('T')[0] ?? date.toISOString()
 
-const sundayOfWeekUTC: (d: Date) => Date = (d: Date): Date => {
-  const c: Date = new Date(
-    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+const sundayOfWeekUTC: (date: Date) => Date = (date: Date): Date => {
+  const utcDate: Date = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
   )
-  const day: number = c.getUTCDay() // 0..6 (Sun..Sat)
-  c.setUTCDate(c.getUTCDate() - day)
-  return c
+  const day: number = utcDate.getUTCDay() // 0..6 (Sun..Sat)
+  utcDate.setUTCDate(utcDate.getUTCDate() - day)
+  return utcDate
 }
 
 const makeDataMap: (
@@ -84,70 +85,74 @@ const makeDataMap: (
   input: readonly ContributionPoint[]
 ): Map<string, ContributionPoint> => {
   const entries: readonly (readonly [string, ContributionPoint])[] = input.map(
-    (pt: ContributionPoint): readonly [string, ContributionPoint] => [
-      pt.date,
-      pt,
+    (
+      contributionPoint: ContributionPoint
+    ): readonly [string, ContributionPoint] => [
+      contributionPoint.date,
+      contributionPoint,
     ]
   )
   return new Map<string, ContributionPoint>(entries)
 }
 
-interface MonthCtx {
-  readonly weekDays: readonly (ContributionPoint | null)[]
-  readonly locale: string
-  readonly weeksLength: number
+interface MonthContext {
   readonly currentMonth: string
+  readonly locale: string
+  readonly weekDays: readonly (ContributionPoint | null)[]
+  readonly weeksLength: number
 }
 
 interface ComputeMonthLabelResult {
-  readonly next: string
   readonly label: MonthLabel | null
+  readonly next: string
 }
 
-const computeMonthLabel: (ctx: MonthCtx) => ComputeMonthLabelResult = ({
-  weekDays,
-  locale,
-  weeksLength,
+const computeMonthLabel: (context: MonthContext) => ComputeMonthLabelResult = ({
   currentMonth,
-}: MonthCtx): ComputeMonthLabelResult => {
+  locale,
+  weekDays,
+  weeksLength,
+}: MonthContext): ComputeMonthLabelResult => {
   const first: ContributionPoint | undefined = weekDays.find(
-    (d: ContributionPoint | null): d is ContributionPoint => d !== null
+    (
+      contributionPoint: ContributionPoint | null
+    ): contributionPoint is ContributionPoint => contributionPoint !== null
   )
   if (first === undefined) {
-    return { next: currentMonth, label: null }
+    return { label: null, next: currentMonth }
   }
 
   const monthName: string = new Date(first.date).toLocaleDateString(locale, {
     month: 'short',
   })
   if (monthName === currentMonth) {
-    return { next: currentMonth, label: null }
+    return { label: null, next: currentMonth }
   }
 
   return {
-    next: monthName,
     label: { month: monthName, weekIndex: weeksLength },
+    next: monthName,
   }
 }
 
-interface BuildCalendarProps {
-  readonly locale: string
+interface BuildCalendarProperties {
   readonly data: readonly ContributionPoint[]
+  readonly locale: string
 }
 
-const buildCalendar: (props: BuildCalendarProps) => CalendarModel = ({
-  locale,
+const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
   data,
+  locale,
   // eslint-disable-next-line complexity
-}: BuildCalendarProps): CalendarModel => {
+}: BuildCalendarProperties): CalendarModel => {
   if (data.length === 0) {
-    return { weeks: [], monthLabels: [] }
+    return { monthLabels: [], weeks: [] }
   }
 
   const dataMap: Map<string, ContributionPoint> = makeDataMap(data)
   const sorted: readonly ContributionPoint[] = [...data].sort(
-    (a: ContributionPoint, b: ContributionPoint): number =>
-      new Date(a.date).getTime() - new Date(b.date).getTime()
+    (pointOne: ContributionPoint, pointTwo: ContributionPoint): number =>
+      new Date(pointOne.date).getTime() - new Date(pointTwo.date).getTime()
   )
 
   // normalize to UTC midnight to avoid TZ/DST drift
@@ -169,7 +174,7 @@ const buildCalendar: (props: BuildCalendarProps) => CalendarModel = ({
     const start: Date = new Date(cursor.getTime())
     const days: (ContributionPoint | null)[] = []
 
-    for (let i: number = 0; i < 7; i++) {
+    for (let index: number = 0; index < 7; index++) {
       const key: string = isoDate(cursor) // YYYY-MM-DD (UTC)
       const day: ContributionPoint | null = dataMap.get(key) ?? null
       days.push(day)
@@ -177,39 +182,39 @@ const buildCalendar: (props: BuildCalendarProps) => CalendarModel = ({
       cursor.setUTCDate(cursor.getUTCDate() + 1)
     }
 
-    const res: ComputeMonthLabelResult = computeMonthLabel({
-      weekDays: days,
-      locale,
-      weeksLength: weeks.length,
+    const response: ComputeMonthLabelResult = computeMonthLabel({
       currentMonth,
+      locale,
+      weekDays: days,
+      weeksLength: weeks.length,
     })
-    currentMonth = res.next
-    if (res.label !== null) {
-      monthLabels.push(res.label)
+    currentMonth = response.next
+    if (response.label !== null) {
+      monthLabels.push(response.label)
     }
 
-    weeks.push({ key: isoDate(start), days })
+    weeks.push({ days, key: isoDate(start) })
   }
 
-  return { weeks, monthLabels }
+  return { monthLabels, weeks }
 }
 
-interface DayLabelTripleProps {
-  readonly locale: Locale
+interface DayLabelTripleProperties {
   readonly data: readonly ContributionPoint[]
+  readonly locale: Locale
 }
 
 interface DayLabelTripleResult {
-  readonly d1: string
-  readonly d3: string
-  readonly d5: string
+  readonly dayFive: string
+  readonly dayOne: string
+  readonly dayThree: string
 }
-const dayLabelTriple: (p: DayLabelTripleProps) => DayLabelTripleResult = ({
-  locale,
+const dayLabelTriple: (p: DayLabelTripleProperties) => DayLabelTripleResult = ({
   data,
-}: DayLabelTripleProps): DayLabelTripleResult => {
+  locale,
+}: DayLabelTripleProperties): DayLabelTripleResult => {
   if (data.length === 0) {
-    return { d1: '', d3: '', d5: '' }
+    return { dayFive: '', dayOne: '', dayThree: '' }
   }
 
   const iso: string =
@@ -218,46 +223,49 @@ const dayLabelTriple: (p: DayLabelTripleProps) => DayLabelTripleResult = ({
   const start: Date = sundayOfWeekUTC(firstUTC)
 
   const labelUTC: (offset: number) => string = (offset: number): string => {
-    const d: Date = new Date(start)
-    d.setUTCDate(d.getUTCDate() + offset)
-    return d.toLocaleDateString(locale, { weekday: 'short', timeZone: 'UTC' })
+    const date: Date = new Date(start)
+    date.setUTCDate(date.getUTCDate() + offset)
+    return date.toLocaleDateString(locale, {
+      timeZone: 'UTC',
+      weekday: 'short',
+    })
   }
 
-  return { d1: labelUTC(1), d3: labelUTC(3), d5: labelUTC(5) }
+  return { dayFive: labelUTC(5), dayOne: labelUTC(1), dayThree: labelUTC(3) }
 }
 
 const sumCount: (input: readonly ContributionPoint[]) => number = (
   input: readonly ContributionPoint[]
 ): number => {
   let total: number = 0
-  for (const d of input) {
-    total += d.count
+  for (const contributionPoint of input) {
+    total += contributionPoint.count
   }
   return total
 }
 
 /* =============================== Subviews =============================== */
 
-interface LegendSquareProps {
+interface LegendSquareProperties {
   readonly level: ContributionLevel
 }
 
-const LegendSquare: FCStrict<LegendSquareProps> = ({
+const LegendSquare: FCStrict<LegendSquareProperties> = ({
   level,
-}: LegendSquareProps): JSX.Element => {
+}: LegendSquareProperties): JSX.Element => {
   const cls: string = levelClass(level).split(' ').slice(0, 3).join(' ')
   return <div className={`h-4 w-4 rounded-sm ${cls}`} />
 }
 
-interface LegendBarProps {
+interface LegendBarProperties {
   readonly less: string
   readonly more: string
 }
 
-const LegendBar: FCStrict<LegendBarProps> = ({
+const LegendBar: FCStrict<LegendBarProperties> = ({
   less,
   more,
-}: LegendBarProps): JSX.Element => {
+}: LegendBarProperties): JSX.Element => {
   return (
     <div className="text-muted-foreground flex items-center gap-2 text-xs">
       <span>{less}</span>
@@ -271,23 +279,23 @@ const LegendBar: FCStrict<LegendBarProps> = ({
   )
 }
 
-interface MonthLabelsRowProps {
+interface MonthLabelsRowProperties {
   readonly labels: readonly MonthLabel[]
 }
 
-const MonthLabelsRow: FCStrict<MonthLabelsRowProps> = ({
+const MonthLabelsRow: FCStrict<MonthLabelsRowProperties> = ({
   labels,
-}: MonthLabelsRowProps): JSX.Element => {
+}: MonthLabelsRowProperties): JSX.Element => {
   return (
     <div className="relative mb-3 h-5">
       {labels.map(
-        (ml: MonthLabel): JSX.Element => (
+        (monthLabel: MonthLabel): JSX.Element => (
           <div
             className="text-muted-foreground absolute text-sm font-medium"
-            key={`${ml.month}-${String(ml.weekIndex)}`}
-            style={{ left: String(48 + ml.weekIndex * 20) + 'px' }}
+            key={`${monthLabel.month}-${String(monthLabel.weekIndex)}`}
+            style={{ left: String(48 + monthLabel.weekIndex * 20) + 'px' }}
           >
-            {ml.month}
+            {monthLabel.month}
           </div>
         )
       )}
@@ -300,26 +308,33 @@ const WEEKDAY_INDICES: readonly [0, 1, 2, 3, 4, 5, 6] = [
   0, 1, 2, 3, 4, 5, 6,
 ] as const
 
-interface WeekdayLabelColProps {
-  readonly d1: string
-  readonly d3: string
-  readonly d5: string
+interface WeekdayLabelColProperties {
+  readonly dayFive: string
+  readonly dayOne: string
+  readonly dayThree: string
 }
 
-const WeekdayLabelCol: FCStrict<WeekdayLabelColProps> = ({
-  d1,
-  d3,
-  d5,
-}: WeekdayLabelColProps): JSX.Element => {
+const WeekdayLabelCol: FCStrict<WeekdayLabelColProperties> = ({
+  dayFive,
+  dayOne,
+  dayThree,
+}: WeekdayLabelColProperties): JSX.Element => {
   return (
     <div className="flex flex-shrink-0 flex-col gap-1 pr-3">
       {WEEKDAY_INDICES.map(
-        (i: (typeof WEEKDAY_INDICES)[number]): JSX.Element => {
-          const label: string = i === 1 ? d1 : i === 3 ? d3 : i === 5 ? d5 : ''
+        (index: (typeof WEEKDAY_INDICES)[number]): JSX.Element => {
+          const label: string =
+            index === 1
+              ? dayOne
+              : index === 3
+                ? dayThree
+                : index === 5
+                  ? dayFive
+                  : ''
           return (
             <div
               className="text-muted-foreground flex h-4 w-8 items-center text-xs font-medium"
-              key={`wd-${String(i)}`}
+              key={`wd-${String(index)}`}
             >
               {label}
             </div>
@@ -330,21 +345,21 @@ const WeekdayLabelCol: FCStrict<WeekdayLabelColProps> = ({
   )
 }
 
-interface DayCellProps {
+interface DayCellProperties {
   readonly day: ContributionPoint
-  readonly weekIndex: number
   readonly dayIndex: number
-  readonly onEnter: (props: CellEnterProps) => void
+  readonly onEnter: (properties: CellEnterProperties) => void
   readonly onLeave: () => void
+  readonly weekIndex: number
 }
 
-const DayCell: FCStrict<DayCellProps> = ({
+const DayCell: FCStrict<DayCellProperties> = ({
   day,
-  weekIndex,
   dayIndex,
   onEnter,
   onLeave,
-}: DayCellProps): JSX.Element => {
+  weekIndex,
+}: DayCellProperties): JSX.Element => {
   const delayMs: string = String(weekIndex * 7 + dayIndex) + 'ms'
   const aria: string = String(day.count) + ' on ' + day.date
   return (
@@ -358,22 +373,22 @@ const DayCell: FCStrict<DayCellProps> = ({
       style={{ animationDelay: delayMs }}
       tabIndex={0}
       onBlur={onLeave}
-      onFocus={(e: React.FocusEvent<HTMLDivElement>): void => {
+      onFocus={(error: React.FocusEvent<HTMLDivElement>): void => {
         onEnter({
-          element: e as unknown as React.MouseEvent<HTMLDivElement>,
+          element: error as unknown as React.MouseEvent<HTMLDivElement>,
           point: day,
         })
       }}
-      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>): void => {
-        if (e.key === 'Enter' || e.key === ' ') {
+      onKeyDown={(error: React.KeyboardEvent<HTMLDivElement>): void => {
+        if (error.key === 'Enter' || error.key === ' ') {
           onEnter({
-            element: e as unknown as React.MouseEvent<HTMLDivElement>,
+            element: error as unknown as React.MouseEvent<HTMLDivElement>,
             point: day,
           })
         }
       }}
-      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>): void => {
-        onEnter({ element: e, point: day })
+      onMouseEnter={(error: React.MouseEvent<HTMLDivElement>): void => {
+        onEnter({ element: error, point: day })
       }}
       onMouseLeave={onLeave}
     />
@@ -384,35 +399,38 @@ const EmptyCell: FCStrict = (): JSX.Element => (
   <div className="border-border/30 bg-muted/20 dark:border-border/20 dark:bg-muted/10 h-4 w-4 rounded-sm border" />
 )
 
-interface CellEnterProps {
+interface CellEnterProperties {
   readonly element: React.MouseEvent<HTMLDivElement>
   readonly point: ContributionPoint
 }
 
-interface WeekColumnProps {
+interface WeekColumnProperties {
+  readonly onEnter: (properties: CellEnterProperties) => void
+  readonly onLeave: () => void
   readonly week: WeekModel
   readonly weekIndex: number
-  readonly onEnter: (props: CellEnterProps) => void
-  readonly onLeave: () => void
 }
 
-const WeekColumn: FCStrict<WeekColumnProps> = ({
-  week,
-  weekIndex,
+const WeekColumn: FCStrict<WeekColumnProperties> = ({
   onEnter,
   onLeave,
-}: WeekColumnProps): JSX.Element => {
+  week,
+  weekIndex,
+}: WeekColumnProperties): JSX.Element => {
   return (
     <div className="flex flex-shrink-0 flex-col gap-1">
       {week.days.map(
-        (d: ContributionPoint | null, dayIndex: number): JSX.Element =>
-          d === null ? (
+        (
+          contributionPoint: ContributionPoint | null,
+          dayIndex: number
+        ): JSX.Element =>
+          contributionPoint === null ? (
             <EmptyCell key={`${week.key}-${String(dayIndex)}`} />
           ) : (
             <DayCell
-              day={d}
+              day={contributionPoint}
               dayIndex={dayIndex}
-              key={d.date}
+              key={contributionPoint.date}
               weekIndex={weekIndex}
               onEnter={onEnter}
               onLeave={onLeave}
@@ -423,33 +441,33 @@ const WeekColumn: FCStrict<WeekColumnProps> = ({
   )
 }
 
-interface WeeksGridProps {
-  readonly weeks: readonly WeekModel[]
-  readonly d1: string
-  readonly d3: string
-  readonly d5: string
-  readonly onEnter: (props: CellEnterProps) => void
+interface WeeksGridProperties {
+  readonly dayFive: string
+  readonly dayOne: string
+  readonly dayThree: string
+  readonly onEnter: (properties: CellEnterProperties) => void
   readonly onLeave: () => void
+  readonly weeks: readonly WeekModel[]
 }
 
-const WeeksGrid: FCStrict<WeeksGridProps> = ({
-  weeks,
-  d1,
-  d3,
-  d5,
+const WeeksGrid: FCStrict<WeeksGridProperties> = ({
+  dayFive,
+  dayOne,
+  dayThree,
   onEnter,
   onLeave,
-}: WeeksGridProps): JSX.Element => {
+  weeks,
+}: WeeksGridProperties): JSX.Element => {
   return (
     <div className="flex gap-1">
-      <WeekdayLabelCol d1={d1} d3={d3} d5={d5} />
+      <WeekdayLabelCol dayFive={dayFive} dayOne={dayOne} dayThree={dayThree} />
       <div className="flex gap-1">
         {weeks.map(
-          (w: WeekModel, i: number): JSX.Element => (
+          (weekModel: WeekModel, index: number): JSX.Element => (
             <WeekColumn
-              key={w.key}
-              week={w}
-              weekIndex={i}
+              key={weekModel.key}
+              week={weekModel}
+              weekIndex={index}
               onEnter={onEnter}
               onLeave={onLeave}
             />
@@ -460,24 +478,24 @@ const WeeksGrid: FCStrict<WeeksGridProps> = ({
   )
 }
 
-interface TooltipProps {
+interface TooltipProperties {
   readonly day: ContributionPoint
-  readonly mouse: MousePos
   readonly locale: string
+  readonly mouse: MousePos
 }
 
-const Tooltip: FCStrict<TooltipProps> = ({
+const Tooltip: FCStrict<TooltipProperties> = ({
   day,
-  mouse,
   locale,
-}: TooltipProps): JSX.Element => {
+  mouse,
+}: TooltipProperties): JSX.Element => {
   const cnt: string = day.count.toLocaleString(locale)
   const dateTxt: string = new Date(day.date).toLocaleDateString(locale, {
-    weekday: 'short',
-    month: 'short',
     day: 'numeric',
-    year: 'numeric',
+    month: 'short',
     timeZone: 'UTC',
+    weekday: 'short',
+    year: 'numeric',
   })
   return (
     <div
@@ -493,11 +511,11 @@ const Tooltip: FCStrict<TooltipProps> = ({
 /* ================================ Main FC ================================ */
 
 // eslint-disable-next-line max-lines-per-function
-export const ContributionGraph: FCStrict<ContributionGraphProps> = ({
-  locale,
+export const ContributionGraph: FCStrict<ContributionGraphProperties> = ({
   data,
-}: ContributionGraphProps): JSX.Element => {
-  const t: Translations<'projects.contributions'> = useTranslations(
+  locale,
+}: ContributionGraphProperties): JSX.Element => {
+  const translations: Translations<'projects.contributions'> = useTranslations(
     'projects.contributions'
   )
   const [hoveredDay, setHoveredDay]: [
@@ -508,31 +526,31 @@ export const ContributionGraph: FCStrict<ContributionGraphProps> = ({
     useState<MousePos>({ x: 0, y: 0 })
 
   const calendar: CalendarModel = useMemo<CalendarModel>(
-    (): CalendarModel => buildCalendar({ locale, data }),
+    (): CalendarModel => buildCalendar({ data, locale }),
     [data, locale]
   )
   const labels: DayLabelTripleResult = useMemo<DayLabelTripleResult>(
-    (): DayLabelTripleResult => dayLabelTriple({ locale, data }),
+    (): DayLabelTripleResult => dayLabelTriple({ data, locale }),
     [data, locale]
   )
 
   const total: number = useMemo<number>((): number => sumCount(data), [data])
 
-  const lessText: string = t('less')
-  const moreText: string = t('more')
-  const titleText: string = t('title')
-  const totalText: string = t('totalAmount', {
+  const lessText: string = translations('less')
+  const moreText: string = translations('more')
+  const titleText: string = translations('title')
+  const totalText: string = translations('totalAmount', {
     count: total.toLocaleString(locale),
   })
 
-  const handleEnter: (props: CellEnterProps) => void = ({
+  const handleEnter: (properties: CellEnterProperties) => void = ({
     element,
     point,
-  }: CellEnterProps): void => {
+  }: CellEnterProperties): void => {
     const rect: DOMRect = element.currentTarget.getBoundingClientRect()
-    const x: number = rect.left + rect.width / 2
-    const y: number = rect.top
-    setMouse({ x, y })
+    const mouseX: number = rect.left + rect.width / 2
+    const mouseY: number = rect.top
+    setMouse({ x: mouseX, y: mouseY })
     setHoveredDay(point)
   }
 
@@ -554,9 +572,9 @@ export const ContributionGraph: FCStrict<ContributionGraphProps> = ({
         <div className="inline-block min-w-full">
           <MonthLabelsRow labels={calendar.monthLabels} />
           <WeeksGrid
-            d1={labels.d1}
-            d3={labels.d3}
-            d5={labels.d5}
+            dayFive={labels.dayFive}
+            dayOne={labels.dayOne}
+            dayThree={labels.dayThree}
             weeks={calendar.weeks}
             onEnter={handleEnter}
             onLeave={handleLeave}

@@ -1,13 +1,14 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { type JSX } from 'react'
+
+import { useTranslations } from 'next-intl'
 
 import type { PageFC } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
 
 const Loading: PageFC = (): JSX.Element => {
-  const t: Translations<'loading'> = useTranslations('loading')
+  const translations: Translations<'loading'> = useTranslations('loading')
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center">
@@ -17,7 +18,7 @@ const Loading: PageFC = (): JSX.Element => {
           <div className="border-primary absolute inset-0 animate-spin rounded-full border-4 border-t-transparent" />
         </div>
         <p className="text-muted-foreground animate-pulse text-sm">
-          {t('title')}
+          {translations('title')}
         </p>
       </div>
     </div>

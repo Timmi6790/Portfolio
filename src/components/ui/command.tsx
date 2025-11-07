@@ -1,6 +1,7 @@
+import type { ComponentProps, JSX } from 'react'
+
 import { Command as CommandPrimitive } from 'cmdk'
 import { SearchIcon } from 'lucide-react'
-import type { ComponentProps, JSX } from 'react'
 
 import {
   Dialog,
@@ -9,40 +10,42 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utilities'
 import type { FCWithChildren } from '@/types/fc'
 
 /* ───────────── types ───────────── */
 
-type CommandRootProps = ComponentProps<typeof CommandPrimitive>
+type CommandRootProperties = ComponentProps<typeof CommandPrimitive>
 
-interface CommandDialogProps extends ComponentProps<typeof Dialog> {
-  readonly title: string
-  readonly description: string
+interface CommandDialogProperties extends ComponentProps<typeof Dialog> {
   readonly className?: string
+  readonly description: string
   readonly showCloseButton?: boolean
+  readonly title: string
 }
 
-type CommandInputProps = ComponentProps<typeof CommandPrimitive.Input>
+type CommandInputProperties = ComponentProps<typeof CommandPrimitive.Input>
 
-type CommandListProps = ComponentProps<typeof CommandPrimitive.List>
+type CommandListProperties = ComponentProps<typeof CommandPrimitive.List>
 
-type CommandEmptyProps = ComponentProps<typeof CommandPrimitive.Empty>
+type CommandEmptyProperties = ComponentProps<typeof CommandPrimitive.Empty>
 
-type CommandGroupProps = ComponentProps<typeof CommandPrimitive.Group>
+type CommandGroupProperties = ComponentProps<typeof CommandPrimitive.Group>
 
-type CommandSeparatorProps = ComponentProps<typeof CommandPrimitive.Separator>
+type CommandSeparatorProperties = ComponentProps<
+  typeof CommandPrimitive.Separator
+>
 
-type CommandItemProps = ComponentProps<typeof CommandPrimitive.Item>
+type CommandItemProperties = ComponentProps<typeof CommandPrimitive.Item>
 
-type CommandShortcutProps = ComponentProps<'span'>
+type CommandShortcutProperties = ComponentProps<'span'>
 
 /* ───────────── components ───────────── */
 
-const Command: FCWithChildren<CommandRootProps> = ({
+const Command: FCWithChildren<CommandRootProperties> = ({
   className,
-  ...props
-}: CommandRootProps): JSX.Element => {
+  ...properties
+}: CommandRootProperties): JSX.Element => {
   return (
     <CommandPrimitive
       className={cn(
@@ -50,21 +53,21 @@ const Command: FCWithChildren<CommandRootProps> = ({
         className
       )}
       data-slot="command"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CommandDialog: FCWithChildren<CommandDialogProps> = ({
-  title,
-  description,
+const CommandDialog: FCWithChildren<CommandDialogProperties> = ({
   children,
   className,
+  description,
   showCloseButton = true,
-  ...props
-}: CommandDialogProps): JSX.Element => {
+  title,
+  ...properties
+}: CommandDialogProperties): JSX.Element => {
   return (
-    <Dialog {...props}>
+    <Dialog {...properties}>
       <DialogHeader className="sr-only">
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
@@ -81,10 +84,10 @@ const CommandDialog: FCWithChildren<CommandDialogProps> = ({
   )
 }
 
-const CommandInput: FCWithChildren<CommandInputProps> = ({
+const CommandInput: FCWithChildren<CommandInputProperties> = ({
   className,
-  ...props
-}: CommandInputProps): JSX.Element => {
+  ...properties
+}: CommandInputProperties): JSX.Element => {
   return (
     <div
       className="flex h-9 items-center gap-2 border-b px-3"
@@ -97,16 +100,16 @@ const CommandInput: FCWithChildren<CommandInputProps> = ({
           className
         )}
         data-slot="command-input"
-        {...props}
+        {...properties}
       />
     </div>
   )
 }
 
-const CommandList: FCWithChildren<CommandListProps> = ({
+const CommandList: FCWithChildren<CommandListProperties> = ({
   className,
-  ...props
-}: CommandListProps): JSX.Element => {
+  ...properties
+}: CommandListProperties): JSX.Element => {
   return (
     <CommandPrimitive.List
       className={cn(
@@ -114,27 +117,27 @@ const CommandList: FCWithChildren<CommandListProps> = ({
         className
       )}
       data-slot="command-list"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CommandEmpty: FCWithChildren<CommandEmptyProps> = (
-  props: CommandEmptyProps
+const CommandEmpty: FCWithChildren<CommandEmptyProperties> = (
+  properties: CommandEmptyProperties
 ): JSX.Element => {
   return (
     <CommandPrimitive.Empty
       className="py-6 text-center text-sm"
       data-slot="command-empty"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CommandGroup: FCWithChildren<CommandGroupProps> = ({
+const CommandGroup: FCWithChildren<CommandGroupProperties> = ({
   className,
-  ...props
-}: CommandGroupProps): JSX.Element => {
+  ...properties
+}: CommandGroupProperties): JSX.Element => {
   return (
     <CommandPrimitive.Group
       className={cn(
@@ -142,28 +145,28 @@ const CommandGroup: FCWithChildren<CommandGroupProps> = ({
         className
       )}
       data-slot="command-group"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CommandSeparator: FCWithChildren<CommandSeparatorProps> = ({
+const CommandSeparator: FCWithChildren<CommandSeparatorProperties> = ({
   className,
-  ...props
-}: CommandSeparatorProps): JSX.Element => {
+  ...properties
+}: CommandSeparatorProperties): JSX.Element => {
   return (
     <CommandPrimitive.Separator
       className={cn('bg-border -mx-1 h-px', className)}
       data-slot="command-separator"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CommandItem: FCWithChildren<CommandItemProps> = ({
+const CommandItem: FCWithChildren<CommandItemProperties> = ({
   className,
-  ...props
-}: CommandItemProps): JSX.Element => {
+  ...properties
+}: CommandItemProperties): JSX.Element => {
   return (
     <CommandPrimitive.Item
       className={cn(
@@ -171,15 +174,15 @@ const CommandItem: FCWithChildren<CommandItemProps> = ({
         className
       )}
       data-slot="command-item"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CommandShortcut: FCWithChildren<CommandShortcutProps> = ({
+const CommandShortcut: FCWithChildren<CommandShortcutProperties> = ({
   className,
-  ...props
-}: CommandShortcutProps): JSX.Element => {
+  ...properties
+}: CommandShortcutProperties): JSX.Element => {
   return (
     <span
       className={cn(
@@ -187,7 +190,7 @@ const CommandShortcut: FCWithChildren<CommandShortcutProps> = ({
         className
       )}
       data-slot="command-shortcut"
-      {...props}
+      {...properties}
     />
   )
 }
@@ -195,11 +198,11 @@ const CommandShortcut: FCWithChildren<CommandShortcutProps> = ({
 export {
   Command,
   CommandDialog,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
-  CommandShortcut,
+  CommandList,
   CommandSeparator,
+  CommandShortcut,
 }

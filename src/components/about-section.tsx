@@ -1,33 +1,35 @@
 'use server'
 
-import { BookOpen, Code2 } from 'lucide-react'
-import { type Locale } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
 import { type JSX, type ReactNode } from 'react'
+
+import { type Locale } from 'next-intl'
+
+import { BookOpen, Code2 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProps, Translations } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
-type AboutSectionProps = LocalePageProps
+type AboutSectionProperties = LocalePageProperties
 
-interface InfoCardProps {
+interface InfoCardProperties {
+  readonly description: ReactNode
   readonly icon: ReactNode
   readonly title: string
-  readonly description: ReactNode
 }
 
 interface AboutTranslations {
-  readonly t: Translations<'about'>
-  readonly learningDescription: ReactNode
   readonly expertiseDescription: ReactNode
+  readonly learningDescription: ReactNode
+  readonly t: Translations<'about'>
 }
 
-const InfoCard: FCStrict<InfoCardProps> = ({
+const InfoCard: FCStrict<InfoCardProperties> = ({
+  description,
   icon,
   title,
-  description,
-}: InfoCardProps): JSX.Element => (
+}: InfoCardProperties): JSX.Element => (
   <Card className="group hover:border-primary/50 border-2 transition-all duration-300 hover:shadow-xl">
     <CardContent className="flex items-start gap-4 p-6">
       <div className="from-primary/10 to-primary/5 rounded-lg bg-gradient-to-br p-3 transition-transform duration-300 group-hover:scale-110">
@@ -48,32 +50,38 @@ const InfoCard: FCStrict<InfoCardProps> = ({
 async function getAboutTranslations(
   locale: Locale
 ): Promise<AboutTranslations> {
-  const t: Translations<'about'> = await getTranslations({
+  const translations: Translations<'about'> = await getTranslations({
     locale,
     namespace: 'about',
   })
 
-  const learningDescription: ReactNode = t.rich('learning.description', {
-    highlight: (chunks: ReactNode): JSX.Element => (
-      <span className="text-foreground font-medium">{chunks}</span>
-    ),
-  })
+  const learningDescription: ReactNode = translations.rich(
+    'learning.description',
+    {
+      highlight: (chunks: ReactNode): JSX.Element => (
+        <span className="text-foreground font-medium">{chunks}</span>
+      ),
+    }
+  )
 
-  const expertiseDescription: ReactNode = t.rich('expertise.description', {
-    highlight: (chunks: ReactNode): JSX.Element => (
-      <span className="text-foreground font-medium">{chunks}</span>
-    ),
-  })
+  const expertiseDescription: ReactNode = translations.rich(
+    'expertise.description',
+    {
+      highlight: (chunks: ReactNode): JSX.Element => (
+        <span className="text-foreground font-medium">{chunks}</span>
+      ),
+    }
+  )
 
-  return { t, learningDescription, expertiseDescription }
+  return { expertiseDescription, learningDescription, t: translations }
 }
 
-const AboutSection: AsyncPageFC<AboutSectionProps> = async ({
+const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
   locale,
-}: AboutSectionProps): Promise<JSX.Element> => {
+}: AboutSectionProperties): Promise<JSX.Element> => {
   const aboutTranslations: AboutTranslations =
     await getAboutTranslations(locale)
-  const { t, learningDescription, expertiseDescription }: AboutTranslations =
+  const { expertiseDescription, learningDescription, t }: AboutTranslations =
     aboutTranslations
 
   return (

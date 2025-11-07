@@ -21,7 +21,7 @@ import type {
  *  Helpers
  *  --------------------------------------------------------------------- */
 
-export type NoProps = Readonly<Record<never, never>>
+export type NoProperties = Readonly<Record<never, never>>
 
 export interface NoChildren {
   readonly children?: never
@@ -39,29 +39,29 @@ export interface WithRequiredChildren {
  *  - Parameters are Readonly<…> to satisfy prefer-readonly-parameter-types.
  *  --------------------------------------------------------------------- */
 
-export type FCStrict<P = NoProps> = (
-  props: Readonly<P & NoChildren>
+export type FCStrict<P = NoProperties> = (
+  properties: Readonly<NoChildren & P>
 ) => JSX.Element
 
-export type FCNullable<P = NoProps> = (
-  props: Readonly<P & NoChildren>
+export type FCNullable<P = NoProperties> = (
+  properties: Readonly<NoChildren & P>
 ) => JSX.Element | null
 
-export type FCWithChildren<P = NoProps> = (
-  props: Readonly<P & WithChildren>
+export type FCWithChildren<P = NoProperties> = (
+  properties: Readonly<P & WithChildren>
 ) => JSX.Element
 
-export type FCWithRequiredChildren<P = NoProps> = (
-  props: Readonly<P & WithRequiredChildren>
+export type FCWithRequiredChildren<P = NoProperties> = (
+  properties: Readonly<P & WithRequiredChildren>
 ) => JSX.Element
 
 /** Async server components (e.g., Next.js Server Components) */
-export type FCAsync<P = NoProps> = (
-  props: Readonly<P & NoChildren>
+export type FCAsync<P = NoProperties> = (
+  properties: Readonly<NoChildren & P>
 ) => Promise<JSX.Element>
 
-export type FCAsyncWithChildren<P = NoProps> = (
-  props: Readonly<P & WithChildren>
+export type FCAsyncWithChildren<P = NoProperties> = (
+  properties: Readonly<P & WithChildren>
 ) => Promise<JSX.Element>
 
 /** ------------------------------------------------------------------------
@@ -69,13 +69,12 @@ export type FCAsyncWithChildren<P = NoProps> = (
  *  --------------------------------------------------------------------- */
 
 /** Preferred: component *result* type (no callback params → no param linting at all). */
-export type ForwardRefComponent<P, R> = ForwardRefExoticComponent<
-  Readonly<P & NoChildren> & RefAttributes<R>
+export type ForwardReferenceComponent<P, R> = ForwardRefExoticComponent<
+  Readonly<NoChildren & P> & RefAttributes<R>
 >
 
-export type ForwardRefComponentWithChildren<P, R> = ForwardRefExoticComponent<
-  Readonly<P & WithChildren> & RefAttributes<R>
->
+export type ForwardReferenceComponentWithChildren<P, R> =
+  ForwardRefExoticComponent<Readonly<P & WithChildren> & RefAttributes<R>>
 
 /**
  * Optional: callback *renderer* type (when you want to annotate the render fn).
@@ -83,46 +82,48 @@ export type ForwardRefComponentWithChildren<P, R> = ForwardRefExoticComponent<
  * becomes noisy here. We keep props readonly and suppress the rule for `ref` only.
  */
 
-export type ForwardRefRender<P, R> = (
-  props: Readonly<P & NoChildren>,
-  ref: ForwardedRef<R>
+export type ForwardReferenceRender<P, R> = (
+  properties: Readonly<NoChildren & P>,
+  reference: ForwardedRef<R>
 ) => JSX.Element
 
-export type ForwardRefRenderWithChildren<P, R> = (
-  props: Readonly<P & WithChildren>,
-  ref: ForwardedRef<R>
+export type ForwardReferenceRenderWithChildren<P, R> = (
+  properties: Readonly<P & WithChildren>,
+  reference: ForwardedRef<R>
 ) => JSX.Element
 
 /** ------------------------------------------------------------------------
  *  Polymorphic "as" pattern
  *  --------------------------------------------------------------------- */
 
-export interface AsProp<E extends ElementType> {
+export interface AsProperty<E extends ElementType> {
   readonly as?: E
 }
 
-export type PolymorphicComponentProps<E extends ElementType, P> = Readonly<
-  P & AsProp<E>
+export type PolymorphicComponentProperties<E extends ElementType, P> = Omit<
+  ComponentPropsWithRef<E>,
+  keyof P | 'as'
 > &
-  Omit<ComponentPropsWithRef<E>, keyof P | 'as'>
+  Readonly<AsProperty<E> & P>
 
-export type PolymorphicFCStrict<E extends ElementType, P = NoProps> = <
+export type PolymorphicFCStrict<E extends ElementType, P = NoProperties> = <
   EE extends ElementType = E,
 >(
-  props: PolymorphicComponentProps<EE, P & NoChildren>
+  properties: PolymorphicComponentProperties<EE, NoChildren & P>
 ) => JSX.Element
 
-export type PolymorphicFCWithChildren<E extends ElementType, P = NoProps> = <
-  EE extends ElementType = E,
->(
-  props: PolymorphicComponentProps<EE, P & WithChildren>
+export type PolymorphicFCWithChildren<
+  E extends ElementType,
+  P = NoProperties,
+> = <EE extends ElementType = E>(
+  properties: PolymorphicComponentProperties<EE, P & WithChildren>
 ) => JSX.Element
 
 export type PolymorphicFCWithRequiredChildren<
   E extends ElementType,
-  P = NoProps,
+  P = NoProperties,
 > = <EE extends ElementType = E>(
-  props: PolymorphicComponentProps<EE, P & WithRequiredChildren>
+  properties: PolymorphicComponentProperties<EE, P & WithRequiredChildren>
 ) => JSX.Element
 
 /** ------------------------------------------------------------------------
@@ -131,5 +132,5 @@ export type PolymorphicFCWithRequiredChildren<
 
 export type LayoutFC = FCWithRequiredChildren
 
-export type PageFC<P = NoProps> = FCStrict<P>
-export type AsyncPageFC<P = NoProps> = FCAsync<P>
+export type PageFC<P = NoProperties> = FCStrict<P>
+export type AsyncPageFC<P = NoProperties> = FCAsync<P>

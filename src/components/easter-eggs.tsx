@@ -1,12 +1,13 @@
 'use client'
 
 import {
-  useEffect,
-  useState,
   type Dispatch,
   type JSX,
   type SetStateAction,
+  useEffect,
+  useState,
 } from 'react'
+
 import { toast } from 'sonner'
 
 import type { FCNullable } from '@/types/fc'
@@ -51,16 +52,16 @@ const CLICK_MESSAGES: readonly string[] = [
 /* ───────────────────────── pure helpers ───────────────────────── */
 
 const arraysEqual: (a: readonly string[], b: readonly string[]) => boolean = (
-  a: readonly string[],
-  b: readonly string[]
+  one: readonly string[],
+  two: readonly string[]
 ): boolean => {
-  if (a.length !== b.length) {
+  if (one.length !== two.length) {
     return false
   }
-  for (let i: number = 0; i < a.length; i++) {
-    const ai: string | undefined = a.at(i)
-    const bi: string | undefined = b.at(i)
-    if (ai !== bi) {
+  for (let index: number = 0; index < one.length; index++) {
+    const oneElement: string | undefined = one.at(index)
+    const twoElement: string | undefined = two.at(index)
+    if (oneElement !== twoElement) {
       return false
     }
   }
@@ -83,12 +84,14 @@ const activateKonamiEffect: () => void = (): void => {
 
 const buildKonamiHandler: (
   setKonamiCode: Dispatch<SetStateAction<readonly string[]>>
-) => (e: KeyboardEvent) => void = (
+) => (event: KeyboardEvent) => void = (
   setKonamiCode: Dispatch<SetStateAction<readonly string[]>>
-): ((e: KeyboardEvent) => void) => {
-  return (e: KeyboardEvent): void => {
-    setKonamiCode((prev: readonly string[]): readonly string[] => {
-      const next: readonly string[] = [...prev, e.key].slice(-KONAMI_LEN)
+): ((event: KeyboardEvent) => void) => {
+  return (event: KeyboardEvent): void => {
+    setKonamiCode((previous: readonly string[]): readonly string[] => {
+      const next: readonly string[] = [...previous, event.key].slice(
+        -KONAMI_LEN
+      )
       if (arraysEqual(next, KONAMI_SEQUENCE)) {
         activateKonamiEffect()
         return []
@@ -100,18 +103,18 @@ const buildKonamiHandler: (
 
 const buildTripleClickHandler: (
   setClickCount: Dispatch<SetStateAction<number>>
-) => (e: MouseEvent) => void = (
+) => (error: MouseEvent) => void = (
   setClickCount: Dispatch<SetStateAction<number>>
-): ((e: MouseEvent) => void) => {
-  return (_e: MouseEvent): void => {
-    setClickCount((prev: number): number => {
-      const newCount: number = prev + 1
+): ((error: MouseEvent) => void) => {
+  return (_error: MouseEvent): void => {
+    setClickCount((previous: number): number => {
+      const newCount: number = previous + 1
       if (newCount === 3) {
-        const msgIndex: number = Math.floor(
+        const messageIndex: number = Math.floor(
           Math.random() * CLICK_MESSAGES.length
         )
         const message: string =
-          CLICK_MESSAGES.at(msgIndex) ?? CLICK_MESSAGES.at(0) ?? ''
+          CLICK_MESSAGES.at(messageIndex) ?? CLICK_MESSAGES.at(0) ?? ''
         toast(message, { duration: 3000 })
         return 0
       }
@@ -137,9 +140,9 @@ export const EasterEggs: FCNullable = (): JSX.Element | null => {
   ] = useState<number>(0)
 
   useEffect((): (() => void) => {
-    const handleKeyDown: (e: KeyboardEvent) => void =
+    const handleKeyDown: (event: KeyboardEvent) => void =
       buildKonamiHandler(setKonamiCode)
-    const handleClick: (e: MouseEvent) => void =
+    const handleClick: (event: MouseEvent) => void =
       buildTripleClickHandler(setClickCount)
 
     // fun console hints (your global rule forbids console;

@@ -1,9 +1,11 @@
 'use server'
 
-import { Download, FileText, GitBranch, Mail, MapPin } from 'lucide-react'
-import { type Locale } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
 import { type JSX } from 'react'
+
+import { type Locale } from 'next-intl'
+
+import { Download, FileText, GitBranch, Mail, MapPin } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -13,32 +15,32 @@ import type { Translations } from '@/types/i18n'
 
 /* ─────────────────────────────── types ─────────────────────────────── */
 
-interface ContactSectionProps extends NoChildren {
+interface ContactSectionProperties extends NoChildren {
   readonly locale: Locale
 }
 
-interface InfoItemProps {
+interface InfoItemProperties {
+  readonly content: JSX.Element
   readonly icon: JSX.Element
   readonly label: string
-  readonly content: JSX.Element
 }
 
-interface InfoCardProps {
-  readonly t: Translations<'contact'>
+interface InfoCardProperties {
+  readonly translations: Translations<'contact'>
 }
 
-interface ResumeCardProps {
-  readonly t: Translations<'contact'>
+interface ResumeCardProperties {
   readonly locale: Locale
+  readonly translations: Translations<'contact'>
 }
 
 /* ───────────────────────────── subviews ───────────────────────────── */
 
-const InfoItem: FCStrict<InfoItemProps> = ({
+const InfoItem: FCStrict<InfoItemProperties> = ({
+  content,
   icon,
   label,
-  content,
-}: InfoItemProps): JSX.Element => {
+}: InfoItemProperties): JSX.Element => {
   return (
     <div className="group hover:bg-muted/50 flex items-center gap-4 rounded-lg p-3 transition-all">
       <div className="from-primary/10 to-primary/5 rounded-lg bg-gradient-to-br p-3 transition-transform duration-300 group-hover:scale-110">
@@ -52,13 +54,13 @@ const InfoItem: FCStrict<InfoItemProps> = ({
   )
 }
 
-const InfoCard: FCStrict<InfoCardProps> = ({
-  t,
-}: InfoCardProps): JSX.Element => {
+const InfoCard: FCStrict<InfoCardProperties> = ({
+  translations,
+}: InfoCardProperties): JSX.Element => {
   return (
     <Card className="border-2 shadow-xl">
       <CardContent className="p-8">
-        <h3 className="mb-6 text-2xl font-bold">{t('infoTitle')}</h3>
+        <h3 className="mb-6 text-2xl font-bold">{translations('infoTitle')}</h3>
 
         <div className="space-y-6">
           <InfoItem
@@ -71,7 +73,7 @@ const InfoCard: FCStrict<InfoCardProps> = ({
               </a>
             }
             icon={<Mail className="text-primary h-6 w-6" />}
-            label={t('email')}
+            label={translations('email')}
           />
 
           <InfoItem
@@ -86,17 +88,17 @@ const InfoCard: FCStrict<InfoCardProps> = ({
               </a>
             }
             icon={<GitBranch className="text-primary h-6 w-6" />}
-            label={t('github')}
+            label={translations('github')}
           />
 
           <InfoItem
             content={
               <p className="text-foreground text-lg font-medium">
-                {t('locationValue')}
+                {translations('locationValue')}
               </p>
             }
             icon={<MapPin className="text-primary h-6 w-6" />}
-            label={t('location')}
+            label={translations('location')}
           />
         </div>
       </CardContent>
@@ -104,10 +106,10 @@ const InfoCard: FCStrict<InfoCardProps> = ({
   )
 }
 
-const ResumeCard: FCStrict<ResumeCardProps> = ({
-  t,
+const ResumeCard: FCStrict<ResumeCardProperties> = ({
   locale,
-}: ResumeCardProps): JSX.Element => {
+  translations,
+}: ResumeCardProperties): JSX.Element => {
   const resumePath: string =
     locale === 'de' ? '/resume-de.pdf' : '/resume-en.pdf'
   const languageName: string = locale === 'de' ? 'Deutsch' : 'English'
@@ -123,7 +125,7 @@ const ResumeCard: FCStrict<ResumeCardProps> = ({
             </div>
             <div>
               <h3 className="text-foreground text-xl font-bold">
-                {t('downloadResume')}
+                {translations('downloadResume')}
               </h3>
               <p className="text-muted-foreground text-sm">{pdfLabel}</p>
             </div>
@@ -137,7 +139,7 @@ const ResumeCard: FCStrict<ResumeCardProps> = ({
         >
           <a download={true} href={resumePath}>
             <Download className="mr-2 h-5 w-5 transition-transform group-hover:translate-y-0.5 group-hover:scale-110" />
-            {t('downloadResume')}
+            {translations('downloadResume')}
           </a>
         </Button>
       </div>
@@ -147,10 +149,10 @@ const ResumeCard: FCStrict<ResumeCardProps> = ({
 
 /* ───────────────────────────── main FC ────────────────────────────── */
 
-export const ContactSection: FCAsync<ContactSectionProps> = async ({
+export const ContactSection: FCAsync<ContactSectionProperties> = async ({
   locale,
-}: ContactSectionProps): Promise<JSX.Element> => {
-  const t: Translations<'contact'> = await getTranslations({
+}: ContactSectionProperties): Promise<JSX.Element> => {
+  const translations: Translations<'contact'> = await getTranslations({
     locale,
     namespace: 'contact',
   })
@@ -162,14 +164,14 @@ export const ContactSection: FCAsync<ContactSectionProps> = async ({
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-12 text-center">
           <h2 className="text-foreground mb-3 text-4xl font-bold">
-            {t('title')}
+            {translations('title')}
           </h2>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />
         </div>
 
         <div className="mx-auto max-w-2xl space-y-6">
-          <InfoCard t={t} />
-          <ResumeCard locale={locale} t={t} />
+          <InfoCard translations={translations} />
+          <ResumeCard locale={locale} translations={translations} />
         </div>
       </div>
     </section>

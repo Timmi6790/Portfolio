@@ -1,6 +1,17 @@
 'use client'
 
 import {
+  type Dispatch,
+  type JSX,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
+
+import { type Locale, useLocale, useTranslations } from 'next-intl'
+
+import {
   Briefcase,
   Code,
   CookieIcon,
@@ -11,15 +22,6 @@ import {
   MessageSquare,
   User,
 } from 'lucide-react'
-import { type Locale, useLocale, useTranslations } from 'next-intl'
-import {
-  useCallback,
-  useEffect,
-  useState,
-  type Dispatch,
-  type JSX,
-  type SetStateAction,
-} from 'react'
 
 import {
   CommandDialog,
@@ -37,35 +39,35 @@ import type { Translations } from '@/types/i18n'
 /* ──────────────────────────── types & aliases ─────────────────────────── */
 
 type LocalizedRouter = ReturnType<typeof useRouter>
-type SectionId = 'about' | 'skills' | 'projects' | 'contact'
+type SectionId = 'about' | 'contact' | 'projects' | 'skills'
 
 /* ────────────────────────────── helpers ──────────────────────────────── */
 
-const scrollToSection: (id: string) => void = (id: string): void => {
-  const el: HTMLElement | null = document.querySelector<HTMLElement>(
-    `[id="${id}"]`
+const scrollToSection: (id: string) => void = (identifier: string): void => {
+  const element: HTMLElement | null = document.querySelector<HTMLElement>(
+    `[id="${identifier}"]`
   )
-  if (el !== null) {
-    el.scrollIntoView({ behavior: 'smooth' })
+  if (element !== null) {
+    element.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
-interface GoToSectionParams {
-  readonly router: LocalizedRouter
+interface GoToSectionParameters {
+  readonly id: SectionId
   readonly locale: Locale
   readonly pathname: string // canonical (no locale prefix)
-  readonly id: SectionId
+  readonly router: LocalizedRouter
 }
-const goToSection: (p: GoToSectionParams) => void = (
-  p: GoToSectionParams
+const goToSection: (p: GoToSectionParameters) => void = (
+  parameters: GoToSectionParameters
 ): void => {
-  const isHome: boolean = p.pathname === '/'
+  const isHome: boolean = parameters.pathname === '/'
   if (isHome) {
-    scrollToSection(p.id)
+    scrollToSection(parameters.id)
     return
   }
   // push canonical href; next-intl router injects locale
-  p.router.push(`/#${p.id}`, { locale: p.locale })
+  parameters.router.push(`/#${parameters.id}`, { locale: parameters.locale })
 }
 
 const openNewTab: (url: string) => void = (url: string): void => {
@@ -77,41 +79,43 @@ const sendMailTo: (email: string) => void = (email: string): void => {
 
 /* factories to satisfy unicorn/consistent-function-scoping */
 
-interface CreatePushHandlerParams {
-  readonly router: LocalizedRouter
-  readonly locale: Locale
+interface CreatePushHandlerParameters {
   readonly href: '/' | '/imprint' | '/privacy'
-  readonly run: (fn: () => void) => void
+  readonly locale: Locale
+  readonly router: LocalizedRouter
+  readonly run: (function_: () => void) => void
 }
 const createPushHandler: (
-  p: CreatePushHandlerParams
+  parameters: CreatePushHandlerParameters
 ) => (_value: string) => void = (
-  p: CreatePushHandlerParams
+  parameters: CreatePushHandlerParameters
 ): ((_value: string) => void) => {
   return (_value: string): void => {
-    p.run((): void => {
-      p.router.push(p.href, { locale: p.locale })
+    parameters.run((): void => {
+      parameters.router.push(parameters.href, { locale: parameters.locale })
     })
   }
 }
 
-interface CreateOnSelectSectionParams {
-  readonly router: LocalizedRouter
+interface CreateOnSelectSectionParameters {
+  readonly id: SectionId
   readonly locale: Locale
   readonly pathname: string
-  readonly id: SectionId
-  readonly run: (fn: () => void) => void
+  readonly router: LocalizedRouter
+  readonly run: (function_: () => void) => void
 }
 const createOnSelectSection: (
-  p: CreateOnSelectSectionParams
-) => (_value: string) => void = (p: CreateOnSelectSectionParams) => {
+  parameters: CreateOnSelectSectionParameters
+) => (_value: string) => void = (
+  parameters: CreateOnSelectSectionParameters
+) => {
   return (_value: string): void => {
-    p.run((): void => {
+    parameters.run((): void => {
       goToSection({
-        router: p.router,
-        locale: p.locale,
-        pathname: p.pathname,
-        id: p.id,
+        id: parameters.id,
+        locale: parameters.locale,
+        pathname: parameters.pathname,
+        router: parameters.router,
       })
     })
   }
@@ -119,36 +123,36 @@ const createOnSelectSection: (
 
 /* ───────────────────────────── sub-views ─────────────────────────────── */
 
-interface NavGroupProps {
+interface NavGroupProperties {
   readonly locale: Locale
-  readonly tPalette: Translations<'commandPalette'>
-  readonly tAll: Translations<''>
   readonly router: LocalizedRouter
-  readonly run: (fn: () => void) => void
+  readonly run: (function_: () => void) => void
+  readonly tAll: Translations<''>
+  readonly tPalette: Translations<'commandPalette'>
 }
-const NavGroup: FCStrict<NavGroupProps> = ({
+const NavGroup: FCStrict<NavGroupProperties> = ({
   locale,
-  tPalette,
-  tAll,
   router,
   run,
-}: NavGroupProps): JSX.Element => {
+  tAll,
+  tPalette,
+}: NavGroupProperties): JSX.Element => {
   const goHome: (_value: string) => void = createPushHandler({
-    router,
-    locale,
     href: '/',
+    locale,
+    router,
     run,
   })
   const goImprint: (_value: string) => void = createPushHandler({
-    router,
-    locale,
     href: '/imprint',
+    locale,
+    router,
     run,
   })
   const goPrivacy: (_value: string) => void = createPushHandler({
-    router,
-    locale,
     href: '/privacy',
+    locale,
+    router,
     run,
   })
 
@@ -170,48 +174,48 @@ const NavGroup: FCStrict<NavGroupProps> = ({
   )
 }
 
-interface SectionsGroupProps {
-  readonly tPalette: Translations<'commandPalette'>
-  readonly tAll: Translations<''>
-  readonly run: (fn: () => void) => void
-  readonly router: LocalizedRouter
+interface SectionsGroupProperties {
   readonly locale: Locale
   readonly pathname: string
+  readonly router: LocalizedRouter
+  readonly run: (function_: () => void) => void
+  readonly tAll: Translations<''>
+  readonly tPalette: Translations<'commandPalette'>
 }
-const SectionsGroup: FCStrict<SectionsGroupProps> = ({
-  tPalette,
-  tAll,
-  run,
-  router,
+const SectionsGroup: FCStrict<SectionsGroupProperties> = ({
   locale,
   pathname,
-}: SectionsGroupProps): JSX.Element => {
+  router,
+  run,
+  tAll,
+  tPalette,
+}: SectionsGroupProperties): JSX.Element => {
   const toAbout: (_value: string) => void = createOnSelectSection({
-    router,
+    id: 'about',
     locale,
     pathname,
-    id: 'about',
+    router,
     run,
   })
   const toSkills: (_value: string) => void = createOnSelectSection({
-    router,
+    id: 'skills',
     locale,
     pathname,
-    id: 'skills',
+    router,
     run,
   })
   const toProjects: (_value: string) => void = createOnSelectSection({
-    router,
+    id: 'projects',
     locale,
     pathname,
-    id: 'projects',
+    router,
     run,
   })
   const toContact: (_value: string) => void = createOnSelectSection({
-    router,
+    id: 'contact',
     locale,
     pathname,
-    id: 'contact',
+    router,
     run,
   })
 
@@ -237,14 +241,14 @@ const SectionsGroup: FCStrict<SectionsGroupProps> = ({
   )
 }
 
-interface ActionsGroupProps {
+interface ActionsGroupProperties {
+  readonly run: (function_: () => void) => void
   readonly tPalette: Translations<'commandPalette'>
-  readonly run: (fn: () => void) => void
 }
-const ActionsGroup: FCStrict<ActionsGroupProps> = ({
-  tPalette,
+const ActionsGroup: FCStrict<ActionsGroupProperties> = ({
   run,
-}: ActionsGroupProps): JSX.Element => {
+  tPalette,
+}: ActionsGroupProperties): JSX.Element => {
   const goGitHub: (_value: string) => void = (_value: string): void => {
     run((): void => {
       openNewTab(siteConfig.github)
@@ -284,19 +288,21 @@ export const CommandPalette: FCStrict = (): JSX.Element => {
   const [open, setOpen]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false)
 
-  const runCommand: (fn: () => void) => void = useCallback(
-    (fn: () => void): void => {
+  const runCommand: (function_: () => void) => void = useCallback(
+    (function_: () => void): void => {
       setOpen(false)
-      fn()
+      function_()
     },
     []
   )
 
   useEffect((): (() => void) => {
-    const down: (e: KeyboardEvent) => void = (e: KeyboardEvent): void => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((prev: boolean): boolean => !prev)
+    const down: (error: KeyboardEvent) => void = (
+      error: KeyboardEvent
+    ): void => {
+      if (error.key === 'k' && (error.metaKey || error.ctrlKey)) {
+        error.preventDefault()
+        setOpen((previous: boolean): boolean => !previous)
       }
     }
     document.addEventListener('keydown', down)

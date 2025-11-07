@@ -1,52 +1,57 @@
-import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { XIcon } from 'lucide-react'
 import type { ComponentProps, JSX } from 'react'
 
-import { cn } from '@/lib/utils'
+import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { XIcon } from 'lucide-react'
+
+import { cn } from '@/lib/utilities'
 import type { FCWithChildren } from '@/types/fc'
 
 /* ───────────── props ───────────── */
 
-type DialogRootProps = ComponentProps<typeof DialogPrimitive.Root>
-type DialogTriggerProps = ComponentProps<typeof DialogPrimitive.Trigger>
-type DialogPortalProps = ComponentProps<typeof DialogPrimitive.Portal>
-type DialogCloseProps = ComponentProps<typeof DialogPrimitive.Close>
-type DialogOverlayProps = ComponentProps<typeof DialogPrimitive.Overlay>
-interface DialogContentBaseProps
+type DialogRootProperties = ComponentProps<typeof DialogPrimitive.Root>
+type DialogTriggerProperties = ComponentProps<typeof DialogPrimitive.Trigger>
+type DialogPortalProperties = ComponentProps<typeof DialogPrimitive.Portal>
+type DialogCloseProperties = ComponentProps<typeof DialogPrimitive.Close>
+type DialogOverlayProperties = ComponentProps<typeof DialogPrimitive.Overlay>
+interface DialogContentBaseProperties
   extends ComponentProps<typeof DialogPrimitive.Content> {
   readonly showCloseButton?: boolean
 }
-type DialogHeaderProps = ComponentProps<'div'>
-type DialogFooterProps = ComponentProps<'div'>
-type DialogTitleProps = ComponentProps<typeof DialogPrimitive.Title>
-type DialogDescriptionProps = ComponentProps<typeof DialogPrimitive.Description>
+type DialogHeaderProperties = ComponentProps<'div'>
+type DialogFooterProperties = ComponentProps<'div'>
+type DialogTitleProperties = ComponentProps<typeof DialogPrimitive.Title>
+type DialogDescriptionProperties = ComponentProps<
+  typeof DialogPrimitive.Description
+>
 
 /* ───────────── components ───────────── */
 
-const Dialog: FCWithChildren<DialogRootProps> = (
-  props: DialogRootProps
-): JSX.Element => <DialogPrimitive.Root data-slot="dialog" {...props} />
+const Dialog: FCWithChildren<DialogRootProperties> = (
+  properties: DialogRootProperties
+): JSX.Element => <DialogPrimitive.Root data-slot="dialog" {...properties} />
 
-const DialogTrigger: FCWithChildren<DialogTriggerProps> = (
-  props: DialogTriggerProps
+const DialogTrigger: FCWithChildren<DialogTriggerProperties> = (
+  properties: DialogTriggerProperties
 ): JSX.Element => (
-  <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
+  <DialogPrimitive.Trigger data-slot="dialog-trigger" {...properties} />
 )
 
-const DialogPortal: FCWithChildren<DialogPortalProps> = (
-  props: DialogPortalProps
+const DialogPortal: FCWithChildren<DialogPortalProperties> = (
+  properties: DialogPortalProperties
 ): JSX.Element => (
-  <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
+  <DialogPrimitive.Portal data-slot="dialog-portal" {...properties} />
 )
 
-const DialogClose: FCWithChildren<DialogCloseProps> = (
-  props: DialogCloseProps
-): JSX.Element => <DialogPrimitive.Close data-slot="dialog-close" {...props} />
+const DialogClose: FCWithChildren<DialogCloseProperties> = (
+  properties: DialogCloseProperties
+): JSX.Element => (
+  <DialogPrimitive.Close data-slot="dialog-close" {...properties} />
+)
 
-const DialogOverlay: FCWithChildren<DialogOverlayProps> = ({
+const DialogOverlay: FCWithChildren<DialogOverlayProperties> = ({
   className,
-  ...props
-}: DialogOverlayProps): JSX.Element => {
+  ...properties
+}: DialogOverlayProperties): JSX.Element => {
   return (
     <DialogPrimitive.Overlay
       className={cn(
@@ -54,17 +59,17 @@ const DialogOverlay: FCWithChildren<DialogOverlayProps> = ({
         className
       )}
       data-slot="dialog-overlay"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const DialogContent: FCWithChildren<DialogContentBaseProps> = ({
-  className,
+const DialogContent: FCWithChildren<DialogContentBaseProperties> = ({
   children,
+  className,
   showCloseButton = true,
-  ...props
-}: DialogContentBaseProps): JSX.Element => {
+  ...properties
+}: DialogContentBaseProperties): JSX.Element => {
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
@@ -74,7 +79,7 @@ const DialogContent: FCWithChildren<DialogContentBaseProps> = ({
           className
         )}
         data-slot="dialog-content"
-        {...props}
+        {...properties}
       >
         {children}
         {showCloseButton ? (
@@ -91,23 +96,23 @@ const DialogContent: FCWithChildren<DialogContentBaseProps> = ({
   )
 }
 
-const DialogHeader: FCWithChildren<DialogHeaderProps> = ({
+const DialogHeader: FCWithChildren<DialogHeaderProperties> = ({
   className,
-  ...props
-}: DialogHeaderProps): JSX.Element => {
+  ...properties
+}: DialogHeaderProperties): JSX.Element => {
   return (
     <div
       className={cn('flex flex-col gap-2 text-center sm:text-left', className)}
       data-slot="dialog-header"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const DialogFooter: FCWithChildren<DialogFooterProps> = ({
+const DialogFooter: FCWithChildren<DialogFooterProperties> = ({
   className,
-  ...props
-}: DialogFooterProps): JSX.Element => {
+  ...properties
+}: DialogFooterProperties): JSX.Element => {
   return (
     <div
       className={cn(
@@ -115,33 +120,33 @@ const DialogFooter: FCWithChildren<DialogFooterProps> = ({
         className
       )}
       data-slot="dialog-footer"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const DialogTitle: FCWithChildren<DialogTitleProps> = ({
+const DialogTitle: FCWithChildren<DialogTitleProperties> = ({
   className,
-  ...props
-}: DialogTitleProps): JSX.Element => {
+  ...properties
+}: DialogTitleProperties): JSX.Element => {
   return (
     <DialogPrimitive.Title
       className={cn('text-lg leading-none font-semibold', className)}
       data-slot="dialog-title"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const DialogDescription: FCWithChildren<DialogDescriptionProps> = ({
+const DialogDescription: FCWithChildren<DialogDescriptionProperties> = ({
   className,
-  ...props
-}: DialogDescriptionProps): JSX.Element => {
+  ...properties
+}: DialogDescriptionProperties): JSX.Element => {
   return (
     <DialogPrimitive.Description
       className={cn('text-muted-foreground text-sm', className)}
       data-slot="dialog-description"
-      {...props}
+      {...properties}
     />
   )
 }

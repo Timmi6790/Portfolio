@@ -1,14 +1,15 @@
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
 import { type JSX } from 'react'
+
+import { Moon, Sun } from 'lucide-react'
 
 import { type Theme, useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
 import type { FCStrict } from '@/types/fc'
 
 export const ThemeToggle: FCStrict = (): JSX.Element => {
-  const { theme, setTheme }: { theme: Theme; setTheme: (t: Theme) => void } =
+  const { setTheme, theme }: { theme: Theme; setTheme: (t: Theme) => void } =
     useTheme()
 
   const toggleTheme: () => void = (): void => {

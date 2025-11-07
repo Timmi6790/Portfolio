@@ -1,19 +1,19 @@
 import { type JSX } from 'react'
 
-import { BackToHome } from '@/components/back_to_home'
+import { BackToHome } from '@/components/back-to-home'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { FCWithChildren, WithChildren } from '@/types/fc'
-import type { LocalePageProps } from '@/types/i18n'
+import type { LocalePageProperties } from '@/types/i18n'
 
-interface LegalPageLayoutProps extends WithChildren, LocalePageProps {
+interface LegalPageLayoutProperties extends WithChildren, LocalePageProperties {
   readonly title: string
 }
 
-export const LegalPageLayout: FCWithChildren<LegalPageLayoutProps> = ({
+export const LegalPageLayout: FCWithChildren<LegalPageLayoutProperties> = ({
+  children,
   locale,
   title,
-  children,
-}: LegalPageLayoutProps): JSX.Element => {
+}: LegalPageLayoutProperties): JSX.Element => {
   return (
     <main className="bg-background min-h-screen px-4 py-12">
       <div className="mx-auto max-w-3xl">

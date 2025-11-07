@@ -8,17 +8,17 @@ type ChangeFreq = MetadataRoute.Sitemap[0]['changeFrequency']
 
 interface CreateUrlEntryOptions {
   readonly baseUrl: string
+  readonly changeFreq: ChangeFreq
   readonly now: Readonly<Date>
   readonly path: string
-  readonly changeFreq: ChangeFreq
   readonly priority: number
 }
 
 function createUrlEntry({
   baseUrl,
+  changeFreq,
   now,
   path,
-  changeFreq,
   priority,
 }: CreateUrlEntryOptions): MetadataRoute.Sitemap {
   const adjustedBasePath: string = path.startsWith('/') ? path : `/${path}`
@@ -26,17 +26,17 @@ function createUrlEntry({
   const alternates: Record<string, string> = Object.fromEntries(
     routing.locales.map((loc: Locale): [string, string] => [
       loc,
-      `${baseUrl}${getPathname({ locale: loc, href: adjustedBasePath })}`,
+      `${baseUrl}${getPathname({ href: adjustedBasePath, locale: loc })}`,
     ])
   )
 
   return [
     {
-      url: `${baseUrl}${adjustedBasePath}`,
-      lastModified: now,
-      changeFrequency: changeFreq,
-      priority,
       alternates: { languages: alternates },
+      changeFrequency: changeFreq,
+      lastModified: now,
+      priority,
+      url: `${baseUrl}${adjustedBasePath}`,
     },
   ]
 }
@@ -53,9 +53,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   urls.push(
     ...createUrlEntry({
       baseUrl,
+      changeFreq: 'weekly',
       now,
       path: '/',
-      changeFreq: 'weekly',
       priority: 1.0,
     })
   )
@@ -65,9 +65,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     urls.push(
       ...createUrlEntry({
         baseUrl,
+        changeFreq: 'monthly',
         now,
         path: page,
-        changeFreq: 'monthly',
         priority: 0.5,
       })
     )

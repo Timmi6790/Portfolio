@@ -1,18 +1,19 @@
 'use server'
 
-import { getTranslations } from 'next-intl/server'
 import { type JSX } from 'react'
+
+import { getTranslations } from 'next-intl/server'
 
 import { Link } from '@/i18n/routing'
 import type { AsyncPageFC } from '@/types/fc'
-import type { LocalePageProps, Translations } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
-type LegalFooterProps = LocalePageProps
+type LegalFooterProperties = LocalePageProperties
 
-export const LegalFooter: AsyncPageFC<LegalFooterProps> = async ({
+export const LegalFooter: AsyncPageFC<LegalFooterProperties> = async ({
   locale,
-}: LegalFooterProps): Promise<JSX.Element> => {
-  const t: Translations<''> = await getTranslations({ locale })
+}: LegalFooterProperties): Promise<JSX.Element> => {
+  const translations: Translations<''> = await getTranslations({ locale })
 
   return (
     <footer className="mt-8 text-center">
@@ -21,13 +22,13 @@ export const LegalFooter: AsyncPageFC<LegalFooterProps> = async ({
           className="text-muted-foreground hover:text-primary text-sm transition-colors hover:underline"
           href="/imprint"
         >
-          {t('imprint.title')}
+          {translations('imprint.title')}
         </Link>
         <Link
           className="text-muted-foreground hover:text-primary text-sm transition-colors hover:underline"
           href="/privacy"
         >
-          {t('privacy.title')}
+          {translations('privacy.title')}
         </Link>
       </nav>
     </footer>

@@ -1,9 +1,11 @@
 'use server'
 
-import { ExternalLink, Star, GitFork, Code2, Link, Globe } from 'lucide-react'
-import { type Locale } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
+
+import { type Locale } from 'next-intl'
+
+import { Code2, ExternalLink, GitFork, Globe, Link, Star } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 import { ContributionGraph } from '@/components/contribution-graph'
 import { Badge } from '@/components/ui/badge'
@@ -19,14 +21,14 @@ import type { Translations } from '@/types/i18n'
 
 /* --------------------------------- pieces --------------------------------- */
 
-interface SectionHeaderProps {
-  readonly title: string
+interface SectionHeaderProperties {
   readonly subtitle: string
+  readonly title: string
 }
-const SectionHeader: FCStrict<SectionHeaderProps> = ({
-  title,
+const SectionHeader: FCStrict<SectionHeaderProperties> = ({
   subtitle,
-}: SectionHeaderProps): JSX.Element => {
+  title,
+}: SectionHeaderProperties): JSX.Element => {
   return (
     <div className="mb-16 text-center">
       <h2 className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
@@ -39,16 +41,16 @@ const SectionHeader: FCStrict<SectionHeaderProps> = ({
   )
 }
 
-interface StatsCardProps {
+interface StatsCardProperties {
   readonly icon: JSX.Element
-  readonly value: number
   readonly label: string
+  readonly value: number
 }
-const StatsCard: FCStrict<StatsCardProps> = ({
+const StatsCard: FCStrict<StatsCardProperties> = ({
   icon,
-  value,
   label,
-}: StatsCardProps): JSX.Element => {
+  value,
+}: StatsCardProperties): JSX.Element => {
   return (
     <Card className="hover:border-primary/50 border-2 p-6 transition-all duration-300 hover:shadow-lg">
       <div className="flex items-center gap-4">
@@ -62,13 +64,13 @@ const StatsCard: FCStrict<StatsCardProps> = ({
   )
 }
 
-interface ProjectCardProps {
+interface ProjectCardProperties {
   readonly project: GitHubProject
 }
 // eslint-disable-next-line max-lines-per-function
-const ProjectCard: FCStrict<ProjectCardProps> = ({
+const ProjectCard: FCStrict<ProjectCardProperties> = ({
   project,
-}: ProjectCardProps): JSX.Element => {
+}: ProjectCardProperties): JSX.Element => {
   const hasHomepage: boolean =
     typeof project.homepage === 'string' && project.homepage.length > 0
 
@@ -138,12 +140,12 @@ const ProjectCard: FCStrict<ProjectCardProps> = ({
   )
 }
 
-interface ProjectsGridProps {
+interface ProjectsGridProperties {
   readonly projects: readonly GitHubProject[]
 }
-const ProjectsGrid: FCStrict<ProjectsGridProps> = ({
+const ProjectsGrid: FCStrict<ProjectsGridProperties> = ({
   projects,
-}: ProjectsGridProps): JSX.Element => {
+}: ProjectsGridProperties): JSX.Element => {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map(
@@ -155,14 +157,14 @@ const ProjectsGrid: FCStrict<ProjectsGridProps> = ({
   )
 }
 
-interface SectionFooterProps {
-  readonly githubUsername: string
+interface SectionFooterProperties {
   readonly cta: string
+  readonly githubUsername: string
 }
-const SectionFooter: FCStrict<SectionFooterProps> = ({
-  githubUsername,
+const SectionFooter: FCStrict<SectionFooterProperties> = ({
   cta,
-}: SectionFooterProps): JSX.Element => {
+  githubUsername,
+}: SectionFooterProperties): JSX.Element => {
   return (
     <div className="mt-12 text-center">
       <Button asChild={true} className="group" size="lg">
@@ -181,21 +183,21 @@ const SectionFooter: FCStrict<SectionFooterProps> = ({
 
 /* ------------------------------- main export ------------------------------ */
 
-interface ProjectsSectionProps {
-  readonly locale: Locale
+interface ProjectsSectionProperties {
+  readonly contributionData: readonly ContributionPoint[]
   readonly githubUsername: string
+  readonly locale: Locale
   readonly projects: readonly GitHubProject[]
   readonly stats: UserStats
-  readonly contributionData: readonly ContributionPoint[]
 }
-export const ProjectsSection: FCAsync<ProjectsSectionProps> = async ({
-  locale,
+export const ProjectsSection: FCAsync<ProjectsSectionProperties> = async ({
+  contributionData,
   githubUsername,
+  locale,
   projects,
   stats,
-  contributionData,
-}: ProjectsSectionProps): Promise<JSX.Element> => {
-  const t: Translations<'projects'> = await getTranslations({
+}: ProjectsSectionProperties): Promise<JSX.Element> => {
+  const translations: Translations<'projects'> = await getTranslations({
     locale,
     namespace: 'projects',
   })
@@ -206,23 +208,26 @@ export const ProjectsSection: FCAsync<ProjectsSectionProps> = async ({
       id="projects"
     >
       <div className="mx-auto max-w-7xl">
-        <SectionHeader subtitle={t('subtitle')} title={t('title')} />
+        <SectionHeader
+          subtitle={translations('subtitle')}
+          title={translations('title')}
+        />
 
         {/* GitHub Stats Cards */}
         <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-3">
           <StatsCard
             icon={<Code2 className="text-primary h-8 w-8" />}
-            label={t('stats.repositories')}
+            label={translations('stats.repositories')}
             value={stats.repositories}
           />
           <StatsCard
             icon={<Star className="text-primary h-8 w-8" />}
-            label={t('stats.stars')}
+            label={translations('stats.stars')}
             value={stats.stars}
           />
           <StatsCard
             icon={<GitFork className="text-primary h-8 w-8" />}
-            label={t('stats.forks')}
+            label={translations('stats.forks')}
             value={stats.forks}
           />
         </div>
@@ -236,7 +241,10 @@ export const ProjectsSection: FCAsync<ProjectsSectionProps> = async ({
         </div>
 
         {/* View All Projects Button */}
-        <SectionFooter cta={t('viewAll')} githubUsername={githubUsername} />
+        <SectionFooter
+          cta={translations('viewAll')}
+          githubUsername={githubUsername}
+        />
       </div>
     </section>
   )

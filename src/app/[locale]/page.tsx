@@ -1,6 +1,8 @@
-import { type Locale } from 'next-intl'
-import { setRequestLocale } from 'next-intl/server'
 import { type JSX } from 'react'
+
+import { type Locale } from 'next-intl'
+
+import { setRequestLocale } from 'next-intl/server'
 
 import AboutSection from '@/components/about-section'
 import { ContactSection } from '@/components/contact-section'
@@ -9,7 +11,7 @@ import { HeroSection } from '@/components/hero-section'
 import { ProjectsSection } from '@/components/projects-section'
 import { SkillsSection } from '@/components/skills-section'
 import { TestimonialsSection } from '@/components/testimonials-section'
-import { ensureLocaleFromParams } from '@/i18n/locale'
+import { ensureLocaleFromParameters } from '@/i18n/locale'
 import { siteConfig } from '@/lib/config'
 import {
   getContributionData,
@@ -21,13 +23,13 @@ import type {
   GitHubProject,
   UserStats,
 } from '@/types/github'
-import type { UnparsedLocalePageProps } from '@/types/i18n'
-import type { PageParams, RoutePageFC } from '@/types/page'
+import type { UnparsedLocalePageProperties } from '@/types/i18n'
+import type { PageParameters, RoutePageFC } from '@/types/page'
 
 interface GitHubData {
+  contributionData: ContributionPoint[]
   projects: GitHubProject[]
   stats: UserStats
-  contributionData: ContributionPoint[]
 }
 
 // Helper to fetch GitHub data
@@ -38,19 +40,19 @@ const fetchGitHubData: () => Promise<
   const stats: UserStats = await getUserStats()
   const contributionData: ContributionPoint[] = await getContributionData()
 
-  return { projects, stats, contributionData }
+  return { contributionData, projects, stats }
 }
 
-type HomeProps = UnparsedLocalePageProps
+type HomeProperties = UnparsedLocalePageProperties
 
-const Home: RoutePageFC<HomeProps> = async ({
+const Home: RoutePageFC<HomeProperties> = async ({
   params,
-}: PageParams<HomeProps>): Promise<JSX.Element> => {
-  const locale: Locale = await ensureLocaleFromParams(params)
+}: PageParameters<HomeProperties>): Promise<JSX.Element> => {
+  const locale: Locale = await ensureLocaleFromParameters(params)
 
   setRequestLocale(locale)
 
-  const { projects, stats, contributionData }: GitHubData =
+  const { contributionData, projects, stats }: GitHubData =
     await fetchGitHubData()
 
   return (

@@ -1,10 +1,12 @@
 'use server'
 
+import { type JSX } from 'react'
+
+import { type Locale } from 'next-intl'
+
 import { Quote } from 'lucide-react'
 import Image from 'next/image'
-import { type Locale } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
-import { type JSX } from 'react'
 
 import { Card } from '@/components/ui/card'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
@@ -12,51 +14,54 @@ import type { Translations } from '@/types/i18n'
 
 /* ───────────────────────── types ───────────────────────── */
 
-interface TestimonialsSectionProps {
+interface TestimonialsSectionProperties {
   readonly locale: Locale
 }
 
 interface TestimonialItem {
-  readonly name: string
-  readonly role: string
   readonly company: string
   readonly image: string
+  readonly name: string
   readonly quote: string
+  readonly role: string
 }
 
 /* ───────────────────── type guards/helpers ───────────────────── */
 
-const isString: (v: unknown) => v is string = (v: unknown): v is string =>
-  typeof v === 'string'
+const isString: (value: unknown) => value is string = (
+  value: unknown
+): value is string => typeof value === 'string'
 
 const isTestimonialItem: (v: unknown) => v is TestimonialItem = (
-  v: unknown
-): v is TestimonialItem => {
-  if (v === null || typeof v !== 'object') {
+  value: unknown
+): value is TestimonialItem => {
+  if (value === null || typeof value !== 'object') {
     return false
   }
-  const o: Record<string, unknown> = v as Record<string, unknown>
+  const object: Record<string, unknown> = value as Record<string, unknown>
   return (
-    isString(o['name']) &&
-    isString(o['role']) &&
-    isString(o['company']) &&
-    isString(o['image']) &&
-    isString(o['quote'])
+    isString(object['name']) &&
+    isString(object['role']) &&
+    isString(object['company']) &&
+    isString(object['image']) &&
+    isString(object['quote'])
   )
 }
 
-const makeKey: (t: TestimonialItem) => string = (t: TestimonialItem): string =>
-  `${t.name}::${t.company}::${t.image}`
+const makeKey: (testimonialItem: TestimonialItem) => string = (
+  testimonialItem: TestimonialItem
+): string =>
+  `${testimonialItem.name}::${testimonialItem.company}::${testimonialItem.image}`
 
 /* ───────────────────── subcomponents ───────────────────── */
 
-interface TestimonialCardProps {
+interface TestimonialCardProperties {
   readonly item: TestimonialItem
 }
 
-const TestimonialCard: FCStrict<TestimonialCardProps> = ({
+const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
   item,
-}: TestimonialCardProps): JSX.Element => {
+}: TestimonialCardProperties): JSX.Element => {
   return (
     <Card className="group hover:border-primary/50 relative overflow-hidden border-2 p-8 transition-all duration-300 hover:shadow-2xl">
       <div className="absolute top-4 right-4 opacity-10 transition-opacity group-hover:opacity-20">
@@ -91,21 +96,21 @@ const TestimonialCard: FCStrict<TestimonialCardProps> = ({
 /* ───────────────────── main component ───────────────────── */
 
 export const TestimonialsSection: AsyncPageFC<
-  TestimonialsSectionProps
-> = async ({ locale }: TestimonialsSectionProps): Promise<JSX.Element> => {
-  const t: Translations<'testimonials'> = await getTranslations({
+  TestimonialsSectionProperties
+> = async ({ locale }: TestimonialsSectionProperties): Promise<JSX.Element> => {
+  const translations: Translations<'testimonials'> = await getTranslations({
     locale,
     namespace: 'testimonials',
   })
 
   // Safely parse raw items to avoid unsafe assignments
-  const raw: unknown = t.raw('items')
+  const raw: unknown = translations.raw('items')
   const testimonials: readonly TestimonialItem[] = Array.isArray(raw)
     ? raw.filter(isTestimonialItem)
     : []
 
-  const titleText: string = t('title')
-  const subtitleText: string = t('subtitle')
+  const titleText: string = translations('title')
+  const subtitleText: string = translations('subtitle')
 
   return (
     <section className="from-muted/20 to-background min-h-screen bg-gradient-to-b px-4 py-20 md:px-8">

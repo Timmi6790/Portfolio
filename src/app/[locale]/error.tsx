@@ -1,8 +1,10 @@
 'use client'
 
-import { AlertTriangle } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import type { JSX } from 'react'
+
+import { useTranslations } from 'next-intl'
+
+import { AlertTriangle } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,13 +16,13 @@ function goHome(): void {
   window.location.assign('/')
 }
 
-interface ErrorHeaderProps {
+interface ErrorHeaderProperties {
   readonly title: string
 }
 
-const ErrorHeader: FCStrict<ErrorHeaderProps> = ({
+const ErrorHeader: FCStrict<ErrorHeaderProperties> = ({
   title,
-}: ErrorHeaderProps): JSX.Element => {
+}: ErrorHeaderProperties): JSX.Element => {
   return (
     <CardHeader>
       <div className="flex items-center gap-2">
@@ -31,15 +33,15 @@ const ErrorHeader: FCStrict<ErrorHeaderProps> = ({
   )
 }
 
-interface ErrorInfoProps {
+interface ErrorInfoProperties {
   readonly digest?: string | undefined
   readonly label: string
 }
 
-const ErrorInfo: FCNullable<ErrorInfoProps> = ({
+const ErrorInfo: FCNullable<ErrorInfoProperties> = ({
   digest,
   label,
-}: ErrorInfoProps): JSX.Element | null => {
+}: ErrorInfoProperties): JSX.Element | null => {
   if (typeof digest !== 'string' || digest.length === 0) {
     return null
   }
@@ -56,15 +58,15 @@ interface ErrorActionsLabels {
   readonly tryAgain: string
 }
 
-interface ErrorActionsProps {
+interface ErrorActionsProperties {
   readonly labels: ErrorActionsLabels
   readonly reset: () => void
 }
 
-const ErrorActions: FCStrict<ErrorActionsProps> = ({
+const ErrorActions: FCStrict<ErrorActionsProperties> = ({
   labels,
   reset,
-}: Readonly<ErrorActionsProps>): JSX.Element => {
+}: Readonly<ErrorActionsProperties>): JSX.Element => {
   return (
     <div className="flex gap-2">
       <Button className="w-full" onClick={reset}>
@@ -77,26 +79,34 @@ const ErrorActions: FCStrict<ErrorActionsProps> = ({
   )
 }
 
-interface ErrorPageProps {
+interface ErrorPageProperties {
   readonly error: Readonly<Error> & { readonly digest?: string }
   readonly reset: () => void
 }
 
-const ErrorPage: FCStrict<ErrorPageProps> = ({
+const ErrorPage: FCStrict<ErrorPageProperties> = ({
   error,
   reset,
-}: ErrorPageProps): JSX.Element => {
-  const t: Translations<'error'> = useTranslations('error')
+}: ErrorPageProperties): JSX.Element => {
+  const translations: Translations<'error'> = useTranslations('error')
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
-        <ErrorHeader title={t('title')} />
+        <ErrorHeader title={translations('title')} />
         <CardContent className="space-y-4">
-          <p className="text-muted-foreground text-sm">{t('description')}</p>
-          <ErrorInfo digest={error.digest} label={t('errorIdLabel')} />
+          <p className="text-muted-foreground text-sm">
+            {translations('description')}
+          </p>
+          <ErrorInfo
+            digest={error.digest}
+            label={translations('errorIdLabel')}
+          />
           <ErrorActions
-            labels={{ goHome: t('goHome'), tryAgain: t('tryAgain') }}
+            labels={{
+              goHome: translations('goHome'),
+              tryAgain: translations('tryAgain'),
+            }}
             reset={reset}
           />
         </CardContent>

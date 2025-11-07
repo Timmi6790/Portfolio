@@ -7,22 +7,22 @@ import type { FCWithChildren, WithChildren } from '@/types/fc'
 
 export type Theme = 'dark' | 'light'
 
-interface ThemeProviderProps extends WithChildren {
+interface ThemeProviderProperties extends WithChildren {
   readonly defaultTheme?: Theme
 }
 
 interface ThemeProviderState {
-  readonly theme: Theme
   readonly setTheme: (theme: Theme) => void
+  readonly theme: Theme
 }
 
 const ThemeProviderContext: React.Context<ThemeProviderState | undefined> =
   React.createContext<ThemeProviderState | undefined>(undefined)
 
-export const ThemeProvider: FCWithChildren<ThemeProviderProps> = ({
+export const ThemeProvider: FCWithChildren<ThemeProviderProperties> = ({
   children,
   defaultTheme = 'dark',
-}: ThemeProviderProps): JSX.Element => {
+}: ThemeProviderProperties): JSX.Element => {
   const [theme, setTheme]: [
     Theme,
     React.Dispatch<React.SetStateAction<Theme>>,
@@ -42,7 +42,6 @@ export const ThemeProvider: FCWithChildren<ThemeProviderProps> = ({
 
   const value: ThemeProviderState = React.useMemo<ThemeProviderState>(
     (): ThemeProviderState => ({
-      theme,
       setTheme: (newTheme: Theme): void => {
         localStorage.setItem('theme', newTheme)
         const root: HTMLElement = window.document.documentElement
@@ -50,6 +49,7 @@ export const ThemeProvider: FCWithChildren<ThemeProviderProps> = ({
         root.classList.add(newTheme)
         setTheme(newTheme)
       },
+      theme,
     }),
     [theme]
   )

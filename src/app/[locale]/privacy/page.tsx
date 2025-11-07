@@ -1,55 +1,67 @@
 'use server'
 
-import type { Metadata } from 'next'
-import { type Locale } from 'next-intl'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { JSX } from 'react'
 
+import type { Metadata } from 'next'
+import { type Locale } from 'next-intl'
+
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+
 import { LegalPageLayout } from '@/components/legal-page-layout'
-import { ensureLocaleFromParams, maybeLocaleFromParams } from '@/i18n/locale'
+import {
+  ensureLocaleFromParameters,
+  maybeLocaleFromParameters,
+} from '@/i18n/locale'
 import type { FCStrict } from '@/types/fc'
-import type { Translations, UnparsedLocalePageProps } from '@/types/i18n'
-import type { GenerateMetadataFC, PageParams, RoutePageFC } from '@/types/page'
+import type { Translations, UnparsedLocalePageProperties } from '@/types/i18n'
+import type {
+  GenerateMetadataFC,
+  PageParameters,
+  RoutePageFC,
+} from '@/types/page'
 
 /* --------------------------------- metadata -------------------------------- */
 export const generateMetadata: GenerateMetadataFC<
-  UnparsedLocalePageProps
+  UnparsedLocalePageProperties
 > = async ({
   params,
-}: PageParams<UnparsedLocalePageProps>): Promise<Metadata> => {
-  const locale: Locale | null = await maybeLocaleFromParams(params)
+}: PageParameters<UnparsedLocalePageProperties>): Promise<Metadata> => {
+  const locale: Locale | null = await maybeLocaleFromParameters(params)
   if (locale === null) {
     return {}
   }
 
-  const t: Translations<'privacy'> = await getTranslations({
+  const translations: Translations<'privacy'> = await getTranslations({
     locale,
     namespace: 'privacy',
   })
-  return { title: t('title'), description: t('description') }
+  return {
+    description: translations('description'),
+    title: translations('title'),
+  }
 }
 
 /* ----------------------------- small components ---------------------------- */
 
-interface ControllerBlockProps {
-  readonly title: string
-  readonly nameLabel: string
+interface ControllerBlockProperties {
+  readonly address: string
   readonly addressLabel: string
+  readonly email: string
   readonly emailLabel: string
   readonly name: string
-  readonly address: string
-  readonly email: string
+  readonly nameLabel: string
+  readonly title: string
 }
 
-const ControllerBlock: FCStrict<ControllerBlockProps> = ({
-  title,
-  nameLabel,
+const ControllerBlock: FCStrict<ControllerBlockProperties> = ({
+  address,
   addressLabel,
+  email,
   emailLabel,
   name,
-  address,
-  email,
-}: ControllerBlockProps): JSX.Element => {
+  nameLabel,
+  title,
+}: ControllerBlockProperties): JSX.Element => {
   return (
     <div>
       <h2 className="mb-2 text-xl font-semibold">{title}</h2>
@@ -67,25 +79,25 @@ const ControllerBlock: FCStrict<ControllerBlockProps> = ({
   )
 }
 
-interface CloudflareBlockProps {
-  readonly title: string
-  readonly pre: string
-  readonly strong: string
-  readonly post: string
-  readonly provider: string
+interface CloudflareBlockProperties {
   readonly policyLink: string
+  readonly post: string
+  readonly pre: string
+  readonly provider: string
+  readonly strong: string
   readonly text: string
+  readonly title: string
 }
 
-const CloudflareBlock: FCStrict<CloudflareBlockProps> = ({
-  title,
-  pre,
-  strong,
-  post,
-  provider,
+const CloudflareBlock: FCStrict<CloudflareBlockProperties> = ({
   policyLink,
+  post,
+  pre,
+  provider,
+  strong,
   text,
-}: CloudflareBlockProps): JSX.Element => {
+  title,
+}: CloudflareBlockProperties): JSX.Element => {
   return (
     <div>
       <h2 className="mb-2 text-xl font-semibold">{title}</h2>
@@ -113,24 +125,24 @@ const CloudflareBlock: FCStrict<CloudflareBlockProps> = ({
 }
 
 interface SectionData {
-  readonly title: string
   readonly text: string
+  readonly title: string
 }
 
-interface SectionsProps {
+interface SectionsProperties {
   readonly sections: Record<string, SectionData>
 }
 
-const Sections: (props: SectionsProps) => JSX.Element[] = ({
+const Sections: (properties: SectionsProperties) => JSX.Element[] = ({
   sections,
-}: SectionsProps): JSX.Element[] => {
+}: SectionsProperties): JSX.Element[] => {
   const nodes: JSX.Element[] = []
-  for (const [key, s] of Object.entries(sections)) {
+  for (const [key, section] of Object.entries(sections)) {
     nodes.push(
       <div key={key}>
-        <h2 className="mb-2 text-xl font-semibold">{s.title}</h2>
+        <h2 className="mb-2 text-xl font-semibold">{section.title}</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          {s.text}
+          {section.text}
         </p>
       </div>
     )
@@ -140,17 +152,17 @@ const Sections: (props: SectionsProps) => JSX.Element[] = ({
 
 /* ----------------------------------- page ---------------------------------- */
 
-type PrivacyPageProps = UnparsedLocalePageProps
+type PrivacyPageProperties = UnparsedLocalePageProperties
 
 // eslint-disable-next-line max-lines-per-function
-const PrivacyPolicyPage: RoutePageFC<PrivacyPageProps> = async ({
+const PrivacyPolicyPage: RoutePageFC<PrivacyPageProperties> = async ({
   params,
-}: PageParams<PrivacyPageProps>): Promise<JSX.Element> => {
-  const locale: Locale = await ensureLocaleFromParams(params)
+}: PageParameters<PrivacyPageProperties>): Promise<JSX.Element> => {
+  const locale: Locale = await ensureLocaleFromParameters(params)
 
   setRequestLocale(locale)
 
-  const t: Translations<'privacy'> = await getTranslations({
+  const translations: Translations<'privacy'> = await getTranslations({
     locale,
     namespace: 'privacy',
   })
@@ -168,33 +180,51 @@ const PrivacyPolicyPage: RoutePageFC<PrivacyPageProps> = async ({
     address: string
     email: string
   }> = {
-    title: t('controller.title'),
-    name: t('controller.name'),
-    address: t('controller.address'),
-    email: t('controller.email'),
+    address: translations('controller.address'),
+    email: translations('controller.email'),
+    name: translations('controller.name'),
+    title: translations('controller.title'),
   }
 
-  const cloudflare: CloudflareBlockProps = {
-    title: t('cloudflare.title'),
-    pre: t('cloudflare.pre'),
-    strong: t('cloudflare.strong'),
-    post: t('cloudflare.post'),
-    provider: t('cloudflare.provider'),
-    policyLink: t('cloudflare.policyLink'),
-    text: t('cloudflare.text'),
+  const cloudflare: CloudflareBlockProperties = {
+    policyLink: translations('cloudflare.policyLink'),
+    post: translations('cloudflare.post'),
+    pre: translations('cloudflare.pre'),
+    provider: translations('cloudflare.provider'),
+    strong: translations('cloudflare.strong'),
+    text: translations('cloudflare.text'),
+    title: translations('cloudflare.title'),
   }
 
   const sections: Record<string, SectionData> = {
-    general: { title: t('general.title'), text: t('general.text') },
-    logs: { title: t('logs.title'), text: t('logs.text') },
-    contact: { title: t('contact.title'), text: t('contact.text') },
-    rights: { title: t('rights.title'), text: t('rights.text') },
-    nocookies: { title: t('nocookies.title'), text: t('nocookies.text') },
-    changes: { title: t('changes.title'), text: t('changes.text') },
+    changes: {
+      text: translations('changes.text'),
+      title: translations('changes.title'),
+    },
+    contact: {
+      text: translations('contact.text'),
+      title: translations('contact.title'),
+    },
+    general: {
+      text: translations('general.text'),
+      title: translations('general.title'),
+    },
+    logs: {
+      text: translations('logs.text'),
+      title: translations('logs.title'),
+    },
+    nocookies: {
+      text: translations('nocookies.text'),
+      title: translations('nocookies.title'),
+    },
+    rights: {
+      text: translations('rights.text'),
+      title: translations('rights.title'),
+    },
   }
 
   return (
-    <LegalPageLayout locale={locale} title={t('title')}>
+    <LegalPageLayout locale={locale} title={translations('title')}>
       <ControllerBlock
         address={controller.address}
         addressLabel={addressLabel}

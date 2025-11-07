@@ -1,8 +1,10 @@
 'use server'
 
-import { type Locale } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
 import { type JSX } from 'react'
+
+import { type Locale } from 'next-intl'
+
+import { getTranslations } from 'next-intl/server'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -12,25 +14,25 @@ import type { Translations } from '@/types/i18n'
 
 /* ────────────────────────── types ────────────────────────── */
 
-interface SkillsSectionProps {
+interface SkillsSectionProperties {
   readonly locale: Locale
 }
 
-type BadgeVariant = 'default' | 'secondary' | 'outline'
+type BadgeVariant = 'default' | 'outline' | 'secondary'
 
-interface SkillCardProps {
-  readonly title: string
+interface SkillCardProperties {
   readonly items: readonly string[]
+  readonly title: string
   readonly variant: BadgeVariant
 }
 
 /* ────────────────────── subcomponent ─────────────────────── */
 
-const SkillCard: FCStrict<SkillCardProps> = ({
-  title,
+const SkillCard: FCStrict<SkillCardProperties> = ({
   items,
+  title,
   variant,
-}: SkillCardProps): JSX.Element => {
+}: SkillCardProperties): JSX.Element => {
   return (
     <Card className="group hover:border-primary/50 border-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <CardHeader>
@@ -62,10 +64,10 @@ const SkillCard: FCStrict<SkillCardProps> = ({
 
 /* ─────────────────────── main section ────────────────────── */
 
-export const SkillsSection: AsyncPageFC<SkillsSectionProps> = async ({
+export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
   locale,
-}: SkillsSectionProps): Promise<JSX.Element> => {
-  const t: Translations<'skills'> = await getTranslations({
+}: SkillsSectionProperties): Promise<JSX.Element> => {
+  const translations: Translations<'skills'> = await getTranslations({
     locale,
     namespace: 'skills',
   })
@@ -81,7 +83,7 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProps> = async ({
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-12 text-center">
           <h2 className="text-foreground mb-3 text-4xl font-bold">
-            {t('title')}
+            {translations('title')}
           </h2>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />
         </div>
@@ -89,15 +91,19 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProps> = async ({
         <div className="grid gap-6 md:grid-cols-3">
           <SkillCard
             items={expertise}
-            title={t('expertise')}
+            title={translations('expertise')}
             variant="default"
           />
           <SkillCard
             items={learning}
-            title={t('learning')}
+            title={translations('learning')}
             variant="secondary"
           />
-          <SkillCard items={tools} title={t('tools')} variant="outline" />
+          <SkillCard
+            items={tools}
+            title={translations('tools')}
+            variant="outline"
+          />
         </div>
       </div>
     </section>

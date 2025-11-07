@@ -1,9 +1,10 @@
 import { type Locale } from 'next-intl'
+
 import { getRequestConfig, type GetRequestConfigParams } from 'next-intl/server'
 
-import type en from '../../messages/en.json'
-
 import { routing } from './routing'
+
+import type en from '../../messages/en.json'
 
 // Infer the messages schema from a known file (requires "resolveJsonModule": true)
 type Messages = typeof en
@@ -19,18 +20,18 @@ const isSupportedLocale: (value: unknown) => value is Locale = (
 
 export default getRequestConfig(
   async (
-    params: GetRequestConfigParams
+    parameters: GetRequestConfigParams
   ): Promise<{ locale: Locale; messages: Messages }> => {
-    const requested: string | undefined = await params.requestLocale
+    const requested: string | undefined = await parameters.requestLocale
     const locale: Locale = isSupportedLocale(requested)
       ? requested
       : routing.defaultLocale
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const mod: { readonly default: Messages } = await import(
+    const module_: { readonly default: Messages } = await import(
       `../../messages/${locale}.json`
     )
-    const messages: Messages = mod.default
+    const messages: Messages = module_.default
 
     return { locale, messages }
   }

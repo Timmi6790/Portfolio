@@ -1,15 +1,11 @@
 export interface SiteConfig {
-  readonly name: string
-  readonly fullName: string
   readonly description: string
-  readonly username: string
-  readonly title: string
   readonly email: string
-  readonly github: string
-  readonly twitter: string
-  readonly url: string
-  readonly githubUsername: string
   readonly featuredRepos: readonly string[]
+  readonly fullName: string
+  readonly github: string
+  readonly githubUsername: string
+  readonly name: string
   readonly seo: {
     readonly keywords: readonly string[]
   }
@@ -18,28 +14,26 @@ export interface SiteConfig {
     readonly learning: readonly string[]
     readonly tools: readonly string[]
   }
+  readonly title: string
+  readonly twitter: string
+  readonly url: string
+  readonly username: string
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'Tim',
-  fullName: 'Tim Schönle',
   description:
     'Portfolio of Tim - Software Developer specializing in Java, learning Rust and Next.js. Open-source contributor and passionate about building great software.',
-  username: 'Timmi6790',
-  title: 'Tim - Software Developer',
-
   email: 'contact@timmi6790.de',
-  github: 'https://github.com/Timmi6790',
-  twitter: '@Timmi6790',
-  url: 'https://timmi6790.de',
-
-  githubUsername: 'Timmi6790',
   featuredRepos: [
     'cloudflare-access-webhook-redirect',
     's3-bucket-perma-link',
     'helm-charts',
   ],
+  fullName: 'Tim Schönle',
+  github: 'https://github.com/Timmi6790',
 
+  githubUsername: 'Timmi6790',
+  name: 'Tim',
   seo: {
     keywords: [
       'Tim',
@@ -53,10 +47,16 @@ export const siteConfig: SiteConfig = {
       'Germany',
     ],
   },
-
   skills: {
     expertise: ['Java', 'Spring Boot', 'Maven', 'Gradle'],
     learning: ['Rust', 'Next.js', 'React', 'TypeScript'],
     tools: ['Git', 'GitHub', 'Docker', 'Linux'],
   },
+
+  title: 'Tim - Software Developer',
+  twitter: '@Timmi6790',
+
+  url: 'https://timmi6790.de',
+
+  username: 'Timmi6790',
 }

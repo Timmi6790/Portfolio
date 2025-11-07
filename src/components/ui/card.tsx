@@ -1,20 +1,20 @@
 import type { ComponentProps, JSX } from 'react'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utilities'
 import type { FCWithChildren } from '@/types/fc'
 
-type CardProps = ComponentProps<'div'>
-type CardHeaderProps = ComponentProps<'div'>
-type CardTitleProps = ComponentProps<'div'>
-type CardDescriptionProps = ComponentProps<'div'>
-type CardActionProps = ComponentProps<'div'>
-type CardContentProps = ComponentProps<'div'>
-type CardFooterProps = ComponentProps<'div'>
+type CardProperties = ComponentProps<'div'>
+type CardHeaderProperties = ComponentProps<'div'>
+type CardTitleProperties = ComponentProps<'div'>
+type CardDescriptionProperties = ComponentProps<'div'>
+type CardActionProperties = ComponentProps<'div'>
+type CardContentProperties = ComponentProps<'div'>
+type CardFooterProperties = ComponentProps<'div'>
 
-const Card: FCWithChildren<CardProps> = ({
+const Card: FCWithChildren<CardProperties> = ({
   className,
-  ...props
-}: CardProps): JSX.Element => {
+  ...properties
+}: CardProperties): JSX.Element => {
   return (
     <div
       className={cn(
@@ -22,15 +22,15 @@ const Card: FCWithChildren<CardProps> = ({
         className
       )}
       data-slot="card"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CardHeader: FCWithChildren<CardHeaderProps> = ({
+const CardHeader: FCWithChildren<CardHeaderProperties> = ({
   className,
-  ...props
-}: CardHeaderProps): JSX.Element => {
+  ...properties
+}: CardHeaderProperties): JSX.Element => {
   return (
     <div
       className={cn(
@@ -38,41 +38,41 @@ const CardHeader: FCWithChildren<CardHeaderProps> = ({
         className
       )}
       data-slot="card-header"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CardTitle: FCWithChildren<CardTitleProps> = ({
+const CardTitle: FCWithChildren<CardTitleProperties> = ({
   className,
-  ...props
-}: CardTitleProps): JSX.Element => {
+  ...properties
+}: CardTitleProperties): JSX.Element => {
   return (
     <div
       className={cn('leading-none font-semibold', className)}
       data-slot="card-title"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CardDescription: FCWithChildren<CardDescriptionProps> = ({
+const CardDescription: FCWithChildren<CardDescriptionProperties> = ({
   className,
-  ...props
-}: CardDescriptionProps): JSX.Element => {
+  ...properties
+}: CardDescriptionProperties): JSX.Element => {
   return (
     <div
       className={cn('text-muted-foreground text-sm', className)}
       data-slot="card-description"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CardAction: FCWithChildren<CardActionProps> = ({
+const CardAction: FCWithChildren<CardActionProperties> = ({
   className,
-  ...props
-}: CardActionProps): JSX.Element => {
+  ...properties
+}: CardActionProperties): JSX.Element => {
   return (
     <div
       className={cn(
@@ -80,43 +80,43 @@ const CardAction: FCWithChildren<CardActionProps> = ({
         className
       )}
       data-slot="card-action"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CardContent: FCWithChildren<CardContentProps> = ({
+const CardContent: FCWithChildren<CardContentProperties> = ({
   className,
-  ...props
-}: CardContentProps): JSX.Element => {
+  ...properties
+}: CardContentProperties): JSX.Element => {
   return (
     <div
       className={cn('px-6', className)}
       data-slot="card-content"
-      {...props}
+      {...properties}
     />
   )
 }
 
-const CardFooter: FCWithChildren<CardFooterProps> = ({
+const CardFooter: FCWithChildren<CardFooterProperties> = ({
   className,
-  ...props
-}: CardFooterProps): JSX.Element => {
+  ...properties
+}: CardFooterProperties): JSX.Element => {
   return (
     <div
       className={cn('flex items-center px-6 [.border-t]:pt-6', className)}
       data-slot="card-footer"
-      {...props}
+      {...properties}
     />
   )
 }
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
   CardAction,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 }

@@ -1,5 +1,6 @@
-import bundleAnalyzer from '@next/bundle-analyzer'
 import type { NextConfig } from 'next'
+
+import bundleAnalyzer from '@next/bundle-analyzer'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 // Typedef via ReturnType to avoid unused param identifiers
@@ -11,31 +12,15 @@ const withNextIntl: ReturnType<typeof createNextIntlPlugin> =
   })
 
 const withBundleAnalyzer: ReturnType<typeof bundleAnalyzer> = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: process.env['ANALYZE'] === 'true',
 })
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
-
-  // Enable strict mode for better development experience
-  reactStrictMode: true,
-
-  // Enable typed routes for better TypeScript support
-  typedRoutes: true,
-
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      { protocol: 'https', hostname: 'github.com' },
-      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
-    ],
-  },
-
   experimental: {
-    typedEnv: true,
-    turbopackFileSystemCacheForDev: true,
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    turbopackFileSystemCacheForDev: true,
+    typedEnv: true,
   },
 
   headers(): {
@@ -44,7 +29,6 @@ const nextConfig: NextConfig = {
   }[] {
     return [
       {
-        source: '/:path*',
         headers: [
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
           {
@@ -59,9 +43,26 @@ const nextConfig: NextConfig = {
             value: 'camera=(), microphone=(), geolocation=()',
           },
         ],
+        source: '/:path*',
       },
     ]
   },
+
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      { hostname: 'github.com', protocol: 'https' },
+      { hostname: 'avatars.githubusercontent.com', protocol: 'https' },
+    ],
+  },
+
+  output: 'standalone',
+
+  // Enable strict mode for better development experience
+  reactStrictMode: true,
+
+  // Enable typed routes for better TypeScript support
+  typedRoutes: true,
 }
 
 export default withBundleAnalyzer(withNextIntl(nextConfig))

@@ -1,8 +1,10 @@
 'use client'
 
-import { Globe } from 'lucide-react'
-import { type Locale, useLocale } from 'next-intl'
 import { type JSX } from 'react'
+
+import { type Locale, useLocale } from 'next-intl'
+
+import { Globe } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { usePathname, useRouter } from '@/i18n/routing'

@@ -1,11 +1,12 @@
 import '../globals.css'
 
-import type { Metadata } from 'next'
-import type { NextFontWithVariable } from 'next/dist/compiled/@next/font'
-import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
-import { NextIntlClientProvider, type Locale } from 'next-intl'
-import { setRequestLocale } from 'next-intl/server'
 import type { JSX } from 'react'
+
+import type { Metadata } from 'next'
+import { type Locale, NextIntlClientProvider } from 'next-intl'
+
+import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
+import { setRequestLocale } from 'next-intl/server'
 import { Toaster } from 'sonner'
 
 import { CommandPalette } from '@/components/command-palette'
@@ -15,16 +16,21 @@ import { LanguageSwitcher } from '@/components/language-switcher'
 import { LegalFooter } from '@/components/legal-footer'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { ensureLocaleFromParams, maybeLocaleFromParams } from '@/i18n/locale'
+import {
+  ensureLocaleFromParameters,
+  maybeLocaleFromParameters,
+} from '@/i18n/locale'
 import { getPathname, routing } from '@/i18n/routing'
 import { siteConfig } from '@/lib/config'
-import type { UnparsedLocalePageProps } from '@/types/i18n'
+import type { UnparsedLocalePageProperties } from '@/types/i18n'
 import type {
   GenerateMetadataFC,
-  PageParams,
-  PageParamsWithChildren,
+  PageParameters,
+  PageParametersWithChildren,
   RoutePageWithChildrenFC,
 } from '@/types/page'
+
+import type { NextFontWithVariable } from 'next/dist/compiled/@next/font'
 
 /* ---------- fonts ---------- */
 const geist: NextFontWithVariable = Geist({
@@ -54,7 +60,7 @@ const buildLanguages: () => Record<string, string> = (): Record<
     (routing.locales as readonly Locale[]).map(
       (loc: Locale): readonly [Locale, string] => [
         loc,
-        `${siteConfig.url}/${getPathname({ locale: loc, href: '/' })}`,
+        `${siteConfig.url}/${getPathname({ href: '/', locale: loc })}`,
       ]
     )
   )
@@ -70,77 +76,77 @@ const buildAlternateLocales: (current: Locale) => string = (
 
 /* ---------- generateMetadata ---------- */
 export const generateMetadata: GenerateMetadataFC<
-  UnparsedLocalePageProps
+  UnparsedLocalePageProperties
 > = async ({
   params,
-}: PageParams<UnparsedLocalePageProps>): Promise<Metadata> => {
-  const locale: Locale | null = await maybeLocaleFromParams(params)
+}: PageParameters<UnparsedLocalePageProperties>): Promise<Metadata> => {
+  const locale: Locale | null = await maybeLocaleFromParameters(params)
   if (locale === null) {
     return {}
   }
 
   return {
+    alternates: {
+      languages: buildLanguages(),
+    },
+    authors: [{ name: siteConfig.fullName, url: siteConfig.url }],
+    creator: siteConfig.fullName,
+    description: siteConfig.description,
+    keywords: siteConfig.seo.keywords.join(', '),
     metadataBase: new URL(siteConfig.url),
+    openGraph: {
+      alternateLocale: buildAlternateLocales(locale),
+      description: siteConfig.description,
+      images: [
+        {
+          alt: siteConfig.title,
+          height: 630,
+          url: '/og-image.png',
+          width: 1200,
+        },
+      ],
+      locale,
+      siteName: siteConfig.title,
+      title: siteConfig.title,
+      type: 'website',
+      url: `${siteConfig.url}/${locale}`,
+    },
+    publisher: siteConfig.fullName,
+    robots: {
+      follow: true,
+      googleBot: {
+        follow: true,
+        index: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+      index: true,
+    },
     title: {
       default: siteConfig.title,
       template: `%s | ${siteConfig.title}`,
     },
-    description: siteConfig.description,
-    keywords: siteConfig.seo.keywords.join(', '),
-    authors: [{ name: siteConfig.fullName, url: siteConfig.url }],
-    creator: siteConfig.fullName,
-    publisher: siteConfig.fullName,
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    openGraph: {
-      type: 'website',
-      locale,
-      alternateLocale: buildAlternateLocales(locale),
-      url: `${siteConfig.url}/${locale}`,
-      title: siteConfig.title,
-      description: siteConfig.description,
-      siteName: siteConfig.title,
-      images: [
-        {
-          url: '/og-image.png',
-          width: 1200,
-          height: 630,
-          alt: siteConfig.title,
-        },
-      ],
-    },
     twitter: {
       card: 'summary_large_image',
-      title: siteConfig.title,
+      creator: siteConfig.twitter,
       description: siteConfig.description,
       images: ['/og-image.png'],
-      creator: siteConfig.twitter,
-    },
-    alternates: {
-      languages: buildLanguages(),
+      title: siteConfig.title,
     },
   }
 }
 
 /* ---------- generateStaticParams ---------- */
 
-interface StaticParam {
+interface StaticParameter {
   readonly locale: Locale
 }
-type GenerateStaticParams = () => readonly StaticParam[]
+type GenerateStaticParameters = () => readonly StaticParameter[]
 
-export const generateStaticParams: GenerateStaticParams =
-  (): readonly StaticParam[] => {
-    const out: StaticParam[] = []
+export const generateStaticParams: GenerateStaticParameters =
+  (): readonly StaticParameter[] => {
+    const out: StaticParameter[] = []
     for (const loc of routing.locales as readonly Locale[]) {
       out.push({ locale: loc })
     }
@@ -148,13 +154,13 @@ export const generateStaticParams: GenerateStaticParams =
   }
 
 /* ---------- layout ---------- */
-type RootLayoutProps = UnparsedLocalePageProps
+type RootLayoutProperties = UnparsedLocalePageProperties
 
-const RootLayout: RoutePageWithChildrenFC<RootLayoutProps> = async ({
+const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
   children,
   params,
-}: PageParamsWithChildren<RootLayoutProps>): Promise<JSX.Element> => {
-  const locale: Locale = await ensureLocaleFromParams(params)
+}: PageParametersWithChildren<RootLayoutProperties>): Promise<JSX.Element> => {
+  const locale: Locale = await ensureLocaleFromParameters(params)
 
   setRequestLocale(locale)
 

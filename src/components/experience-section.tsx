@@ -1,45 +1,48 @@
 'use server'
 
+import { type JSX } from 'react'
+
+import { type Locale } from 'next-intl'
+
 import { Briefcase, Calendar } from 'lucide-react'
 import Image from 'next/image'
-import { type Locale } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
-import { type JSX } from 'react'
 
 import { Card, CardContent } from '@/components/ui/card'
 import type { Translations } from '@/types/i18n'
 
 /* ─────────────────────────── types ─────────────────────────── */
 
-interface ExperienceSectionProps {
+interface ExperienceSectionProperties {
   readonly locale: Locale
 }
 
 interface Experience {
   readonly company: string
-  readonly logo?: string | null
-  readonly title: string
   readonly dateRange: string
   readonly description: string
+  readonly logo?: string | null
+  readonly title: string
 }
 
 /* ──────────────────────── runtime guards ───────────────────── */
 
-const isRecord: (v: unknown) => v is Record<string, unknown> = (
-  v: unknown
-): v is Record<string, unknown> => typeof v === 'object' && v !== null
+const isRecord: (value: unknown) => value is Record<string, unknown> = (
+  value: unknown
+): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null
 
-const isExperience: (v: unknown) => v is Experience = (
-  v: unknown
-): v is Experience => {
-  if (!isRecord(v)) {
+const isExperience: (value: unknown) => value is Experience = (
+  value: unknown
+): value is Experience => {
+  if (!isRecord(value)) {
     return false
   }
-  const company: unknown = v['company']
-  const logo: unknown = v['logo']
-  const title: unknown = v['title']
-  const dateRange: unknown = v['dateRange']
-  const description: unknown = v['description']
+  const company: unknown = value['company']
+  const logo: unknown = value['logo']
+  const title: unknown = value['title']
+  const dateRange: unknown = value['dateRange']
+  const description: unknown = value['description']
   const logoOk: boolean =
     logo === undefined || logo === null || typeof logo === 'string'
   return (
@@ -69,18 +72,18 @@ const parseExperiences: (raw: unknown) => readonly Experience[] = (
 /* ────────────────────────── component ───────────────────────── */
 
 export const ExperienceSection: (
-  props: ExperienceSectionProps
+  properties: ExperienceSectionProperties
   // eslint-disable-next-line max-lines-per-function
 ) => Promise<JSX.Element> = async ({
   locale,
-}: ExperienceSectionProps): Promise<JSX.Element> => {
-  const t: Translations<'experience'> = await getTranslations({
+}: ExperienceSectionProperties): Promise<JSX.Element> => {
+  const translations: Translations<'experience'> = await getTranslations({
     locale,
     namespace: 'experience',
   })
 
   // Safely read raw list and validate
-  const rawItems: unknown = t.raw('items')
+  const rawItems: unknown = translations.raw('items')
   const experiences: readonly Experience[] = parseExperiences(rawItems)
 
   return (
@@ -88,7 +91,7 @@ export const ExperienceSection: (
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-12 text-center">
           <h2 className="text-foreground mb-3 text-4xl font-bold">
-            {t('title')}
+            {translations('title')}
           </h2>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />
         </div>

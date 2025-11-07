@@ -1,46 +1,58 @@
 'use server'
 
-import type { Metadata } from 'next'
-import { type Locale } from 'next-intl'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { JSX } from 'react'
 
+import type { Metadata } from 'next'
+import { type Locale } from 'next-intl'
+
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+
 import { LegalPageLayout } from '@/components/legal-page-layout'
-import { ensureLocaleFromParams, maybeLocaleFromParams } from '@/i18n/locale'
+import {
+  ensureLocaleFromParameters,
+  maybeLocaleFromParameters,
+} from '@/i18n/locale'
 import { siteConfig } from '@/lib/config'
 import type { FCStrict } from '@/types/fc'
-import type { Translations, UnparsedLocalePageProps } from '@/types/i18n'
-import type { GenerateMetadataFC, PageParams, RoutePageFC } from '@/types/page'
+import type { Translations, UnparsedLocalePageProperties } from '@/types/i18n'
+import type {
+  GenerateMetadataFC,
+  PageParameters,
+  RoutePageFC,
+} from '@/types/page'
 /* --------------------------------- meta --------------------------------- */
 
 export const generateMetadata: GenerateMetadataFC<
-  UnparsedLocalePageProps
+  UnparsedLocalePageProperties
 > = async ({
   params,
-}: PageParams<UnparsedLocalePageProps>): Promise<Metadata> => {
-  const locale: Locale | null = await maybeLocaleFromParams(params)
+}: PageParameters<UnparsedLocalePageProperties>): Promise<Metadata> => {
+  const locale: Locale | null = await maybeLocaleFromParameters(params)
   if (locale === null) {
     return {}
   }
 
-  const t: Translations<'imprint'> = await getTranslations({
+  const translations: Translations<'imprint'> = await getTranslations({
     locale,
     namespace: 'imprint',
   })
-  return { title: t('title'), description: t('description') }
+  return {
+    description: translations('description'),
+    title: translations('title'),
+  }
 }
 
 /* ----------------------------- small components ----------------------------- */
 
-interface AddressProps {
-  readonly name: string
+interface AddressProperties {
   readonly country: string
+  readonly name: string
 }
 
-const Address: FCStrict<AddressProps> = ({
-  name,
+const Address: FCStrict<AddressProperties> = ({
   country,
-}: AddressProps): JSX.Element => {
+  name,
+}: AddressProperties): JSX.Element => {
   return (
     <p className="text-muted-foreground">
       {name}
@@ -50,15 +62,15 @@ const Address: FCStrict<AddressProps> = ({
   )
 }
 
-interface EmailLineProps {
-  readonly label: string
+interface EmailLineProperties {
   readonly email: string
+  readonly label: string
 }
 
-const EmailLine: FCStrict<EmailLineProps> = ({
-  label,
+const EmailLine: FCStrict<EmailLineProperties> = ({
   email,
-}: EmailLineProps): JSX.Element => {
+  label,
+}: EmailLineProperties): JSX.Element => {
   return (
     <p className="text-muted-foreground">
       {label}
@@ -70,15 +82,15 @@ const EmailLine: FCStrict<EmailLineProps> = ({
   )
 }
 
-interface SectionProps {
-  readonly title: string
+interface SectionProperties {
   readonly body: string
+  readonly title: string
 }
 
-const Section: FCStrict<SectionProps> = ({
-  title,
+const Section: FCStrict<SectionProperties> = ({
   body,
-}: SectionProps): JSX.Element => {
+  title,
+}: SectionProperties): JSX.Element => {
   return (
     <div>
       <h2 className="mb-2 text-xl font-semibold">{title}</h2>
@@ -89,20 +101,20 @@ const Section: FCStrict<SectionProps> = ({
 
 /* ---------------------------------- page ---------------------------------- */
 
-type ImprintPageProps = UnparsedLocalePageProps
+type ImprintPageProperties = UnparsedLocalePageProperties
 
-const ImprintPage: RoutePageFC<ImprintPageProps> = async ({
+const ImprintPage: RoutePageFC<ImprintPageProperties> = async ({
   params,
-}: PageParams<ImprintPageProps>): Promise<JSX.Element> => {
-  const locale: Locale = await ensureLocaleFromParams(params)
+}: PageParameters<ImprintPageProperties>): Promise<JSX.Element> => {
+  const locale: Locale = await ensureLocaleFromParameters(params)
 
   setRequestLocale(locale)
 
-  const t: Translations<'imprint'> = await getTranslations({
+  const translations: Translations<'imprint'> = await getTranslations({
     locale,
     namespace: 'imprint',
   })
-  const tContact: Translations<'contact'> = await getTranslations({
+  const translationsContact: Translations<'contact'> = await getTranslations({
     locale,
     namespace: 'contact',
   })
@@ -111,28 +123,43 @@ const ImprintPage: RoutePageFC<ImprintPageProps> = async ({
   const ownerCountry: string = 'Germany'
 
   return (
-    <LegalPageLayout locale={locale} title={t('title')}>
+    <LegalPageLayout locale={locale} title={translations('title')}>
       <div>
-        <h2 className="mb-2 text-xl font-semibold">{t('infoTitle')}</h2>
+        <h2 className="mb-2 text-xl font-semibold">
+          {translations('infoTitle')}
+        </h2>
         <Address country={ownerCountry} name={ownerName} />
       </div>
 
       <div>
-        <h2 className="mb-2 text-xl font-semibold">{t('contactTitle')}</h2>
-        <EmailLine email={siteConfig.email} label={tContact('email')} />
+        <h2 className="mb-2 text-xl font-semibold">
+          {translations('contactTitle')}
+        </h2>
+        <EmailLine
+          email={siteConfig.email}
+          label={translationsContact('email')}
+        />
       </div>
 
       <div>
-        <h2 className="mb-2 text-xl font-semibold">{t('responsibleTitle')}</h2>
+        <h2 className="mb-2 text-xl font-semibold">
+          {translations('responsibleTitle')}
+        </h2>
         <Address country={ownerCountry} name={ownerName} />
       </div>
 
       <Section
-        body={t('liabilityContent')}
-        title={t('liabilityContentTitle')}
+        body={translations('liabilityContent')}
+        title={translations('liabilityContentTitle')}
       />
-      <Section body={t('liabilityLinks')} title={t('liabilityLinksTitle')} />
-      <Section body={t('copyright')} title={t('copyrightTitle')} />
+      <Section
+        body={translations('liabilityLinks')}
+        title={translations('liabilityLinksTitle')}
+      />
+      <Section
+        body={translations('copyright')}
+        title={translations('copyrightTitle')}
+      />
     </LegalPageLayout>
   )
 }

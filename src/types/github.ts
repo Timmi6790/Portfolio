@@ -1,18 +1,18 @@
 export interface GitHubProject {
-  readonly name: string
   readonly description: string
-  readonly html_url: string
-  readonly homepage: string | undefined
-  readonly stargazers_count: number
   readonly forks_count: number
+  readonly homepage: string | undefined
+  readonly html_url: string
   readonly language: string
+  readonly name: string
+  readonly stargazers_count: number
   readonly topics: readonly string[]
 }
 
 export interface UserStats {
+  readonly forks: number
   readonly repositories: number
   readonly stars: number
-  readonly forks: number
 }
 
 export const CONTRIBUTION_LEVELS: readonly [0, 1, 2, 3, 4] = [
@@ -22,7 +22,7 @@ export const CONTRIBUTION_LEVELS: readonly [0, 1, 2, 3, 4] = [
 export type ContributionLevel = (typeof CONTRIBUTION_LEVELS)[number]
 
 export interface ContributionPoint {
-  readonly date: string
   readonly count: number
+  readonly date: string
   readonly level: ContributionLevel
 }

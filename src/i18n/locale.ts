@@ -1,9 +1,9 @@
-// src/lib/locale.ts
-import { notFound } from 'next/navigation'
 import { hasLocale, type Locale } from 'next-intl'
 
+import { notFound } from 'next/navigation'
+
 import { routing } from '@/i18n/routing'
-import type { UnparsedLocalePageProps } from '@/types/i18n'
+import type { UnparsedLocalePageProperties } from '@/types/i18n'
 
 /**
  * Assertion-style validator. Refines a string to Locale in-place.
@@ -11,7 +11,7 @@ import type { UnparsedLocalePageProps } from '@/types/i18n'
 export const assertLocale: (value: string) => asserts value is Locale = (
   value: string
 ): void => {
-  if (!hasLocale(routing.locales as readonly Locale[], value as Locale)) {
+  if (!hasLocale(routing.locales as readonly Locale[], value)) {
     notFound()
   }
 }
@@ -22,38 +22,36 @@ export const assertLocale: (value: string) => asserts value is Locale = (
 export const ensureLocale: (value: string) => Locale = (
   value: string
 ): Locale => {
-  if (!hasLocale(routing.locales as readonly Locale[], value as Locale)) {
+  if (!hasLocale(routing.locales as readonly Locale[], value)) {
     notFound()
   }
-  return value as Locale
+  return value
 }
 
 /**
  * Sugar for Next.js page/layout params → Locale.
  * Accepts a Promise to keep call-sites terse in async components.
  */
-export const ensureLocaleFromParams: (
-  paramsPromise: Promise<UnparsedLocalePageProps>
+export const ensureLocaleFromParameters: (
+  parametersPromise: Promise<UnparsedLocalePageProperties>
 ) => Promise<Locale> = async (
-  paramsPromise: Promise<UnparsedLocalePageProps>
+  parametersPromise: Promise<UnparsedLocalePageProperties>
 ): Promise<Locale> => {
-  const raw: UnparsedLocalePageProps = await paramsPromise
+  const raw: UnparsedLocalePageProperties = await parametersPromise
   return ensureLocale(raw.locale)
 }
 
 export const maybeLocale: (value: string) => Locale | null = (
   value: string
 ): Locale | null => {
-  return hasLocale(routing.locales as readonly Locale[], value as Locale)
-    ? (value as Locale)
-    : null
+  return hasLocale(routing.locales as readonly Locale[], value) ? value : null
 }
 
-export const maybeLocaleFromParams: (
-  paramsPromise: Promise<UnparsedLocalePageProps>
+export const maybeLocaleFromParameters: (
+  parametersPromise: Promise<UnparsedLocalePageProperties>
 ) => Promise<Locale | null> = async (
-  paramsPromise: Promise<UnparsedLocalePageProps>
+  parametersPromise: Promise<UnparsedLocalePageProperties>
 ): Promise<Locale | null> => {
-  const raw: UnparsedLocalePageProps = await paramsPromise
+  const raw: UnparsedLocalePageProperties = await parametersPromise
   return maybeLocale(raw.locale)
 }

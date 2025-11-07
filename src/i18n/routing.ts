@@ -3,9 +3,6 @@ import { defineRouting } from 'next-intl/routing'
 
 // eslint-disable-next-line @typescript-eslint/typedef
 export const routing = defineRouting({
-  // A list of all locales that are supported
-  locales: ['en', 'de'],
-
   // Used when no locale matches
   defaultLocale: 'en',
 
@@ -13,10 +10,13 @@ export const routing = defineRouting({
   localePrefix: {
     mode: 'always',
   },
+
+  // A list of all locales that are supported
+  locales: ['en', 'de'],
 })
 
 // Lightweight wrappers around Next.js' navigation APIs
 // that will consider the routing configuration
 // eslint-disable-next-line @typescript-eslint/typedef
-export const { Link, redirect, usePathname, useRouter, getPathname } =
+export const { getPathname, Link, redirect, usePathname, useRouter } =
   createNavigation(routing)

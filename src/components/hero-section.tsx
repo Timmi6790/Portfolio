@@ -1,45 +1,46 @@
 'use server'
 
-import { Mail, GitBranch, ArrowDown } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
 import { type JSX } from 'react'
+
+import { ArrowDown, GitBranch, Mail } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProps, Translations } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* ── props ─────────────────────────────────────────────────────────────── */
 
-type HeroSectionProps = LocalePageProps
+type HeroSectionProperties = LocalePageProperties
 
-interface HeroTitleProps {
+interface HeroTitleProperties {
   readonly greeting: string
   readonly name: string
 }
 
-interface HeroSubtitleProps {
+interface HeroSubtitleProperties {
   readonly title: string
 }
 
-interface HeroLocationTaglineProps {
+interface HeroLocationTaglineProperties {
   readonly location: string
   readonly tagline: string
 }
 
-interface HeroButtonsProps {
-  readonly githubUrl: string
+interface HeroButtonsProperties {
+  readonly contactLabel: string
   readonly email: string
   readonly githubLabel: string
-  readonly contactLabel: string
+  readonly githubUrl: string
 }
 
 /* ── subcomponents (small & typed) ─────────────────────────────────────── */
 
-const HeroTitle: FCStrict<HeroTitleProps> = ({
+const HeroTitle: FCStrict<HeroTitleProperties> = ({
   greeting,
   name,
-}: HeroTitleProps): JSX.Element => (
+}: HeroTitleProperties): JSX.Element => (
   <h1 className="text-foreground animate-in fade-in slide-in-from-bottom-4 mb-6 text-5xl font-bold tracking-tight text-balance duration-1000 md:text-7xl">
     {greeting}{' '}
     <span
@@ -52,34 +53,34 @@ const HeroTitle: FCStrict<HeroTitleProps> = ({
   </h1>
 )
 
-const HeroSubtitle: FCStrict<HeroSubtitleProps> = ({
+const HeroSubtitle: FCStrict<HeroSubtitleProperties> = ({
   title,
-}: HeroSubtitleProps): JSX.Element => (
+}: HeroSubtitleProperties): JSX.Element => (
   <p className="text-muted-foreground animate-in fade-in slide-in-from-bottom-4 mb-3 text-xl text-pretty delay-150 duration-1000 md:text-2xl">
     {title}
   </p>
 )
 
-const HeroLocationTagline: FCStrict<HeroLocationTaglineProps> = ({
+const HeroLocationTagline: FCStrict<HeroLocationTaglineProperties> = ({
   location,
   tagline,
-}: HeroLocationTaglineProps): JSX.Element => {
-  const sep: string = ' \u00B7 '
+}: HeroLocationTaglineProperties): JSX.Element => {
+  const separator: string = ' \u00B7 '
   return (
     <p className="text-muted-foreground animate-in fade-in slide-in-from-bottom-4 mb-10 text-lg delay-300 duration-1000">
       {location}
-      {sep}
+      {separator}
       {tagline}
     </p>
   )
 }
 
-const HeroButtons: FCStrict<HeroButtonsProps> = ({
-  githubUrl,
+const HeroButtons: FCStrict<HeroButtonsProperties> = ({
+  contactLabel,
   email,
   githubLabel,
-  contactLabel,
-}: HeroButtonsProps): JSX.Element => (
+  githubUrl,
+}: HeroButtonsProperties): JSX.Element => (
   <div className="animate-in fade-in slide-in-from-bottom-4 flex flex-wrap items-center justify-center gap-4 delay-500 duration-1000">
     <Button
       asChild={true}
@@ -113,10 +114,10 @@ const HeroScrollHint: FCStrict = (): JSX.Element => (
 )
 
 /* ── main ──────────────────────────────────────────────────── */
-export const HeroSection: AsyncPageFC<HeroSectionProps> = async ({
+export const HeroSection: AsyncPageFC<HeroSectionProperties> = async ({
   locale,
-}: HeroSectionProps): Promise<JSX.Element> => {
-  const t: Translations<'hero'> = await getTranslations({
+}: HeroSectionProperties): Promise<JSX.Element> => {
+  const translations: Translations<'hero'> = await getTranslations({
     locale,
     namespace: 'hero',
   })
@@ -126,13 +127,19 @@ export const HeroSection: AsyncPageFC<HeroSectionProps> = async ({
       <div className="from-primary/5 absolute inset-0 -z-10 bg-gradient-to-b via-transparent to-transparent" />
 
       <div className="max-w-4xl text-center">
-        <HeroTitle greeting={t('greeting')} name={t('name')} />
-        <HeroSubtitle title={t('title')} />
-        <HeroLocationTagline location={t('location')} tagline={t('tagline')} />
+        <HeroTitle
+          greeting={translations('greeting')}
+          name={translations('name')}
+        />
+        <HeroSubtitle title={translations('title')} />
+        <HeroLocationTagline
+          location={translations('location')}
+          tagline={translations('tagline')}
+        />
         <HeroButtons
-          contactLabel={t('contact')}
+          contactLabel={translations('contact')}
           email={siteConfig.email}
-          githubLabel={t('github')}
+          githubLabel={translations('github')}
           githubUrl={siteConfig.github}
         />
         <HeroScrollHint />

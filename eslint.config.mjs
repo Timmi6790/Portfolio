@@ -9,18 +9,15 @@ import sonarjs from 'eslint-plugin-sonarjs'
 import unicorn from 'eslint-plugin-unicorn'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import noSecrets from 'eslint-plugin-no-secrets'
+import perfectionist from 'eslint-plugin-perfectionist'
 
 export default tseslint.config(
-  // ---------------------------------------------------------------------
   // Ignore build/vendor outputs
-  // ---------------------------------------------------------------------
   {
     ignores: ['**/node_modules/', '**/.next/', '**/out/', '**/public/'],
   },
 
-  // ---------------------------------------------------------------------
   // Disallow JS/CJS/MJS everywhere...
-  // ---------------------------------------------------------------------
   {
     files: ['**/*.{js,jsx,cjs,mjs}'],
     ignores: ['eslint.config.mjs', 'postcss.config.mjs'], // ...except these two
@@ -36,9 +33,7 @@ export default tseslint.config(
     },
   },
 
-  // ---------------------------------------------------------------------
   // Allow + lightly lint our two Node-side config files
-  // ---------------------------------------------------------------------
   {
     files: ['eslint.config.mjs', 'postcss.config.mjs'],
     languageOptions: {
@@ -53,10 +48,7 @@ export default tseslint.config(
     },
   },
 
-  // ---------------------------------------------------------------------
-  // Bring in the official TS presets (type-checked)
-  // NOTE: These include "files" globs for ts/tsx and expect a project.
-  // ---------------------------------------------------------------------
+  // TS presets (type-checked)
   ...tseslint.configs.recommendedTypeChecked.map((c) => ({
     ...c,
     files: ['**/*.{ts,tsx}'],
@@ -69,10 +61,8 @@ export default tseslint.config(
     ...c,
     files: ['**/*.{ts,tsx}'],
   })),
-  // ---------------------------------------------------------------------
-  // Our project-specific TS/React/Next hardening (ts/tsx only)
-  // This block *augments* the presets above.
-  // ---------------------------------------------------------------------
+
+  // Project rules
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -96,15 +86,14 @@ export default tseslint.config(
       unicorn,
       'jsx-a11y': jsxA11y,
       'no-secrets': noSecrets,
+      perfectionist,
     },
     settings: {
       react: { version: 'detect' },
       'import/resolver': { typescript: { project: './tsconfig.json' } },
     },
     rules: {
-      // --- Strengthen/align with your “ultimate strict” stance ---
-
-      // Use TS-aware rule; base is off in the presets already
+      // Strict TS safety
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -117,7 +106,6 @@ export default tseslint.config(
           destructuredArrayIgnorePattern: '^_',
         },
       ],
-
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/await-thenable': 'error',
@@ -127,20 +115,15 @@ export default tseslint.config(
         'error',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
-
-      // These are already quite strict in the presets, but we lock them to error:
       '@typescript-eslint/no-unsafe-assignment': 'error',
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
-
-      // Explicitness at module boundaries & arrows
       '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/explicit-function-return-type': [
         'error',
         { allowExpressions: false, allowTypedFunctionExpressions: false },
       ],
-
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         { accessibility: 'explicit' },
@@ -166,9 +149,146 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-indexed-object-style': ['error', 'record'],
       '@typescript-eslint/prefer-readonly': 'error',
-      // '@typescript-eslint/prefer-readonly-parameter-types': 'error',
+      '@typescript-eslint/sort-type-constituents': [
+        'error',
+        { checkIntersections: true, checkUnions: true },
+      ],
 
-      // General maintainability
+      // Naming + files (with hook exception)
+      '@typescript-eslint/naming-convention': [
+        'error',
+
+        // Types, interfaces, enums, type params
+        { selector: 'typeLike', format: ['PascalCase'] },
+
+        // Variables:
+        // - PascalCase allowed so const React components pass
+        // - camelCase for regular vars
+        // - UPPER_CASE for true constants
+        {
+          selector: 'variable',
+          format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+          custom: {
+            regex: '^(?:_+)?[A-Za-z][A-Za-z0-9_]{2,}(?:_+)?$',
+            match: true,
+          }, // min length 3
+          leadingUnderscore: 'allow',
+          trailingUnderscore: 'allow',
+        },
+
+        // Functions:
+        // - PascalCase allowed for function React components
+        // - camelCase for everything else (incl. Next.js `generateMetadata`)
+        { selector: 'function', format: ['camelCase', 'PascalCase'] },
+
+        // Hooks must start with "use" + capital next letter
+        {
+          selector: 'function',
+          filter: { regex: '^use', match: true },
+          format: ['camelCase'],
+          custom: { regex: '^use[A-Z].*', match: true },
+        },
+
+        // Don’t police property names (API payloads, CSS-in-JS, etc.)
+        { selector: 'property', format: null },
+        { selector: 'objectLiteralProperty', format: null },
+
+        // Parameters (allow leading underscore to mark intentionally unused)
+        {
+          selector: 'parameter',
+          format: ['camelCase'],
+          custom: { regex: '^[A-Za-z][A-Za-z0-9]{2,}$', match: true },
+          leadingUnderscore: 'allow',
+          trailingUnderscore: 'allow',
+        },
+
+        // Destructured variables: allow any case.
+        { selector: 'variable', modifiers: ['destructured'], format: null },
+      ],
+
+      'unicorn/prevent-abbreviations': [
+        'warn',
+        {
+          allowList: {
+            i18n: true,
+          },
+          // exact identifiers we never want flagged (Next.js & friends)
+          ignore: [
+            'generateStaticParams',
+            'generateMetadata',
+            'generateViewport',
+            'generateImageMetadata',
+            'getStaticProps',
+            'getStaticPaths',
+            'getServerSideProps',
+          ],
+        },
+      ],
+      'unicorn/filename-case': [
+        'error',
+        {
+          cases: { kebabCase: true, camelCase: true, pascalCase: true },
+          ignore: ['^\\[.*\\]$'], // dynamic routes: [locale], [id], etc.
+        },
+      ],
+
+      // Class & interface member ordering (no 3rd-party conflicts)
+      '@typescript-eslint/member-ordering': [
+        'error',
+        {
+          default: {
+            memberTypes: [
+              'signature',
+              // fields
+              'public-static-field',
+              'protected-static-field',
+              'private-static-field',
+              'public-decorated-field',
+              'protected-decorated-field',
+              'private-decorated-field',
+              'public-instance-field',
+              'protected-instance-field',
+              'private-instance-field',
+              // constructor
+              'public-constructor',
+              'protected-constructor',
+              'private-constructor',
+              // methods
+              'public-static-method',
+              'protected-static-method',
+              'private-static-method',
+              'public-instance-method',
+              'protected-instance-method',
+              'private-instance-method',
+            ],
+            order: 'as-written',
+          },
+        },
+      ],
+
+      // Perfectionist: keep what doesn’t clash with TS/import rules
+      'perfectionist/sort-objects': [
+        'error',
+        { type: 'natural', order: 'asc' },
+      ],
+      // Disable union sorting here (TS rule already handles it)
+      'perfectionist/sort-union-types': 'off',
+      'perfectionist/sort-enums': ['error', { type: 'natural', order: 'asc' }],
+      'perfectionist/sort-interfaces': [
+        'error',
+        { type: 'natural', order: 'asc' },
+      ],
+      'perfectionist/sort-named-imports': [
+        'error',
+        { type: 'natural', order: 'asc', ignoreCase: true },
+      ],
+      'perfectionist/sort-named-exports': [
+        'error',
+        { type: 'natural', order: 'asc', ignoreCase: true },
+      ],
+      // Keep using import/order for module grouping (don’t enable perfectionist import sorter)
+
+      // Maintainability
       'no-var': 'error',
       'prefer-const': 'error',
       'no-duplicate-imports': 'error',
@@ -230,10 +350,27 @@ export default tseslint.config(
       'next/next-script-for-ga': 'error',
       'next/no-css-tags': 'error',
 
-      // Imports
+      // Imports (grouping + line order)
       'import/order': [
         'error',
-        { alphabetize: { order: 'asc' }, 'newlines-between': 'always' },
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'type',
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          'newlines-between': 'always',
+          pathGroups: [
+            { pattern: 'react', group: 'external', position: 'before' },
+            { pattern: 'next**', group: 'external', position: 'before' },
+            { pattern: '@/**', group: 'internal', position: 'after' },
+          ],
+        },
       ],
       'import/no-duplicates': 'error',
       'import/no-cycle': 'error',
@@ -260,7 +397,7 @@ export default tseslint.config(
       'sonarjs/prefer-immediate-return': 'error',
       'sonarjs/prefer-object-literal': 'error',
 
-      // Unicorn
+      // Unicorn misc
       'unicorn/consistent-function-scoping': 'error',
       'unicorn/prefer-optional-catch-binding': 'error',
       'unicorn/throw-new-error': 'error',

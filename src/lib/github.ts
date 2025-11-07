@@ -12,14 +12,14 @@ import type {
 
 /* ----------------------------- shared interfaces ---------------------------- */
 interface GraphQLCalendarDay {
-  readonly date: string
   readonly contributionCount: number
   readonly contributionLevel:
-    | 'NONE'
     | 'FIRST_QUARTILE'
+    | 'FOURTH_QUARTILE'
+    | 'NONE'
     | 'SECOND_QUARTILE'
     | 'THIRD_QUARTILE'
-    | 'FOURTH_QUARTILE'
+  readonly date: string
 }
 
 interface GraphQLCalendarWeek {
@@ -46,7 +46,7 @@ interface GraphQLResponse {
 /* --------------------------------- octokit --------------------------------- */
 
 const octokit: Octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
+  auth: process.env['GITHUB_TOKEN'],
 })
 
 /* ---------------------------- featured repositories --------------------------- */
@@ -65,13 +65,13 @@ const getFeaturedProjectsUncached: () => Promise<
               })
 
             return {
-              name: resp.data.name,
               description: resp.data.description ?? '',
-              html_url: resp.data.html_url,
-              homepage: resp.data.homepage ?? undefined,
-              stargazers_count: resp.data.stargazers_count,
               forks_count: resp.data.forks_count,
+              homepage: resp.data.homepage ?? undefined,
+              html_url: resp.data.html_url,
               language: resp.data.language ?? 'Unknown',
+              name: resp.data.name,
+              stargazers_count: resp.data.stargazers_count,
               topics: Array.isArray(resp.data.topics) ? resp.data.topics : [],
             }
           }
@@ -82,11 +82,14 @@ const getFeaturedProjectsUncached: () => Promise<
     return projects
       .filter(
         (
-          r: PromiseSettledResult<GitHubProject>
-        ): r is PromiseFulfilledResult<GitHubProject> =>
-          r.status === 'fulfilled'
+          result: PromiseSettledResult<GitHubProject>
+        ): result is PromiseFulfilledResult<GitHubProject> =>
+          result.status === 'fulfilled'
       )
-      .map((r: PromiseFulfilledResult<GitHubProject>): GitHubProject => r.value)
+      .map(
+        (result: PromiseFulfilledResult<GitHubProject>): GitHubProject =>
+          result.value
+      )
   } catch (error: unknown) {
     // Swallow per policy (no-console) and return a safe fallback
     void error
@@ -108,32 +111,34 @@ const getUserStatsUncached: () => Promise<UserStats> =
         readonly stargazers_count?: number | null
         readonly forks_count?: number | null
       }[] = await octokit.paginate(octokit.repos.listForUser, {
-        username: siteConfig.githubUsername,
         per_page: 100,
         type: 'owner',
+        username: siteConfig.githubUsername,
       })
 
       const totalStars: number = repos.reduce(
         (
-          acc: number,
+          accumulator: number,
           repo: { readonly stargazers_count?: number | null }
-        ): number => acc + (repo.stargazers_count ?? 0),
+        ): number => accumulator + (repo.stargazers_count ?? 0),
         0
       )
 
       const totalForks: number = repos.reduce(
-        (acc: number, repo: { readonly forks_count?: number | null }): number =>
-          acc + (repo.forks_count ?? 0),
+        (
+          accumulator: number,
+          repo: { readonly forks_count?: number | null }
+        ): number => accumulator + (repo.forks_count ?? 0),
         0
       )
 
       return {
+        forks: totalForks,
         repositories: repos.length,
         stars: totalStars,
-        forks: totalForks,
       }
     } catch {
-      return { repositories: 0, stars: 0, forks: 0 }
+      return { forks: 0, repositories: 0, stars: 0 }
     }
   }
 
@@ -169,21 +174,21 @@ const buildHeaders: () => Record<string, string> = (): Record<
   string
 > => {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-  const token: string | undefined = process.env.GITHUB_TOKEN
+  const token: string | undefined = process.env['GITHUB_TOKEN']
   if (token !== undefined && token !== '') {
     headers['Authorization'] = `Bearer ${token}`
   }
   return headers
 }
 
-const isGraphQLResponse: (u: unknown) => u is GraphQLResponse = (
-  u: unknown
-): u is GraphQLResponse => {
-  if (typeof u !== 'object' || u === null) {
+const isGraphQLResponse: (value: unknown) => value is GraphQLResponse = (
+  value: unknown
+): value is GraphQLResponse => {
+  if (typeof value !== 'object' || value === null) {
     return false
   }
-  const o: Record<string, unknown> = u as Record<string, unknown>
-  return 'data' in o
+  const object: Record<string, unknown> = value as Record<string, unknown>
+  return 'data' in object
 }
 
 const levelToInt: (
@@ -216,8 +221,8 @@ const flattenWeeks: (
   for (const week of weeks) {
     for (const day of week.contributionDays) {
       out.push({
-        date: day.date,
         count: day.contributionCount,
+        date: day.date,
         level: levelToInt(day.contributionLevel),
       })
     }
@@ -229,20 +234,24 @@ const getContributionDataUncached: () => Promise<
   ContributionPoint[]
 > = async (): Promise<ContributionPoint[]> => {
   try {
-    const to: string = new Date().toISOString()
-    const from: string = new Date(
+    const toDate: string = new Date().toISOString()
+    const fromDate: string = new Date(
       Date.now() - 365 * 24 * 60 * 60 * 1000
     ).toISOString()
     const query: string = buildContributionQuery()
     const headers: Record<string, string> = buildHeaders()
 
     const response: Response = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
-      headers,
       body: JSON.stringify({
         query,
-        variables: { username: siteConfig.githubUsername, from, to },
+        variables: {
+          from: fromDate,
+          to: toDate,
+          username: siteConfig.githubUsername,
+        },
       }),
+      headers,
+      method: 'POST',
     })
 
     if (!response.ok) {

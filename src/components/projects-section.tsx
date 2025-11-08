@@ -4,7 +4,14 @@ import type { JSX } from 'react'
 
 import { type Locale } from 'next-intl'
 
-import { Code2, ExternalLink, GitFork, Globe, Link, Star } from 'lucide-react'
+import {
+  Code2,
+  ExternalLink,
+  GitFork,
+  Globe,
+  Link as LinkIcon,
+  Star,
+} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { ContributionGraph } from '@/components/contribution-graph'
@@ -119,7 +126,7 @@ const ProjectCard: FCStrict<ProjectCardProperties> = ({
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <Link className="h-4 w-4" />
+                <LinkIcon className="h-4 w-4" />
               </a>
             </Button>
             {hasHomepage ? (

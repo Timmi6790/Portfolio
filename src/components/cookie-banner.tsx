@@ -155,6 +155,7 @@ const AnalyticsRow: FCStrict<AnalyticsRowProperties> = ({
       htmlFor="allow-analytics"
     >
       <input
+        aria-labelledby="allow-analytics-label"
         checked={checked}
         className="peer sr-only"
         id="allow-analytics"
@@ -164,7 +165,9 @@ const AnalyticsRow: FCStrict<AnalyticsRowProperties> = ({
         }}
       />
       <div className="bg-muted peer-focus:ring-primary/20 peer peer-checked:bg-primary h-6 w-11 rounded-full peer-focus:ring-4 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white" />
-      <span className="sr-only">{translations('analyticsDesc')}</span>
+      <span className="sr-only" id="allow-analytics-label">
+        {translations('analyticsDesc')}
+      </span>
     </label>
   </div>
 )

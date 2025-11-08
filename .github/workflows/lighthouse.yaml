@@ -26,4 +26,9 @@ jobs:
           curl -sS http://localhost:3000/en >/dev/null
 
       - name: Lighthouse CI (assert budgets)
-        run: npx lhci autorun --collect.url=http://localhost:3000 --upload.target=temporary-public-storage
+        run: >
+          npx lhci autorun
+          --collect.url=http://localhost:3000/en
+          --collect.numberOfRuns=3
+          --upload.target=temporary-public-storage
+          --assert.preset=lighthouse:recommended

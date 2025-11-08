@@ -10,10 +10,7 @@ import noSecrets from 'eslint-plugin-no-secrets'
 import perfectionist from 'eslint-plugin-perfectionist'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import reactCompiler from 'eslint-plugin-react-compiler'
-import { FlatCompat } from '@eslint/eslintrc'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
-
-const compat = new FlatCompat({ baseDirectory: import.meta.dirname })
 
 const TSLINT_FILES = ['**/*.{ts,tsx}']
 
@@ -78,8 +75,8 @@ export default tseslint.config(
     tseslint.configs.recommendedTypeChecked,
     tseslint.configs.strictTypeChecked,
     tseslint.configs.stylisticTypeChecked,
-    compat.config({ extends: ['plugin:jsx-a11y/strict'] }),
     eslintPluginUnicorn.configs.recommended,
+    jsxA11y.flatConfigs.strict,
     sonarRecommended,
     securityPlugin.configs.recommended,
     react.configs.flat.recommended,
@@ -94,9 +91,6 @@ export default tseslint.config(
       parserOptions: {
         project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname,
-        ecmaFeatures: {
-          jsx: true,
-        },
       },
       globals: {
         ...globals.browser,
@@ -110,7 +104,6 @@ export default tseslint.config(
       import: importPlugin,
       security: securityPlugin,
       sonarjs,
-      'jsx-a11y': jsxA11y,
       'no-secrets': noSecrets,
       perfectionist,
     },
@@ -425,50 +418,6 @@ export default tseslint.config(
       'unicorn/no-null': 'off',
       'unicorn/prefer-string-raw': 'off',
       'unicorn/prefer-global-this': 'off',
-
-      // JSX-A11Y
-      // Map Next components so rules apply
-      'jsx-a11y/alt-text': ['error', { img: ['Image'] }],
-      'jsx-a11y/anchor-has-content': ['error', { components: ['Link'] }],
-      'jsx-a11y/anchor-is-valid': [
-        'error',
-        {
-          components: ['Link'],
-          aspects: ['noHref', 'invalidHref', 'preferButton'],
-        },
-      ],
-
-      // Ensure icon-only controls have names (shadcn/Radix)
-      'jsx-a11y/control-has-associated-label': [
-        'error',
-        {
-          labelAttributes: ['aria-label', 'aria-labelledby'],
-          controlComponents: [
-            'Button',
-            'IconButton',
-            'DialogClose',
-            'DropdownMenuTrigger',
-            'SheetClose',
-            'AlertDialogAction',
-            'AlertDialogCancel',
-          ],
-        },
-      ],
-      'jsx-a11y/label-has-associated-control': ['error', { assert: 'either' }],
-
-      // Common misses Lighthouse also complains about
-      'jsx-a11y/interactive-supports-focus': 'error',
-      'jsx-a11y/mouse-events-have-key-events': 'error',
-      'jsx-a11y/role-has-required-aria-props': 'error',
-      'jsx-a11y/no-redundant-roles': 'error',
-      'jsx-a11y/tabindex-no-positive': 'error',
-      'jsx-a11y/heading-has-content': 'error',
-      'jsx-a11y/html-has-lang': 'error',
-      'jsx-a11y/lang': 'error',
-      'jsx-a11y/media-has-caption': 'error',
-      'jsx-a11y/iframe-has-title': 'error',
-      // If you use Next <Image>, catch bad alt like "image"/"photo"
-      'jsx-a11y/img-redundant-alt': ['warn', { img: ['Image'] }],
     },
   }
 )

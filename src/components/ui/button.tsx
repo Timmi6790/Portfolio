@@ -78,8 +78,8 @@ export const Button: FCWithChildren<ButtonProperties> = ({
   let options: ButtonVariantProperties | undefined
   if (variant !== undefined || size !== undefined) {
     options = {
-      ...(variant !== undefined ? { variant } : {}),
-      ...(size !== undefined ? { size } : {}),
+      ...(variant === undefined ? {} : { variant }),
+      ...(size === undefined ? {} : { size }),
     }
   }
 

@@ -31,9 +31,9 @@ const CONSENT_KEY: string = 'cookie-consent'
 
 const loadConsent: () => CookieConsent | null = (): CookieConsent | null => {
   const raw: string | null =
-    typeof window !== 'undefined'
-      ? window.localStorage.getItem(CONSENT_KEY)
-      : null
+    typeof window === 'undefined'
+      ? null
+      : window.localStorage.getItem(CONSENT_KEY)
   if (raw === null) {
     return null
   }
@@ -150,16 +150,21 @@ const AnalyticsRow: FCStrict<AnalyticsRowProperties> = ({
       </p>
     </div>
 
-    <label className="relative ml-4 inline-flex cursor-pointer items-center">
+    <label
+      className="relative ml-4 inline-flex cursor-pointer items-center"
+      htmlFor="allow-analytics"
+    >
       <input
         checked={checked}
         className="peer sr-only"
+        id="allow-analytics"
         type="checkbox"
-        onChange={(error: React.ChangeEvent<HTMLInputElement>): void => {
-          onChange(error.target.checked)
+        onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+          onChange(event.target.checked)
         }}
       />
       <div className="bg-muted peer-focus:ring-primary/20 peer peer-checked:bg-primary h-6 w-11 rounded-full peer-focus:ring-4 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white" />
+      <span className="sr-only">{translations('analyticsDesc')}</span>
     </label>
   </div>
 )
@@ -242,21 +247,7 @@ export const CookieBanner: FCNullable = (): JSX.Element | null => {
       <Card className="bg-background/95 pointer-events-auto w-full max-w-2xl border-2 p-6 shadow-2xl backdrop-blur-sm">
         <Header title={translations('title')} onClose={handleRejectAll} />
 
-        {!customize ? (
-          <>
-            <p className="text-muted-foreground mb-6 text-sm">
-              {translations('description')}
-            </p>
-            <SummaryActions
-              translations={translations}
-              onAcceptAll={handleAcceptAll}
-              onCustomize={(): void => {
-                setCustomize(true)
-              }}
-              onRejectAll={handleRejectAll}
-            />
-          </>
-        ) : (
+        {customize ? (
           <>
             <div className="mb-6 space-y-4">
               <EssentialRow
@@ -278,6 +269,20 @@ export const CookieBanner: FCNullable = (): JSX.Element | null => {
                 setCustomize(false)
               }}
               onSave={handleSavePreferences}
+            />
+          </>
+        ) : (
+          <>
+            <p className="text-muted-foreground mb-6 text-sm">
+              {translations('description')}
+            </p>
+            <SummaryActions
+              translations={translations}
+              onAcceptAll={handleAcceptAll}
+              onCustomize={(): void => {
+                setCustomize(true)
+              }}
+              onRejectAll={handleRejectAll}
             />
           </>
         )}

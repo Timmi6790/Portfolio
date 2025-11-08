@@ -106,7 +106,10 @@ export const TestimonialsSection: AsyncPageFC<
   // Safely parse raw items to avoid unsafe assignments
   const raw: unknown = translations.raw('items')
   const testimonials: readonly TestimonialItem[] = Array.isArray(raw)
-    ? raw.filter(isTestimonialItem)
+    ? (raw as unknown[]).filter(
+        (element: unknown): element is TestimonialItem =>
+          isTestimonialItem(element)
+      )
     : []
 
   const titleText: string = translations('title')

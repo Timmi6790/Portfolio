@@ -6,10 +6,26 @@ import nextPlugin from '@next/eslint-plugin-next'
 import importPlugin from 'eslint-plugin-import'
 import securityPlugin from 'eslint-plugin-security'
 import sonarjs from 'eslint-plugin-sonarjs'
-import unicorn from 'eslint-plugin-unicorn'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
 import noSecrets from 'eslint-plugin-no-secrets'
 import perfectionist from 'eslint-plugin-perfectionist'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import { FlatCompat } from '@eslint/eslintrc'
+
+const compat = new FlatCompat({ baseDirectory: import.meta.dirname })
+
+const TSLINT_FILES = ['**/*.{ts,tsx}']
+
+const forTS = (...groups) =>
+  groups
+    .flat()
+    .filter(Boolean)
+    .map((c) => ({ ...c, files: TSLINT_FILES }))
+
+const sonarRecommended = (sonarjs.configs &&
+  sonarjs.configs['flat/recommended']) || {
+  plugins: { sonarjs },
+  rules: sonarjs.configs?.recommended?.rules ?? {},
+}
 
 export default tseslint.config(
   // Ignore build/vendor outputs
@@ -48,34 +64,36 @@ export default tseslint.config(
       globals: { ...globals.node },
     },
     rules: {
+      'unicorn/no-null': 'off',
       'no-duplicate-imports': 'error',
       'no-eval': 'error',
       'no-implied-eval': 'error',
     },
   },
 
-  // TS presets (type-checked)
-  ...tseslint.configs.recommendedTypeChecked.map((c) => ({
-    ...c,
-    files: ['**/*.{ts,tsx}'],
-  })),
-  ...tseslint.configs.strictTypeChecked.map((c) => ({
-    ...c,
-    files: ['**/*.{ts,tsx}'],
-  })),
-  ...tseslint.configs.stylisticTypeChecked.map((c) => ({
-    ...c,
-    files: ['**/*.{ts,tsx}'],
-  })),
+  // TS
+  ...forTS(
+    tseslint.configs.recommendedTypeChecked,
+    tseslint.configs.strictTypeChecked,
+    tseslint.configs.stylisticTypeChecked,
+    compat.config({ extends: ['plugin:jsx-a11y/strict'] }),
+    eslintPluginUnicorn.configs.recommended,
+    sonarRecommended,
+    securityPlugin.configs.recommended,
+    react.configs.flat.recommended
+  ),
 
   // Project rules
   {
-    files: ['**/*.{ts,tsx}'],
+    files: TSLINT_FILES,
     languageOptions: {
       // Make the presets type-aware using your tsconfig
       parserOptions: {
         project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname,
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
       globals: {
         ...globals.browser,
@@ -89,8 +107,6 @@ export default tseslint.config(
       import: importPlugin,
       security: securityPlugin,
       sonarjs,
-      unicorn,
-      'jsx-a11y': jsxA11y,
       'no-secrets': noSecrets,
       perfectionist,
     },
@@ -398,30 +414,13 @@ export default tseslint.config(
         'error',
         { threshold: 3, ignoreStrings: 'application/json' },
       ],
-      'sonarjs/no-ignored-return': 'error',
-      'sonarjs/no-useless-catch': 'error',
-      'sonarjs/prefer-immediate-return': 'error',
-      'sonarjs/prefer-object-literal': 'error',
+      // We handle that somewhere else
+      'sonarjs/no-unused-vars': 'off',
 
-      // Unicorn misc
-      'unicorn/consistent-function-scoping': 'error',
-      'unicorn/prefer-optional-catch-binding': 'error',
-      'unicorn/throw-new-error': 'error',
-      'unicorn/no-array-reduce': 'warn',
-      'unicorn/prefer-includes': 'error',
-      'unicorn/prefer-query-selector': 'error',
-      'unicorn/prefer-string-starts-ends-with': 'error',
-
-      // A11y
-      'jsx-a11y/alt-text': 'error',
-      'jsx-a11y/anchor-is-valid': 'error',
-      'jsx-a11y/click-events-have-key-events': 'error',
-      'jsx-a11y/no-noninteractive-element-interactions': 'error',
-      'jsx-a11y/no-static-element-interactions': 'error',
-      'jsx-a11y/aria-props': 'error',
-      'jsx-a11y/aria-proptypes': 'error',
-      'jsx-a11y/aria-role': 'error',
-      'jsx-a11y/aria-unsupported-elements': 'error',
+      // Unicorn -- Disable rules which are causing issues
+      'unicorn/no-null': 'off',
+      'unicorn/prefer-string-raw': 'off',
+      'unicorn/prefer-global-this': 'off',
     },
   }
 )

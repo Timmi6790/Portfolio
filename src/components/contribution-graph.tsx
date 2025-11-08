@@ -150,7 +150,7 @@ const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
   }
 
   const dataMap: Map<string, ContributionPoint> = makeDataMap(data)
-  const sorted: readonly ContributionPoint[] = [...data].sort(
+  const sorted: readonly ContributionPoint[] = [...data].toSorted(
     (pointOne: ContributionPoint, pointTwo: ContributionPoint): number =>
       new Date(pointOne.date).getTime() - new Date(pointTwo.date).getTime()
   )
@@ -160,7 +160,7 @@ const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
     sorted[0]?.date ?? panic('buildCalendar: empty contributions array')
 
   const lastISO: string =
-    sorted[sorted.length - 1]?.date ?? panic('buildCalendar: missing last item')
+    sorted.at(-1)?.date ?? panic('buildCalendar: missing last item')
 
   const firstDate: Date = new Date(`${firstISO}T00:00:00Z`)
   const lastDate: Date = new Date(`${lastISO}T00:00:00Z`)
@@ -171,7 +171,7 @@ const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
   let currentMonth: string = ''
 
   while (cursor.getTime() <= lastDate.getTime()) {
-    const start: Date = new Date(cursor.getTime())
+    const start: Date = new Date(cursor)
     const days: (ContributionPoint | null)[] = []
 
     for (let index: number = 0; index < 7; index++) {
@@ -323,14 +323,26 @@ const WeekdayLabelCol: FCStrict<WeekdayLabelColProperties> = ({
     <div className="flex flex-shrink-0 flex-col gap-1 pr-3">
       {WEEKDAY_INDICES.map(
         (index: (typeof WEEKDAY_INDICES)[number]): JSX.Element => {
-          const label: string =
-            index === 1
-              ? dayOne
-              : index === 3
-                ? dayThree
-                : index === 5
-                  ? dayFive
-                  : ''
+          let label: string
+
+          switch (index) {
+            case 1: {
+              label = dayOne
+              break
+            }
+            case 3: {
+              label = dayThree
+              break
+            }
+            case 5: {
+              label = dayFive
+              break
+            }
+            default: {
+              label = ''
+            }
+          }
+
           return (
             <div
               className="text-muted-foreground flex h-4 w-8 items-center text-xs font-medium"
@@ -582,9 +594,9 @@ export const ContributionGraph: FCStrict<ContributionGraphProperties> = ({
         </div>
       </div>
 
-      {hoveredDay !== null ? (
+      {hoveredDay === null ? null : (
         <Tooltip day={hoveredDay} locale={locale} mouse={mouse} />
-      ) : null}
+      )}
     </Card>
   )
 }

@@ -9,8 +9,8 @@
     "docker:dev": "docker-compose up dev",
     "docker:prod": "docker-compose up app",
     "docker:run": "docker run -p 3000:3000 portfolio:latest",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md,yaml,yml}\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "next start",
@@ -80,6 +80,7 @@
     "@commitlint/types": "latest",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.38.0",
+    "@lhci/cli": "^0.15.1",
     "@lingual/i18n-check": "latest",
     "@next/bundle-analyzer": "^16.0.1",
     "@next/eslint-plugin-next": "16.0.1",
@@ -87,7 +88,6 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "typescript-eslint": "^8.46.3",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "cross-env": "^10.1.0",
@@ -107,7 +107,8 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.0",
     "tailwindcss": "^4.1.9",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.46.3"
   },
   "browserslist": {
     "production": [

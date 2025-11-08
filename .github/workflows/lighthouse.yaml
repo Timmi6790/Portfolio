@@ -1,0 +1,23 @@
+name: Lighthouse
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Setup base environment
+        uses: ./.github/actions/build-dependency
+
+      - name: Build & start
+        run: pnpm run build && pnpm run start & npx wait-on@latest http://localhost:3000
+
+      - name: Lighthouse CI (assert budgets)
+        run: npx lhci autorun --collect.url=http://localhost:3000 --upload.target=temporary-public-storage

@@ -19,5 +19,11 @@ jobs:
       - name: Build & start
         run: pnpm run build && pnpm run start & npx wait-on@latest http://localhost:3000
 
+      - name: Warm up
+        run: |
+          curl -sS http://localhost:3000/en >/dev/null
+          sleep 2
+          curl -sS http://localhost:3000/en >/dev/null
+
       - name: Lighthouse CI (assert budgets)
         run: npx lhci autorun --collect.url=http://localhost:3000 --upload.target=temporary-public-storage

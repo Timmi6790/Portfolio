@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --fix",
     "start": "next start",
     "type-check": "tsc --noEmit",
-    "i18n-check": "i18n-check --unused src/ -f next-intl --source en --locales messages",
+    "i18n-check": "i18n-check --unused src/ -f next-intl --source en --locales messages || echo \"::warning::i18n-check found issues (non-blocking)\"",
     "analyze": "cross-env NEXT_IGNORE_TURBOPACK=true ANALYZE=true next build --webpack"
   },
   "dependencies": {

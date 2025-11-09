@@ -32,3 +32,12 @@ jobs:
           --collect.numberOfRuns=3
           --upload.target=temporary-public-storage
           --assert.preset=lighthouse:recommended
+
+      - name: Upload Lighthouse JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-json-${{ github.run_number }}
+          path: .lighthouseci/*.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -93,7 +93,9 @@ const Section: FCStrict<SectionProperties> = ({
 }: SectionProperties): JSX.Element => {
   return (
     <div>
-      <h2 className="mb-2 text-xl font-semibold">{title}</h2>
+      <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+        {title}
+      </h2>
       <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
     </div>
   )
@@ -125,14 +127,14 @@ const ImprintPage: RoutePageFC<ImprintPageProperties> = async ({
   return (
     <LegalPageLayout locale={locale} title={translations('title')}>
       <div>
-        <h2 className="mb-2 text-xl font-semibold">
+        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
           {translations('infoTitle')}
         </h2>
         <Address country={ownerCountry} name={ownerName} />
       </div>
 
       <div>
-        <h2 className="mb-2 text-xl font-semibold">
+        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
           {translations('contactTitle')}
         </h2>
         <EmailLine
@@ -142,7 +144,7 @@ const ImprintPage: RoutePageFC<ImprintPageProperties> = async ({
       </div>
 
       <div>
-        <h2 className="mb-2 text-xl font-semibold">
+        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
           {translations('responsibleTitle')}
         </h2>
         <Address country={ownerCountry} name={ownerName} />

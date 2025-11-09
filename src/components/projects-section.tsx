@@ -38,7 +38,10 @@ const SectionHeader: FCStrict<SectionHeaderProperties> = ({
 }: SectionHeaderProperties): JSX.Element => {
   return (
     <div className="mb-16 text-center">
-      <h2 className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+      <h2
+        className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+        data-heading-tag="H2"
+      >
         {title}
       </h2>
       <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
@@ -90,7 +93,10 @@ const ProjectCard: FCStrict<ProjectCardProperties> = ({
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="group-hover:text-primary mb-2 text-xl font-bold transition-colors">
+        <h3
+          className="group-hover:text-primary mb-2 text-xl font-bold transition-colors"
+          data-heading-tag="H3"
+        >
           {project.name}
         </h3>
         <p className="text-muted-foreground mb-4 flex-1">

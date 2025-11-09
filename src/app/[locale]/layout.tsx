@@ -5,7 +5,6 @@ import type { JSX } from 'react'
 import type { Metadata } from 'next'
 import { type Locale, type Messages, NextIntlClientProvider } from 'next-intl'
 
-import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { Toaster } from 'sonner'
 
@@ -30,27 +29,7 @@ import type {
   RoutePageWithChildrenFC,
 } from '@/types/page'
 
-import type { NextFontWithVariable } from 'next/dist/compiled/@next/font'
 import type { DeepPartial } from 'react-hook-form'
-
-/* ---------- fonts ---------- */
-const geist: NextFontWithVariable = Geist({
-  subsets: ['latin'],
-  variable: '--font-geist',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-})
-
-const geistMono: NextFontWithVariable = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-})
-
-const sourceSerif: NextFontWithVariable = Source_Serif_4({
-  subsets: ['latin'],
-  variable: '--font-source-serif',
-  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
-})
 
 /* ---------- helpers (readonly params, no inline callbacks) ---------- */
 const buildLanguages: () => Record<string, string> = (): Record<
@@ -169,9 +148,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
 
   return (
     <html className="dark" lang={locale}>
-      <body
-        className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} font-sans antialiased`}
-      >
+      <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark">
             <ThemeToggle />

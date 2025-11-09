@@ -8,6 +8,7 @@ import { type Locale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { LegalPageLayout } from '@/components/legal-page-layout'
+import { Heading } from '@/components/ui/heading'
 import {
   ensureLocaleFromParameters,
   maybeLocaleFromParameters,
@@ -64,9 +65,9 @@ const ControllerBlock: FCStrict<ControllerBlockProperties> = ({
 }: ControllerBlockProperties): JSX.Element => {
   return (
     <div>
-      <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+      <Heading as="h2" className="mb-2 text-xl font-semibold">
         {title}
-      </h2>
+      </Heading>
       <p className="text-muted-foreground">
         <strong>{nameLabel}</strong> {name}
         <br />
@@ -102,9 +103,9 @@ const CloudflareBlock: FCStrict<CloudflareBlockProperties> = ({
 }: CloudflareBlockProperties): JSX.Element => {
   return (
     <div>
-      <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+      <Heading as="h2" className="mb-2 text-xl font-semibold">
         {title}
-      </h2>
+      </Heading>
       <p className="text-muted-foreground text-sm leading-relaxed">
         {pre} <strong>{strong}</strong> {post}
       </p>
@@ -144,9 +145,9 @@ const Sections: (properties: SectionsProperties) => JSX.Element[] = ({
   for (const [key, section] of Object.entries(sections)) {
     nodes.push(
       <div key={key}>
-        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+        <Heading as="h2" className="mb-2 text-xl font-semibold">
           {section.title}
-        </h2>
+        </Heading>
         <p className="text-muted-foreground text-sm leading-relaxed">
           {section.text}
         </p>

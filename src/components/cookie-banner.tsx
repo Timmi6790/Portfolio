@@ -15,6 +15,7 @@ import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import type { FCNullable, FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
 
@@ -75,9 +76,9 @@ const Header: FCStrict<HeaderProperties> = ({
   title,
 }: HeaderProperties): JSX.Element => (
   <div className="mb-4 flex items-start justify-between">
-    <h3 className="text-xl font-semibold" data-heading-tag="H3">
+    <Heading as="h3" className="text-xl font-semibold">
       {title}
-    </h3>
+    </Heading>
     <Button className="h-8 w-8" size="icon" variant="ghost" onClick={onClose}>
       <X className="h-4 w-4" />
     </Button>
@@ -123,9 +124,9 @@ const EssentialRow: FCStrict<EssentialRowProperties> = ({
 }: EssentialRowProperties): JSX.Element => (
   <div className="bg-muted/50 flex items-start justify-between rounded-lg border p-4">
     <div className="flex-1">
-      <h4 className="mb-1 font-medium" data-heading-tag="H4">
+      <Heading as="h4" className="mb-1 font-medium">
         {translations('essential')}
-      </h4>
+      </Heading>
       <p className="text-muted-foreground text-sm">
         {translations('essentialDesc')}
       </p>
@@ -148,9 +149,9 @@ const AnalyticsRow: FCStrict<AnalyticsRowProperties> = ({
 }: AnalyticsRowProperties): JSX.Element => (
   <div className="flex items-start justify-between rounded-lg border p-4">
     <div className="flex-1">
-      <h4 className="mb-1 font-medium" data-heading-tag="H4">
+      <Heading as="h4" className="mb-1 font-medium">
         {translations('analytics')}
-      </h4>
+      </Heading>
       <p className="text-muted-foreground text-sm">
         {translations('analyticsDesc')}
       </p>

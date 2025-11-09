@@ -12,6 +12,7 @@ import React, {
 import { type Locale, useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import { panic } from '@/lib/utilities'
 import type { FCStrict } from '@/types/fc'
 import {
@@ -575,9 +576,9 @@ export const ContributionGraph: FCStrict<ContributionGraphProperties> = ({
     <Card className="hover:border-primary/50 dark:bg-card/50 w-full overflow-hidden border-2 p-6 transition-all duration-300 hover:shadow-lg">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-2xl font-bold" data-heading-tag="H3">
+          <Heading as="h3" className="text-2xl font-bold">
             {titleText}
-          </h3>
+          </Heading>
           <p className="text-muted-foreground text-sm">{totalText}</p>
         </div>
         <LegendBar less={lessText} more={moreText} />

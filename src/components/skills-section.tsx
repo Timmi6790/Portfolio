@@ -8,6 +8,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
@@ -82,12 +83,12 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
 
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-12 text-center">
-          <h2
+          <Heading
+            as="h2"
             className="text-foreground mb-3 text-4xl font-bold"
-            data-heading-tag="H2"
           >
             {translations('title')}
-          </h2>
+          </Heading>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />
         </div>
 

@@ -8,6 +8,7 @@ import { type Locale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { LegalPageLayout } from '@/components/legal-page-layout'
+import { Heading } from '@/components/ui/heading'
 import {
   ensureLocaleFromParameters,
   maybeLocaleFromParameters,
@@ -93,9 +94,9 @@ const Section: FCStrict<SectionProperties> = ({
 }: SectionProperties): JSX.Element => {
   return (
     <div>
-      <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+      <Heading as="h2" className="mb-2 text-xl font-semibold">
         {title}
-      </h2>
+      </Heading>
       <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
     </div>
   )
@@ -127,16 +128,16 @@ const ImprintPage: RoutePageFC<ImprintPageProperties> = async ({
   return (
     <LegalPageLayout locale={locale} title={translations('title')}>
       <div>
-        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+        <Heading as="h2" className="mb-2 text-xl font-semibold">
           {translations('infoTitle')}
-        </h2>
+        </Heading>
         <Address country={ownerCountry} name={ownerName} />
       </div>
 
       <div>
-        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+        <Heading as="h2" className="mb-2 text-xl font-semibold">
           {translations('contactTitle')}
-        </h2>
+        </Heading>
         <EmailLine
           email={siteConfig.email}
           label={translationsContact('email')}
@@ -144,9 +145,9 @@ const ImprintPage: RoutePageFC<ImprintPageProperties> = async ({
       </div>
 
       <div>
-        <h2 className="mb-2 text-xl font-semibold" data-heading-tag="H2">
+        <Heading as="h2" className="mb-2 text-xl font-semibold">
           {translations('responsibleTitle')}
-        </h2>
+        </Heading>
         <Address country={ownerCountry} name={ownerName} />
       </div>
 

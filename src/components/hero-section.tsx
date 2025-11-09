@@ -6,6 +6,7 @@ import { ArrowDown, GitBranch, Mail } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { Button } from '@/components/ui/button'
+import { Heading } from '@/components/ui/heading'
 import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
@@ -41,12 +42,15 @@ const HeroTitle: FCStrict<HeroTitleProperties> = ({
   greeting,
   name,
 }: HeroTitleProperties): JSX.Element => (
-  <h1 className="text-foreground animate-in fade-in slide-in-from-bottom-4 mb-6 text-5xl font-bold tracking-tight text-balance duration-1000 md:text-7xl">
+  <Heading
+    as="h1"
+    className="text-foreground animate-in fade-in slide-in-from-bottom-4 mb-6 text-5xl font-bold tracking-tight text-balance duration-1000 md:text-7xl"
+  >
     {greeting}{' '}
     <span className="from-primary to-primary/60 bg-gradient-to-r bg-clip-text text-transparent">
       {name}
     </span>
-  </h1>
+  </Heading>
 )
 
 const HeroSubtitle: FCStrict<HeroSubtitleProperties> = ({

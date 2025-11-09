@@ -18,6 +18,7 @@ import { ContributionGraph } from '@/components/contribution-graph'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import type { FCAsync, FCStrict } from '@/types/fc'
 import type {
   ContributionPoint,
@@ -38,9 +39,12 @@ const SectionHeader: FCStrict<SectionHeaderProperties> = ({
 }: SectionHeaderProperties): JSX.Element => {
   return (
     <div className="mb-16 text-center">
-      <h2 className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+      <Heading
+        as="h2"
+        className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+      >
         {title}
-      </h2>
+      </Heading>
       <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
         {subtitle}
       </p>
@@ -90,9 +94,12 @@ const ProjectCard: FCStrict<ProjectCardProperties> = ({
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="group-hover:text-primary mb-2 text-xl font-bold transition-colors">
+        <Heading
+          as="h3"
+          className="group-hover:text-primary mb-2 text-xl font-bold transition-colors"
+        >
           {project.name}
-        </h3>
+        </Heading>
         <p className="text-muted-foreground mb-4 flex-1">
           {project.description}
         </p>

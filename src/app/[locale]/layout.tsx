@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 import { type Locale, NextIntlClientProvider } from 'next-intl'
 
 import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
-import { setRequestLocale } from 'next-intl/server'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 import { Toaster } from 'sonner'
 
 import { CommandPalette } from '@/components/command-palette'
@@ -164,12 +164,14 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
 
   setRequestLocale(locale)
 
+  const messages = await getMessages()
+
   return (
     <html className="dark" lang={locale}>
       <body
         className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} font-sans antialiased`}
       >
-        <NextIntlClientProvider locale={locale}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark">
             <ThemeToggle />
             <LanguageSwitcher />

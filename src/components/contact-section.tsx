@@ -126,7 +126,10 @@ const ResumeCard: FCStrict<ResumeCardProperties> = ({
               <FileText className="text-primary h-6 w-6" />
             </div>
             <div>
-              <h3 className="text-foreground text-xl font-bold" data-heading-tag="H3">
+              <h3
+                className="text-foreground text-xl font-bold"
+                data-heading-tag="H3"
+              >
                 {translations('downloadResume')}
               </h3>
               <p className="text-muted-foreground text-sm">{pdfLabel}</p>

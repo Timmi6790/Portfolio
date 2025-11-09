@@ -16,14 +16,29 @@ jobs:
       - name: Setup base environment
         uses: ./.github/actions/build-dependency
 
+      - name: Determine Playwright version
+        id: pw
+        shell: bash
+        run: echo "version=$(node -p \"require('@playwright/test/package.json').version\")" >> "$GITHUB_OUTPUT"
+
+      # Cache the Playwright browser binaries
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-${{ runner.arch }}-ms-playwright-${{ steps.pw.outputs.version }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-ms-playwright-${{ steps.pw.outputs.version }}-
+            ${{ runner.os }}-${{ runner.arch }}-ms-playwright-
+
       - name: Install Playwright browsers
+        if: steps.pw-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
       - name: Build
         run: pnpm run build
-
-      - name: Start server
-        run: pnpm run start & npx wait-on@latest http://localhost:3000
 
       - name: Run E2E
         run: pnpm exec playwright test --reporter=line

@@ -60,7 +60,9 @@ const InfoCard: FCStrict<InfoCardProperties> = ({
   return (
     <Card className="border-2 shadow-xl">
       <CardContent className="p-8">
-        <h3 className="mb-6 text-2xl font-bold">{translations('infoTitle')}</h3>
+        <h3 className="mb-6 text-2xl font-bold" data-heading-tag="H3">
+          {translations('infoTitle')}
+        </h3>
 
         <div className="space-y-6">
           <InfoItem
@@ -124,7 +126,7 @@ const ResumeCard: FCStrict<ResumeCardProperties> = ({
               <FileText className="text-primary h-6 w-6" />
             </div>
             <div>
-              <h3 className="text-foreground text-xl font-bold">
+              <h3 className="text-foreground text-xl font-bold" data-heading-tag="H3">
                 {translations('downloadResume')}
               </h3>
               <p className="text-muted-foreground text-sm">{pdfLabel}</p>
@@ -163,7 +165,10 @@ export const ContactSection: FCAsync<ContactSectionProperties> = async ({
 
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-12 text-center">
-          <h2 className="text-foreground mb-3 text-4xl font-bold">
+          <h2
+            className="text-foreground mb-3 text-4xl font-bold"
+            data-heading-tag="H2"
+          >
             {translations('title')}
           </h2>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />

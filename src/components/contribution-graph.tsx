@@ -575,7 +575,9 @@ export const ContributionGraph: FCStrict<ContributionGraphProperties> = ({
     <Card className="hover:border-primary/50 dark:bg-card/50 w-full overflow-hidden border-2 p-6 transition-all duration-300 hover:shadow-lg">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-2xl font-bold">{titleText}</h3>
+          <h3 className="text-2xl font-bold" data-heading-tag="H3">
+            {titleText}
+          </h3>
           <p className="text-muted-foreground text-sm">{totalText}</p>
         </div>
         <LegendBar less={lessText} more={moreText} />

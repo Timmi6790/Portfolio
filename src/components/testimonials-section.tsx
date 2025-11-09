@@ -79,7 +79,9 @@ const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
             />
           </div>
           <div>
-            <h3 className="text-lg font-bold">{item.name}</h3>
+            <h3 className="text-lg font-bold" data-heading-tag="H3">
+              {item.name}
+            </h3>
             <p className="text-muted-foreground text-sm">{item.role}</p>
             <p className="text-primary text-xs">{item.company}</p>
           </div>
@@ -119,7 +121,10 @@ export const TestimonialsSection: AsyncPageFC<
     <section className="from-muted/20 to-background min-h-screen bg-gradient-to-b px-4 py-20 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
-          <h2 className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+          <h2
+            className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+            data-heading-tag="H2"
+          >
             {titleText}
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">

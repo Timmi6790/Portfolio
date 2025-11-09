@@ -22,6 +22,7 @@ import {
 } from '@/i18n/locale'
 import { getPathname, routing } from '@/i18n/routing'
 import { siteConfig } from '@/lib/config'
+import { loadMessages } from '@/lib/messages'
 import type { UnparsedLocalePageProperties } from '@/types/i18n'
 import type {
   GenerateMetadataFC,

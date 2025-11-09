@@ -75,7 +75,9 @@ const Header: FCStrict<HeaderProperties> = ({
   title,
 }: HeaderProperties): JSX.Element => (
   <div className="mb-4 flex items-start justify-between">
-    <h3 className="text-xl font-semibold">{title}</h3>
+    <h3 className="text-xl font-semibold" data-heading-tag="H3">
+      {title}
+    </h3>
     <Button className="h-8 w-8" size="icon" variant="ghost" onClick={onClose}>
       <X className="h-4 w-4" />
     </Button>
@@ -121,7 +123,9 @@ const EssentialRow: FCStrict<EssentialRowProperties> = ({
 }: EssentialRowProperties): JSX.Element => (
   <div className="bg-muted/50 flex items-start justify-between rounded-lg border p-4">
     <div className="flex-1">
-      <h4 className="mb-1 font-medium">{translations('essential')}</h4>
+      <h4 className="mb-1 font-medium" data-heading-tag="H4">
+        {translations('essential')}
+      </h4>
       <p className="text-muted-foreground text-sm">
         {translations('essentialDesc')}
       </p>
@@ -144,7 +148,9 @@ const AnalyticsRow: FCStrict<AnalyticsRowProperties> = ({
 }: AnalyticsRowProperties): JSX.Element => (
   <div className="flex items-start justify-between rounded-lg border p-4">
     <div className="flex-1">
-      <h4 className="mb-1 font-medium">{translations('analytics')}</h4>
+      <h4 className="mb-1 font-medium" data-heading-tag="H4">
+        {translations('analytics')}
+      </h4>
       <p className="text-muted-foreground text-sm">
         {translations('analyticsDesc')}
       </p>

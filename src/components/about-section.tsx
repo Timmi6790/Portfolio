@@ -36,7 +36,12 @@ const InfoCard: FCStrict<InfoCardProperties> = ({
         {icon}
       </div>
       <div>
-        <h3 className="text-foreground mb-2 text-xl font-semibold">{title}</h3>
+        <h3
+          className="text-foreground mb-2 text-xl font-semibold"
+          data-heading-tag="H3"
+        >
+          {title}
+        </h3>
         <div className="text-muted-foreground leading-relaxed">
           {description}
         </div>
@@ -86,7 +91,10 @@ const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
     <section className="px-4 py-20" id="about">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-12 text-center">
-          <h2 className="text-foreground mb-3 text-4xl font-bold">
+          <h2
+            className="text-foreground mb-3 text-4xl font-bold"
+            data-heading-tag="H2"
+          >
             {t('title')}
           </h2>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />

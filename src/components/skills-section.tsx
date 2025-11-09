@@ -82,7 +82,10 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
 
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-12 text-center">
-          <h2 className="text-foreground mb-3 text-4xl font-bold">
+          <h2
+            className="text-foreground mb-3 text-4xl font-bold"
+            data-heading-tag="H2"
+          >
             {translations('title')}
           </h2>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />

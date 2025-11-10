@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: runner
+      pull: true
     ports:
       - '3000:3000'
     environment:
@@ -23,18 +24,3 @@ services:
       timeout: 3s
       retries: 3
       start_period: 5s
-
-  # Development service
-  dev:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - '3000:3000'
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
-    environment:
-      - NODE_ENV=development
-    command: pnpm dev

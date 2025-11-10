@@ -8,6 +8,9 @@ permissions:
 jobs:
   lhci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        formFactor: [ mobile, desktop ]
     timeout-minutes: 15
     env:
       BASE_URL: 'http://localhost:3000'
@@ -27,6 +30,8 @@ jobs:
           urls: |
             '$BASE_URL/en'
             '$BASE_URL/de'
-          configPath: './.github/lighthouse/lighthouserc.json'
+          configPath: './.github/lighthouse/lighthouserc.js'
           uploadArtifacts: true
           temporaryPublicStorage: true
+        env:
+          LHCI_FORM_FACTOR: ${{ matrix.formFactor }}

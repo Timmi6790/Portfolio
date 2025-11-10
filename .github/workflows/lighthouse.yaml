@@ -22,7 +22,7 @@ jobs:
         uses: ./.github/actions/build-dependency
 
       - name: Build & start
-        run: pnpm run build && pnpm run start & npx wait-on@latest $URL_DOMAIN
+        run: pnpm run build && pnpm run start & npx wait-on@latest $BASE_URL
 
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12

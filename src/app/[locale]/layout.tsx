@@ -5,6 +5,7 @@ import type { JSX } from 'react'
 import type { Metadata } from 'next'
 import { type Locale, type Messages, NextIntlClientProvider } from 'next-intl'
 
+import { Inter } from 'next/font/google'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { Toaster } from 'sonner'
 
@@ -29,7 +30,16 @@ import type {
   RoutePageWithChildrenFC,
 } from '@/types/page'
 
+import type { NextFontWithVariable } from 'next/dist/compiled/@next/font'
 import type { DeepPartial } from 'react-hook-form'
+
+/* ---------- fonts (auto-fetched via next/font/google) ---------- */
+const inter: NextFontWithVariable = Inter({
+  adjustFontFallback: true,
+  display: 'swap',
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
 
 /* ---------- helpers (readonly params, no inline callbacks) ---------- */
 const buildLanguages: () => Record<string, string> = (): Record<
@@ -147,7 +157,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
   const messages: DeepPartial<Messages> = await getMessages()
 
   return (
-    <html className="dark" lang={locale}>
+    <html className={`dark ${inter.variable}`} lang={locale}>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark">

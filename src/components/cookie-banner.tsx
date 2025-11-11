@@ -30,6 +30,10 @@ const CONSENT_KEY: string = 'cookie-consent'
 
 /* ───────────────────────────── Helpers (pure) ───────────────────────────── */
 
+function defer(function_: () => void): void {
+  setTimeout(function_, 0)
+}
+
 const loadConsent: () => CookieConsent | null = (): CookieConsent | null => {
   const raw: string | null =
     typeof window === 'undefined'
@@ -217,6 +221,10 @@ export const CookieBanner: FCNullable = (): JSX.Element | null => {
     boolean,
     Dispatch<SetStateAction<boolean>>,
   ] = useState<boolean>(false)
+
+  const [expanded, setExpanded]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState<boolean>(false)
+
   const [customize, setCustomize]: [
     boolean,
     Dispatch<SetStateAction<boolean>>,
@@ -236,19 +244,50 @@ export const CookieBanner: FCNullable = (): JSX.Element | null => {
     setAnalytics(existing.analytics)
   }, [])
 
+  useEffect((): (() => undefined) | undefined => {
+    if (!showBanner) {
+      return undefined
+    }
+    const requestId: NodeJS.Timeout | number =
+      typeof window !== 'undefined' && 'requestIdleCallback' in window
+        ? window.requestIdleCallback((): void => {
+            setExpanded(true)
+          })
+        : setTimeout((): void => {
+            setExpanded(true)
+          }, 0)
+    return (): undefined => {
+      if (typeof requestId === 'number') {
+        clearTimeout(requestId)
+      } else if (
+        typeof window !== 'undefined' &&
+        'cancelIdleCallback' in window
+      ) {
+        // @ts-expect-error - window typing
+        window.cancelIdleCallback(requestId)
+      }
+    }
+  }, [showBanner])
+
   const handleAcceptAll: () => void = useCallback((): void => {
-    saveConsent({ analytics: true, essential: true })
     setShowBanner(false)
+    defer((): void => {
+      saveConsent({ analytics: true, essential: true })
+    })
   }, [])
 
   const handleRejectAll: () => void = useCallback((): void => {
-    saveConsent({ analytics: false, essential: true })
     setShowBanner(false)
+    defer((): void => {
+      saveConsent({ analytics: false, essential: true })
+    })
   }, [])
 
   const handleSavePreferences: () => void = useCallback((): void => {
-    saveConsent({ analytics, essential: true })
     setShowBanner(false)
+    defer((): void => {
+      saveConsent({ analytics, essential: true })
+    })
   }, [analytics])
 
   if (!showBanner) {
@@ -259,8 +298,23 @@ export const CookieBanner: FCNullable = (): JSX.Element | null => {
   const backLabel: string = translations('back')
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 flex items-end justify-center p-4">
-      <Card className="bg-background/95 pointer-events-auto w-full max-w-2xl border-2 p-6 shadow-2xl backdrop-blur-sm">
+    <div
+      aria-live="polite"
+      className="pointer-events-none fixed inset-0 z-50 flex items-end justify-center p-4"
+    >
+      <Card
+        aria-hidden={!expanded}
+        aria-modal="true"
+        className={[
+          'bg-background/95 pointer-events-auto w-full max-w-2xl border-2 p-6 shadow-2xl backdrop-blur-sm',
+          'overflow-hidden transition-[max-height,opacity,transform] duration-300 ease-out motion-reduce:transition-none',
+          expanded
+            ? 'max-h-96 translate-y-0 opacity-100'
+            : 'max-h-0 translate-y-2 opacity-0',
+          '@starting-style:max-h-0 @starting-style:opacity-0 @starting-style:translate-y-2',
+        ].join(' ')}
+        role="dialog"
+      >
         <Header title={translations('title')} onClose={handleRejectAll} />
 
         {customize ? (

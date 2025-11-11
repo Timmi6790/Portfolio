@@ -17,6 +17,7 @@ const withBundleAnalyzer: ReturnType<typeof bundleAnalyzer> = bundleAnalyzer({
 
 const nextConfig: NextConfig = {
   experimental: {
+    inlineCss: true,
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
     turbopackFileSystemCacheForDev: true,

@@ -79,6 +79,7 @@ const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
               alt={`${item.name} avatar`}
               className="object-cover"
               fill={true}
+              sizes="64px"
               src={item.image || '/placeholder.svg'}
             />
           </div>

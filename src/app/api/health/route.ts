@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic: string = 'force-dynamic'
+
+export const runtime: string = 'nodejs'
+
 export function GET(): NextResponse {
   return NextResponse.json(
     {

@@ -86,7 +86,7 @@ export const generateMetadata: GenerateMetadataFC<
         {
           alt: siteConfig.title,
           height: 630,
-          url: '/og-image.png',
+          url: '/og-image.jpg',
           width: 1200,
         },
       ],
@@ -170,7 +170,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
           <ThemeProvider defaultTheme="dark">
             {/* Non-critical client UI mounts after idle inside this wrapper */}
             <DeferredClientUi />
-            {children}
+            <main id="content">{children}</main>
             <LegalFooter locale={locale} />
           </ThemeProvider>
         </NextIntlClientProvider>

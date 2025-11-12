@@ -56,6 +56,9 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install --with-deps chromium
 
+      - name: Ensure plawright is correctly installed
+        run: pnpm exec playwright install
+
       - name: Build
         run: pnpm run build
 

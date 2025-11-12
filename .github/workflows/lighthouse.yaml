@@ -15,6 +15,9 @@ jobs:
     timeout-minutes: 15
     env:
       BASE_URL: 'http://localhost:3000'
+      TARGET_PATHS: |
+        /en
+        /de
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
@@ -23,14 +26,35 @@ jobs:
         uses: ./.github/actions/build-dependency
 
       - name: Build & start
-        run: pnpm run build && pnpm run start & npx wait-on@latest $BASE_URL
+        run: pnpm run build && pnpm run start & npx wait-on@latest "$BASE_URL"
+
+      - name: Warm up URLs (prime Next.js routes)
+        run: |
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            url="${BASE_URL}${path}"
+            echo "Warming $url"
+            for i in 1 2; do
+              curl -sS -o /dev/null --retry 5 --retry-connrefused --retry-delay 1 --max-time 20 "$url"
+            done
+          done <<< "${TARGET_PATHS}"
+
+      - name: Resolve URL list for Lighthouse
+        id: resolve-urls
+        run: |
+          {
+            echo 'urls<<EOF'
+            while IFS= read -r path; do
+              [ -z "$path" ] && continue
+              echo "${BASE_URL}${path}"
+            done <<< "${TARGET_PATHS}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: |
-            '$BASE_URL/en'
-            '$BASE_URL/de'
+          urls: ${{ steps.resolve-urls.outputs.urls }}
           configPath: './.github/lighthouse/lighthouserc.js'
           uploadArtifacts: false
           temporaryPublicStorage: true

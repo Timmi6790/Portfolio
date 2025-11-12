@@ -141,5 +141,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "nextBundleAnalysis": {
+    "showDetails": true,
+    "buildOutputDirectory": ".next",
+    "budget": 358400,
+    "budgetPercentIncreaseRed": 10,
+    "minimumChangeThreshold": 500,
+    "alwaysShowGzipDiff": true,
+    "skipCommentIfEmpty": false
   }
 }

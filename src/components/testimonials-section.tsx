@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 
 import { Card } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
 
@@ -64,7 +65,10 @@ const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
 }: TestimonialCardProperties): JSX.Element => {
   return (
     <Card className="group hover:border-primary/50 relative overflow-hidden border-2 p-8 transition-all duration-300 hover:shadow-2xl">
-      <div className="absolute top-4 right-4 opacity-10 transition-opacity group-hover:opacity-20">
+      <div
+        aria-hidden="true"
+        className="absolute top-4 right-4 opacity-10 transition-opacity group-hover:opacity-20"
+      >
         <Quote className="text-primary h-16 w-16" />
       </div>
 
@@ -75,13 +79,16 @@ const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
               alt={`${item.name} avatar`}
               className="object-cover"
               fill={true}
+              sizes="64px"
               src={item.image || '/placeholder.svg'}
             />
           </div>
           <div>
-            <h3 className="text-lg font-bold">{item.name}</h3>
-            <p className="text-muted-foreground text-sm">{item.role}</p>
-            <p className="text-primary text-xs">{item.company}</p>
+            <Heading as="h3" className="text-lg font-bold">
+              {item.name}
+            </Heading>
+            <p className="text-foreground text-sm">{item.role}</p>
+            <p className="text-foreground text-sm">{item.company}</p>
           </div>
         </div>
 
@@ -106,7 +113,10 @@ export const TestimonialsSection: AsyncPageFC<
   // Safely parse raw items to avoid unsafe assignments
   const raw: unknown = translations.raw('items')
   const testimonials: readonly TestimonialItem[] = Array.isArray(raw)
-    ? raw.filter(isTestimonialItem)
+    ? (raw as unknown[]).filter(
+        (element: unknown): element is TestimonialItem =>
+          isTestimonialItem(element)
+      )
     : []
 
   const titleText: string = translations('title')
@@ -116,9 +126,12 @@ export const TestimonialsSection: AsyncPageFC<
     <section className="from-muted/20 to-background min-h-screen bg-gradient-to-b px-4 py-20 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
-          <h2 className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+          <Heading
+            as="h2"
+            className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+          >
             {titleText}
-          </h2>
+          </Heading>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             {subtitleText}
           </p>

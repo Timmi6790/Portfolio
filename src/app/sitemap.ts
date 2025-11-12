@@ -47,18 +47,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages: readonly string[] = ['imprint', 'privacy']
 
-  const urls: MetadataRoute.Sitemap = []
-
   // Root page
-  urls.push(
+  const urls: MetadataRoute.Sitemap = [
     ...createUrlEntry({
       baseUrl,
       changeFreq: 'weekly',
       now,
       path: '/',
-      priority: 1.0,
-    })
-  )
+      priority: 1,
+    }),
+  ]
 
   // Static pages
   for (const page of staticPages) {

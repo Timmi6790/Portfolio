@@ -129,8 +129,5 @@ export type PolymorphicFCWithRequiredChildren<
 /** ------------------------------------------------------------------------
  *  Next.js convenience aliases
  *  --------------------------------------------------------------------- */
-
-export type LayoutFC = FCWithRequiredChildren
-
 export type PageFC<P = NoProperties> = FCStrict<P>
 export type AsyncPageFC<P = NoProperties> = FCAsync<P>

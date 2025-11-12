@@ -1,63 +1,43 @@
-# Multi-stage build for optimal security and performance
-# Stage 1: Dependencies
-FROM node:24-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# syntax=docker/dockerfile:1.7
+
+FROM node:24-bookworm-slim AS build_base
 WORKDIR /app
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH="${PNPM_HOME}:${PATH}"
 
-# Copy package files
-COPY package.json pnpm-lock.yaml* ./
+FROM build_base AS deps
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable
+RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --prefer-offline
 
-# Install dependencies with pnpm
-RUN corepack enable pnpm && pnpm install --frozen-lockfile
+FROM build_base AS builder
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 
-# Stage 2: Builder
-FROM node:24-alpine AS builder
-WORKDIR /app
-
-# Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Set environment variables for build
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
+RUN corepack enable
+RUN --mount=type=cache,target=/app/.next/cache pnpm run build
+RUN find .next/static -type f -name '*.map' -delete
 
-# Build the application
-RUN corepack enable pnpm && pnpm run build
-
-# Stage 3: Runner (Production)
-FROM node:24-alpine AS runner
+FROM gcr.io/distroless/nodejs24-debian12:nonroot AS runner
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000
 
-# Create non-root user for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+COPY --from=builder --chown=nonroot:nonroot /app/public ./public
+COPY --from=builder --chown=nonroot:nonroot /app/.next/standalone ./
+COPY --from=builder --chown=nonroot:nonroot /app/.next/static ./.next/static
 
-# Copy necessary files from builder
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-
-# Set correct permissions
-RUN chown -R nextjs:nodejs /app
-
-# Switch to non-root user
-USER nextjs
-
-# Expose port
 EXPOSE 3000
 
-# Set hostname
-ENV HOSTNAME="0.0.0.0"
-ENV PORT=3000
-
-# Health check
+# Healthcheck hits /api/health and fails on non-200 or error
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+  CMD ["/nodejs/bin/node","-e","require('http').get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/api/health'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
 
-# Start the application
-CMD ["node", "server.js"]
+# Distroless node entry is /nodejs/bin/node; no shell, no package manager
+ENTRYPOINT ["/nodejs/bin/node"]
+CMD ["server.js"]

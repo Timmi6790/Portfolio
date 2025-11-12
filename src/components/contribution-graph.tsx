@@ -1,19 +1,16 @@
 /* eslint-disable max-lines */
-'use client'
+'use server'
 
-import React, {
-  type Dispatch,
-  type JSX,
-  type SetStateAction,
-  useMemo,
-  useState,
-} from 'react'
+import { type JSX } from 'react'
 
-import { type Locale, useTranslations } from 'next-intl'
+import { type Locale } from 'next-intl'
+
+import { getTranslations } from 'next-intl/server'
 
 import { Card } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import { panic } from '@/lib/utilities'
-import type { FCStrict } from '@/types/fc'
+import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import {
   CONTRIBUTION_LEVELS,
   type ContributionLevel,
@@ -21,15 +18,12 @@ import {
 } from '@/types/github'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
 
+import styles from './contribution-graph.module.css'
+
 /* =============================== Types =============================== */
 
 interface ContributionGraphProperties extends LocalePageProperties {
   readonly data: readonly ContributionPoint[]
-}
-
-interface MousePos {
-  readonly x: number
-  readonly y: number
 }
 
 interface MonthLabel {
@@ -124,6 +118,7 @@ const computeMonthLabel: (context: MonthContext) => ComputeMonthLabelResult = ({
 
   const monthName: string = new Date(first.date).toLocaleDateString(locale, {
     month: 'short',
+    timeZone: 'UTC',
   })
   if (monthName === currentMonth) {
     return { label: null, next: currentMonth }
@@ -150,7 +145,7 @@ const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
   }
 
   const dataMap: Map<string, ContributionPoint> = makeDataMap(data)
-  const sorted: readonly ContributionPoint[] = [...data].sort(
+  const sorted: readonly ContributionPoint[] = [...data].toSorted(
     (pointOne: ContributionPoint, pointTwo: ContributionPoint): number =>
       new Date(pointOne.date).getTime() - new Date(pointTwo.date).getTime()
   )
@@ -160,7 +155,7 @@ const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
     sorted[0]?.date ?? panic('buildCalendar: empty contributions array')
 
   const lastISO: string =
-    sorted[sorted.length - 1]?.date ?? panic('buildCalendar: missing last item')
+    sorted.at(-1)?.date ?? panic('buildCalendar: missing last item')
 
   const firstDate: Date = new Date(`${firstISO}T00:00:00Z`)
   const lastDate: Date = new Date(`${lastISO}T00:00:00Z`)
@@ -171,7 +166,7 @@ const buildCalendar: (properties: BuildCalendarProperties) => CalendarModel = ({
   let currentMonth: string = ''
 
   while (cursor.getTime() <= lastDate.getTime()) {
-    const start: Date = new Date(cursor.getTime())
+    const start: Date = new Date(cursor)
     const days: (ContributionPoint | null)[] = []
 
     for (let index: number = 0; index < 7; index++) {
@@ -323,14 +318,26 @@ const WeekdayLabelCol: FCStrict<WeekdayLabelColProperties> = ({
     <div className="flex flex-shrink-0 flex-col gap-1 pr-3">
       {WEEKDAY_INDICES.map(
         (index: (typeof WEEKDAY_INDICES)[number]): JSX.Element => {
-          const label: string =
-            index === 1
-              ? dayOne
-              : index === 3
-                ? dayThree
-                : index === 5
-                  ? dayFive
-                  : ''
+          let label: string
+
+          switch (index) {
+            case 1: {
+              label = dayOne
+              break
+            }
+            case 3: {
+              label = dayThree
+              break
+            }
+            case 5: {
+              label = dayFive
+              break
+            }
+            default: {
+              label = ''
+            }
+          }
+
           return (
             <div
               className="text-muted-foreground flex h-4 w-8 items-center text-xs font-medium"
@@ -348,49 +355,35 @@ const WeekdayLabelCol: FCStrict<WeekdayLabelColProperties> = ({
 interface DayCellProperties {
   readonly day: ContributionPoint
   readonly dayIndex: number
-  readonly onEnter: (properties: CellEnterProperties) => void
-  readonly onLeave: () => void
+  readonly locale: Locale
   readonly weekIndex: number
 }
 
 const DayCell: FCStrict<DayCellProperties> = ({
   day,
   dayIndex,
-  onEnter,
-  onLeave,
+  locale,
   weekIndex,
 }: DayCellProperties): JSX.Element => {
   const delayMs: string = String(weekIndex * 7 + dayIndex) + 'ms'
-  const aria: string = String(day.count) + ' on ' + day.date
+
+  const commitsText: string = day.count.toLocaleString(locale)
+  const dateText: string = new Date(day.date).toLocaleDateString(locale, {
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+    weekday: 'short',
+    year: 'numeric',
+  })
+
   return (
     <div
-      aria-label={aria}
-      className={`h-4 w-4 cursor-pointer rounded-sm transition-all duration-200 ${levelClass(
-        day.level
-      )}`}
+      className={`h-4 w-4 rounded-sm transition-all duration-200 ${levelClass(day.level)} ${styles['cell'] ?? ''}`}
+      data-commits={commitsText}
+      data-date={dateText}
+      data-row={dayIndex}
       key={day.date}
-      role="button"
       style={{ animationDelay: delayMs }}
-      tabIndex={0}
-      onBlur={onLeave}
-      onFocus={(error: React.FocusEvent<HTMLDivElement>): void => {
-        onEnter({
-          element: error as unknown as React.MouseEvent<HTMLDivElement>,
-          point: day,
-        })
-      }}
-      onKeyDown={(error: React.KeyboardEvent<HTMLDivElement>): void => {
-        if (error.key === 'Enter' || error.key === ' ') {
-          onEnter({
-            element: error as unknown as React.MouseEvent<HTMLDivElement>,
-            point: day,
-          })
-        }
-      }}
-      onMouseEnter={(error: React.MouseEvent<HTMLDivElement>): void => {
-        onEnter({ element: error, point: day })
-      }}
-      onMouseLeave={onLeave}
     />
   )
 }
@@ -399,21 +392,14 @@ const EmptyCell: FCStrict = (): JSX.Element => (
   <div className="border-border/30 bg-muted/20 dark:border-border/20 dark:bg-muted/10 h-4 w-4 rounded-sm border" />
 )
 
-interface CellEnterProperties {
-  readonly element: React.MouseEvent<HTMLDivElement>
-  readonly point: ContributionPoint
-}
-
 interface WeekColumnProperties {
-  readonly onEnter: (properties: CellEnterProperties) => void
-  readonly onLeave: () => void
+  readonly locale: Locale
   readonly week: WeekModel
   readonly weekIndex: number
 }
 
 const WeekColumn: FCStrict<WeekColumnProperties> = ({
-  onEnter,
-  onLeave,
+  locale,
   week,
   weekIndex,
 }: WeekColumnProperties): JSX.Element => {
@@ -431,9 +417,8 @@ const WeekColumn: FCStrict<WeekColumnProperties> = ({
               day={contributionPoint}
               dayIndex={dayIndex}
               key={contributionPoint.date}
+              locale={locale}
               weekIndex={weekIndex}
-              onEnter={onEnter}
-              onLeave={onLeave}
             />
           )
       )}
@@ -445,8 +430,7 @@ interface WeeksGridProperties {
   readonly dayFive: string
   readonly dayOne: string
   readonly dayThree: string
-  readonly onEnter: (properties: CellEnterProperties) => void
-  readonly onLeave: () => void
+  readonly locale: Locale
   readonly weeks: readonly WeekModel[]
 }
 
@@ -454,8 +438,7 @@ const WeeksGrid: FCStrict<WeeksGridProperties> = ({
   dayFive,
   dayOne,
   dayThree,
-  onEnter,
-  onLeave,
+  locale,
   weeks,
 }: WeeksGridProperties): JSX.Element => {
   return (
@@ -466,10 +449,9 @@ const WeeksGrid: FCStrict<WeeksGridProperties> = ({
           (weekModel: WeekModel, index: number): JSX.Element => (
             <WeekColumn
               key={weekModel.key}
+              locale={locale}
               week={weekModel}
               weekIndex={index}
-              onEnter={onEnter}
-              onLeave={onLeave}
             />
           )
         )}
@@ -478,94 +460,37 @@ const WeeksGrid: FCStrict<WeeksGridProperties> = ({
   )
 }
 
-interface TooltipProperties {
-  readonly day: ContributionPoint
-  readonly locale: string
-  readonly mouse: MousePos
-}
-
-const Tooltip: FCStrict<TooltipProperties> = ({
-  day,
-  locale,
-  mouse,
-}: TooltipProperties): JSX.Element => {
-  const cnt: string = day.count.toLocaleString(locale)
-  const dateTxt: string = new Date(day.date).toLocaleDateString(locale, {
-    day: 'numeric',
-    month: 'short',
-    timeZone: 'UTC',
-    weekday: 'short',
-    year: 'numeric',
-  })
-  return (
-    <div
-      className="bg-popover dark:border-border/50 dark:bg-popover/95 pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-lg border-2 px-3 py-2 text-sm shadow-xl dark:shadow-2xl"
-      style={{ left: mouse.x, top: mouse.y - 8 }}
-    >
-      <p className="font-semibold">{cnt}</p>
-      <p className="text-muted-foreground text-xs">{dateTxt}</p>
-    </div>
-  )
-}
-
 /* ================================ Main FC ================================ */
-
-// eslint-disable-next-line max-lines-per-function
-export const ContributionGraph: FCStrict<ContributionGraphProperties> = ({
+export const ContributionGraph: AsyncPageFC<
+  ContributionGraphProperties
+> = async ({
   data,
   locale,
-}: ContributionGraphProperties): JSX.Element => {
-  const translations: Translations<'projects.contributions'> = useTranslations(
-    'projects.contributions'
-  )
-  const [hoveredDay, setHoveredDay]: [
-    ContributionPoint | null,
-    Dispatch<SetStateAction<ContributionPoint | null>>,
-  ] = useState<ContributionPoint | null>(null)
-  const [mouse, setMouse]: [MousePos, Dispatch<SetStateAction<MousePos>>] =
-    useState<MousePos>({ x: 0, y: 0 })
+}: ContributionGraphProperties): Promise<JSX.Element> => {
+  const translations: Translations<'projects.contributions'> =
+    await getTranslations({
+      locale,
+      namespace: 'projects.contributions',
+    })
 
-  const calendar: CalendarModel = useMemo<CalendarModel>(
-    (): CalendarModel => buildCalendar({ data, locale }),
-    [data, locale]
-  )
-  const labels: DayLabelTripleResult = useMemo<DayLabelTripleResult>(
-    (): DayLabelTripleResult => dayLabelTriple({ data, locale }),
-    [data, locale]
-  )
-
-  const total: number = useMemo<number>((): number => sumCount(data), [data])
-
-  const lessText: string = translations('less')
-  const moreText: string = translations('more')
-  const titleText: string = translations('title')
-  const totalText: string = translations('totalAmount', {
-    count: total.toLocaleString(locale),
-  })
-
-  const handleEnter: (properties: CellEnterProperties) => void = ({
-    element,
-    point,
-  }: CellEnterProperties): void => {
-    const rect: DOMRect = element.currentTarget.getBoundingClientRect()
-    const mouseX: number = rect.left + rect.width / 2
-    const mouseY: number = rect.top
-    setMouse({ x: mouseX, y: mouseY })
-    setHoveredDay(point)
-  }
-
-  const handleLeave: () => void = (): void => {
-    setHoveredDay(null)
-  }
+  const calendar: CalendarModel = buildCalendar({ data, locale })
+  const labels: DayLabelTripleResult = dayLabelTriple({ data, locale })
+  const total: number = sumCount(data)
 
   return (
     <Card className="hover:border-primary/50 dark:bg-card/50 w-full overflow-hidden border-2 p-6 transition-all duration-300 hover:shadow-lg">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-2xl font-bold">{titleText}</h3>
-          <p className="text-muted-foreground text-sm">{totalText}</p>
+          <Heading as="h3" className="text-2xl font-bold">
+            {translations('title')}
+          </Heading>
+          <p className="text-muted-foreground text-sm">
+            {translations('totalAmount', {
+              count: total.toLocaleString(locale),
+            })}
+          </p>
         </div>
-        <LegendBar less={lessText} more={moreText} />
+        <LegendBar less={translations('less')} more={translations('more')} />
       </div>
 
       <div className="relative w-full overflow-x-auto pb-2">
@@ -575,16 +500,11 @@ export const ContributionGraph: FCStrict<ContributionGraphProperties> = ({
             dayFive={labels.dayFive}
             dayOne={labels.dayOne}
             dayThree={labels.dayThree}
+            locale={locale}
             weeks={calendar.weeks}
-            onEnter={handleEnter}
-            onLeave={handleLeave}
           />
         </div>
       </div>
-
-      {hoveredDay !== null ? (
-        <Tooltip day={hoveredDay} locale={locale} mouse={mouse} />
-      ) : null}
     </Card>
   )
 }

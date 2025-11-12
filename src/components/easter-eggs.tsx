@@ -111,6 +111,7 @@ const buildTripleClickHandler: (
       const newCount: number = previous + 1
       if (newCount === 3) {
         const messageIndex: number = Math.floor(
+          // eslint-disable-next-line sonarjs/pseudo-random
           Math.random() * CLICK_MESSAGES.length
         )
         const message: string =

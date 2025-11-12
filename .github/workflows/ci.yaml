@@ -1,10 +1,12 @@
 name: CI
 
 on:
+  pull_request:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -18,14 +20,32 @@ jobs:
       - name: Setup base environment
         uses: ./.github/actions/build-dependency
 
-      - name: Run type check
-        run: pnpm run type-check
+      - name: Lint (ESLint 9) – fail on warnings
+        run: pnpm run lint --max-warnings=0
 
-      - name: Run linter
-        run: pnpm run lint
-
-      - name: Check formatting
+      - name: Format check (Prettier)
         run: pnpm run format:check
 
-      - name: Build project
+      - name: Type check (TS)
+        run: pnpm run type-check
+
+      - name: i18n check
+        run: pnpm run i18n-check
+
+      - name: Unit/DOM tests
+        run: pnpm test -- --coverage --run
+  build:
+    name: Production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Setup base environment
+        uses: ./.github/actions/build-dependency
+
+      - name: Build
         run: pnpm run build

@@ -2,20 +2,15 @@ import '../globals.css'
 
 import type { JSX } from 'react'
 
-import type { Metadata } from 'next'
-import { type Locale, NextIntlClientProvider } from 'next-intl'
+import type { Metadata, Viewport } from 'next'
+import { type Locale, type Messages, NextIntlClientProvider } from 'next-intl'
 
-import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
-import { setRequestLocale } from 'next-intl/server'
-import { Toaster } from 'sonner'
+import { Inter } from 'next/font/google'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 
-import { CommandPalette } from '@/components/command-palette'
-import { CookieBanner } from '@/components/cookie-banner'
-import { EasterEggs } from '@/components/easter-eggs'
-import { LanguageSwitcher } from '@/components/language-switcher'
+import DeferredClientUi from '@/app/[locale]/deferred-client-ui'
 import { LegalFooter } from '@/components/legal-footer'
 import { ThemeProvider } from '@/components/theme-provider'
-import { ThemeToggle } from '@/components/theme-toggle'
 import {
   ensureLocaleFromParameters,
   maybeLocaleFromParameters,
@@ -31,24 +26,14 @@ import type {
 } from '@/types/page'
 
 import type { NextFontWithVariable } from 'next/dist/compiled/@next/font'
+import type { DeepPartial } from 'react-hook-form'
 
-/* ---------- fonts ---------- */
-const geist: NextFontWithVariable = Geist({
+/* ---------- fonts (auto-fetched via next/font/google) ---------- */
+const inter: NextFontWithVariable = Inter({
+  adjustFontFallback: true,
+  display: 'swap',
   subsets: ['latin'],
-  variable: '--font-geist',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-})
-
-const geistMono: NextFontWithVariable = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-})
-
-const sourceSerif: NextFontWithVariable = Source_Serif_4({
-  subsets: ['latin'],
-  variable: '--font-source-serif',
-  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-inter',
 })
 
 /* ---------- helpers (readonly params, no inline callbacks) ---------- */
@@ -101,7 +86,7 @@ export const generateMetadata: GenerateMetadataFC<
         {
           alt: siteConfig.title,
           height: 630,
-          url: '/og-image.png',
+          url: '/og-image.jpg',
           width: 1200,
         },
       ],
@@ -131,14 +116,27 @@ export const generateMetadata: GenerateMetadataFC<
       card: 'summary_large_image',
       creator: siteConfig.twitter,
       description: siteConfig.description,
-      images: ['/og-image.png'],
+      images: ['/og-image.jpg'],
       title: siteConfig.title,
     },
   }
 }
 
-/* ---------- generateStaticParams ---------- */
+/* ---------- viewport ---------- */
+export const viewport: Viewport = {
+  initialScale: 1,
+  // Avoids auto-detecting phone numbers/emails as links on iOS:
+  interactiveWidget: 'resizes-content',
+  themeColor: [
+    { color: '#000000', media: '(prefers-color-scheme: dark)' },
+    { color: '#ffffff', media: '(prefers-color-scheme: light)' },
+  ],
+  // Optional but helpful:
+  viewportFit: 'cover',
+  width: 'device-width',
+}
 
+/* ---------- generateStaticParams ---------- */
 interface StaticParameter {
   readonly locale: Locale
 }
@@ -161,24 +159,19 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
   params,
 }: PageParametersWithChildren<RootLayoutProperties>): Promise<JSX.Element> => {
   const locale: Locale = await ensureLocaleFromParameters(params)
-
   setRequestLocale(locale)
 
+  const messages: DeepPartial<Messages> = await getMessages()
+
   return (
-    <html className="dark" lang={locale}>
-      <body
-        className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} font-sans antialiased`}
-      >
-        <NextIntlClientProvider locale={locale}>
+    <html className={`dark ${inter.variable}`} lang={locale}>
+      <body className="font-sans antialiased">
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark">
-            <ThemeToggle />
-            <LanguageSwitcher />
-            <CommandPalette />
-            <EasterEggs />
-            {children}
-            <CookieBanner />
+            {/* Non-critical client UI mounts after idle inside this wrapper */}
+            <DeferredClientUi />
+            <main id="content">{children}</main>
             <LegalFooter locale={locale} />
-            <Toaster position="bottom-right" />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,18 +1,18 @@
-name: "Setup Node + PNPM Checkout + Build Dependency"
-description: "Checks out repo, sets up PNPM, Node.js and builds dependency"
+name: 'Setup Node + PNPM Checkout + Build Dependency'
+description: 'Checks out repo, sets up PNPM, Node.js and builds dependency'
 
 inputs:
   node-version:
-    description: "Node.js version"
+    description: 'Node.js version'
     required: true
-    default: "24"
+    default: '24'
   pnpm-version:
-    description: "PNPM version"
+    description: 'PNPM version'
     required: true
-    default: "10"
+    default: '10'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Setup base environment
       uses: ./.github/actions/setup-base-environment
@@ -22,4 +22,4 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install
+      run: pnpm install --frozen-lockfile

@@ -90,9 +90,7 @@ const getFeaturedProjectsUncached: () => Promise<
         (result: PromiseFulfilledResult<GitHubProject>): GitHubProject =>
           result.value
       )
-  } catch (error: unknown) {
-    // Swallow per policy (no-console) and return a safe fallback
-    void error
+  } catch {
     return []
   }
 }
@@ -197,18 +195,24 @@ const levelToInt: (
   level: GraphQLCalendarDay['contributionLevel']
 ): ContributionLevel => {
   switch (level) {
-    case 'NONE':
+    case 'NONE': {
       return 0
-    case 'FIRST_QUARTILE':
+    }
+    case 'FIRST_QUARTILE': {
       return 1
-    case 'SECOND_QUARTILE':
+    }
+    case 'SECOND_QUARTILE': {
       return 2
-    case 'THIRD_QUARTILE':
+    }
+    case 'THIRD_QUARTILE': {
       return 3
-    case 'FOURTH_QUARTILE':
+    }
+    case 'FOURTH_QUARTILE': {
       return 4
-    default:
+    }
+    default: {
       return 0
+    }
   }
 }
 
@@ -276,13 +280,12 @@ const getContributionDataUncached: () => Promise<
       json.data.user?.contributionsCollection.contributionCalendar.weeks ?? []
 
     return flattenWeeks(weeks)
-  } catch (error: unknown) {
-    void error
+  } catch {
     return []
   }
 }
 
 export const getContributionData: () => Promise<ContributionPoint[]> =
   unstable_cache(getContributionDataUncached, ['contribution-data'], {
-    revalidate: 3_600,
+    revalidate: 3600,
   })

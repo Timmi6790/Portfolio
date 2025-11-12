@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import type { Translations } from '@/types/i18n'
 
 /* ─────────────────────────── types ─────────────────────────── */
@@ -90,9 +91,9 @@ export const ExperienceSection: (
     <section className="px-4 py-20">
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-12 text-center">
-          <h2 className="text-foreground mb-3 text-4xl font-bold">
+          <Heading as="h2" className="text-foreground mb-3 text-4xl font-bold">
             {translations('title')}
-          </h2>
+          </Heading>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />
         </div>
 
@@ -126,9 +127,12 @@ export const ExperienceSection: (
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-foreground group-hover:text-primary mb-1 text-xl font-semibold transition-colors">
+                      <Heading
+                        as="h3"
+                        className="text-foreground group-hover:text-primary mb-1 text-xl font-semibold transition-colors"
+                      >
                         {exp.title}
-                      </h3>
+                      </Heading>
                       <p className="text-foreground/80 mb-2 text-base font-medium">
                         {exp.company}
                       </p>

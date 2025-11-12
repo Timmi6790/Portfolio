@@ -68,7 +68,8 @@
       "more": "Mehr",
       "less": "Weniger"
     },
-    "viewAll": "Alle Projekte auf GitHub ansehen"
+    "viewAll": "Alle Projekte auf GitHub ansehen",
+    "view": "Open project"
   },
   "testimonials": {
     "title": "Referenzen",

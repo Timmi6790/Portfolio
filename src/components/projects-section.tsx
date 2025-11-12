@@ -4,13 +4,21 @@ import type { JSX } from 'react'
 
 import { type Locale } from 'next-intl'
 
-import { Code2, ExternalLink, GitFork, Globe, Link, Star } from 'lucide-react'
+import {
+  Code2,
+  ExternalLink,
+  GitFork,
+  Globe,
+  Link as LinkIcon,
+  Star,
+} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { ContributionGraph } from '@/components/contribution-graph'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import type { FCAsync, FCStrict } from '@/types/fc'
 import type {
   ContributionPoint,
@@ -31,9 +39,12 @@ const SectionHeader: FCStrict<SectionHeaderProperties> = ({
 }: SectionHeaderProperties): JSX.Element => {
   return (
     <div className="mb-16 text-center">
-      <h2 className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+      <Heading
+        as="h2"
+        className="from-primary to-primary/60 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+      >
         {title}
-      </h2>
+      </Heading>
       <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
         {subtitle}
       </p>
@@ -66,10 +77,12 @@ const StatsCard: FCStrict<StatsCardProperties> = ({
 
 interface ProjectCardProperties {
   readonly project: GitHubProject
+  readonly translations: Translations<'projects'>
 }
 // eslint-disable-next-line max-lines-per-function
 const ProjectCard: FCStrict<ProjectCardProperties> = ({
   project,
+  translations,
 }: ProjectCardProperties): JSX.Element => {
   const hasHomepage: boolean =
     typeof project.homepage === 'string' && project.homepage.length > 0
@@ -83,9 +96,12 @@ const ProjectCard: FCStrict<ProjectCardProperties> = ({
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="group-hover:text-primary mb-2 text-xl font-bold transition-colors">
+        <Heading
+          as="h3"
+          className="group-hover:text-primary mb-2 text-xl font-bold transition-colors"
+        >
           {project.name}
-        </h3>
+        </Heading>
         <p className="text-muted-foreground mb-4 flex-1">
           {project.description}
         </p>
@@ -115,16 +131,18 @@ const ProjectCard: FCStrict<ProjectCardProperties> = ({
           <div className="flex gap-2">
             <Button asChild={true} size="sm" variant="ghost">
               <a
+                aria-label={translations('view')}
                 href={project.html_url}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <Link className="h-4 w-4" />
+                <LinkIcon className="h-4 w-4" />
               </a>
             </Button>
             {hasHomepage ? (
               <Button asChild={true} size="sm" variant="ghost">
                 <a
+                  aria-label={translations('view')}
                   href={project.homepage}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -142,15 +160,21 @@ const ProjectCard: FCStrict<ProjectCardProperties> = ({
 
 interface ProjectsGridProperties {
   readonly projects: readonly GitHubProject[]
+  readonly translations: Translations<'projects'>
 }
 const ProjectsGrid: FCStrict<ProjectsGridProperties> = ({
   projects,
+  translations,
 }: ProjectsGridProperties): JSX.Element => {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map(
         (project: GitHubProject): JSX.Element => (
-          <ProjectCard key={project.html_url} project={project} />
+          <ProjectCard
+            key={project.html_url}
+            project={project}
+            translations={translations}
+          />
         )
       )}
     </div>
@@ -233,7 +257,7 @@ export const ProjectsSection: FCAsync<ProjectsSectionProperties> = async ({
         </div>
 
         {/* Featured Projects */}
-        <ProjectsGrid projects={projects} />
+        <ProjectsGrid projects={projects} translations={translations} />
 
         {/* GitHub Contribution Graph */}
         <div className="mt-16">

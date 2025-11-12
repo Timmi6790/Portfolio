@@ -8,6 +8,7 @@ import { BookOpen, Code2 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { Heading } from '@/components/ui/heading'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
 
@@ -36,7 +37,9 @@ const InfoCard: FCStrict<InfoCardProperties> = ({
         {icon}
       </div>
       <div>
-        <h3 className="text-foreground mb-2 text-xl font-semibold">{title}</h3>
+        <Heading as="h3" className="text-foreground mb-2 text-xl font-semibold">
+          {title}
+        </Heading>
         <div className="text-muted-foreground leading-relaxed">
           {description}
         </div>
@@ -86,9 +89,9 @@ const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
     <section className="px-4 py-20" id="about">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-12 text-center">
-          <h2 className="text-foreground mb-3 text-4xl font-bold">
+          <Heading as="h2" className="text-foreground mb-3 text-4xl font-bold">
             {t('title')}
-          </h2>
+          </Heading>
           <div className="from-primary to-primary/60 mx-auto h-1 w-20 rounded-full bg-gradient-to-r" />
         </div>
 

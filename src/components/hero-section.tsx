@@ -6,6 +6,7 @@ import { ArrowDown, GitBranch, Mail } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { Button } from '@/components/ui/button'
+import { Heading } from '@/components/ui/heading'
 import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
@@ -41,18 +42,21 @@ const HeroTitle: FCStrict<HeroTitleProperties> = ({
   greeting,
   name,
 }: HeroTitleProperties): JSX.Element => (
-  <h1 className="text-foreground animate-in fade-in slide-in-from-bottom-4 mb-6 text-5xl font-bold tracking-tight text-balance duration-1000 md:text-7xl">
+  <Heading
+    as="h1"
+    className="text-foreground mb-6 text-5xl font-bold tracking-tight text-balance md:text-7xl"
+  >
     {greeting}{' '}
     <span className="from-primary to-primary/60 bg-gradient-to-r bg-clip-text text-transparent">
       {name}
     </span>
-  </h1>
+  </Heading>
 )
 
 const HeroSubtitle: FCStrict<HeroSubtitleProperties> = ({
   title,
 }: HeroSubtitleProperties): JSX.Element => (
-  <p className="text-muted-foreground animate-in fade-in slide-in-from-bottom-4 mb-3 text-xl text-pretty delay-150 duration-1000 md:text-2xl">
+  <p className="text-muted-foreground mb-3 text-xl text-pretty md:text-2xl">
     {title}
   </p>
 )
@@ -63,7 +67,7 @@ const HeroLocationTagline: FCStrict<HeroLocationTaglineProperties> = ({
 }: HeroLocationTaglineProperties): JSX.Element => {
   const separator: string = ' \u00B7 '
   return (
-    <p className="text-muted-foreground animate-in fade-in slide-in-from-bottom-4 mb-10 text-lg delay-300 duration-1000">
+    <p className="text-muted-foreground mb-10 text-lg">
       {location}
       {separator}
       {tagline}
@@ -77,7 +81,7 @@ const HeroButtons: FCStrict<HeroButtonsProperties> = ({
   githubLabel,
   githubUrl,
 }: HeroButtonsProperties): JSX.Element => (
-  <div className="animate-in fade-in slide-in-from-bottom-4 flex flex-wrap items-center justify-center gap-4 delay-500 duration-1000">
+  <div className="flex flex-wrap items-center justify-center gap-4">
     <Button
       asChild={true}
       className="group shadow-lg transition-all hover:shadow-xl"
@@ -104,7 +108,7 @@ const HeroButtons: FCStrict<HeroButtonsProperties> = ({
 )
 
 const HeroScrollHint: FCStrict = (): JSX.Element => (
-  <div className="animate-in fade-in mt-16 delay-700 duration-1000">
+  <div className="mt-16">
     <ArrowDown className="text-muted-foreground mx-auto h-6 w-6 animate-bounce" />
   </div>
 )

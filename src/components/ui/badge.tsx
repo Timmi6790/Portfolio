@@ -54,7 +54,7 @@ export const Badge: FCWithChildren<BadgeProperties> = ({
 
   // With exactOptionalPropertyTypes: omit the key when undefined.
   const variantArgument: BadgeVariantProperties | undefined =
-    variant !== undefined ? { variant } : undefined
+    variant === undefined ? undefined : { variant }
 
   const classes: string = cn(badgeVariants(variantArgument), className)
 

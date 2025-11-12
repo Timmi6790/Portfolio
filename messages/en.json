@@ -68,7 +68,8 @@
       "more": "More",
       "less": "Less"
     },
-    "viewAll": "View All Projects on GitHub"
+    "viewAll": "View All Projects on GitHub",
+    "view": "Open project"
   },
   "testimonials": {
     "title": "Testimonials",

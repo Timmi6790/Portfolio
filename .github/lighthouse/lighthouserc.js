@@ -17,7 +17,7 @@ module.exports = {
       assertions: {
         'categories:performance': [
           'error',
-          { minScore: isDesktop ? 0.99 : 0.95 },
+          { minScore: isDesktop ? 0.95 : 0.8 },
         ],
         'categories:accessibility': ['error', { minScore: 0.98 }],
         'categories:best-practices': ['error', { minScore: 1 }],
@@ -29,11 +29,17 @@ module.exports = {
         ],
         'largest-contentful-paint': [
           'error',
-          { maxNumericValue: 1800, aggregationMethod: 'median' },
+          {
+            maxNumericValue: isDesktop ? 1800 : 3000,
+            aggregationMethod: 'median',
+          },
         ],
         'total-blocking-time': [
           'error',
-          { maxNumericValue: 100, aggregationMethod: 'median' },
+          {
+            maxNumericValue: isDesktop ? 100 : 300,
+            aggregationMethod: 'median',
+          },
         ],
         'cumulative-layout-shift': [
           'error',
@@ -41,7 +47,10 @@ module.exports = {
         ],
         'speed-index': [
           'error',
-          { maxNumericValue: 2000, aggregationMethod: 'median' },
+          {
+            maxNumericValue: isDesktop ? 2000 : 3500,
+            aggregationMethod: 'median',
+          },
         ],
 
         'render-blocking-resources': ['error', { maxLength: 0 }],

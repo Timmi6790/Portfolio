@@ -1,0 +1,156 @@
+{
+  "loading": {
+    "title": "Laden..."
+  },
+  "error": {
+    "title": "Etwas ist schief gelaufen",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie, die Seite zu aktualisieren.",
+    "tryAgain": "Erneut versuchen",
+    "goHome": "Zur Startseite",
+    "errorIdLabel": "Error ID:"
+  },
+  "hero": {
+    "greeting": "Hallo, ich bin",
+    "name": "Tim",
+    "title": "Software-Entwickler",
+    "location": "Ansässig in Deutschland",
+    "tagline": "Leidenschaftlich daran interessiert, großartige Software zu entwickeln",
+    "github": "GitHub",
+    "contact": "Kontakt"
+  },
+  "about": {
+    "title": "Über mich",
+    "learning": {
+      "title": "Derzeit lerne ich",
+      "description": "Erweitere meine Fähigkeiten in <highlight>Rust</highlight> und <highlight>Next.js</highlight>, erkunde moderne Webentwicklung und Systemprogrammierung."
+    },
+    "expertise": {
+      "title": "Expertise",
+      "description": "Spezialisiert auf <highlight>Java</highlight>-Entwicklung mit jahrelanger Erfahrung im Aufbau robuster Anwendungen und Beiträgen zu Open-Source-Projekten."
+    }
+  },
+  "skills": {
+    "title": "Fähigkeiten & Technologien",
+    "expertise": "Expertise",
+    "learning": "Derzeit lerne ich",
+    "tools": "Tools & Plattformen"
+  },
+  "experience": {
+    "title": "Berufserfahrung",
+    "items": []
+  },
+  "projects": {
+    "title": "Ausgewählte Projekte",
+    "subtitle": "Eine Auswahl meiner Open-Source-Beiträge und persönlichen Projekte",
+    "stats": {
+      "repositories": "Repositories",
+      "stars": "Gesamt Sterne",
+      "forks": "Gesamt Forks"
+    },
+    "contributions": {
+      "title": "GitHub-Beiträge",
+      "totalAmount": "{count} beiträge im letzten Jahr",
+      "more": "Mehr",
+      "less": "Weniger"
+    },
+    "viewAll": "Alle Projekte auf GitHub ansehen",
+    "view": "Open project"
+  },
+  "testimonials": {
+    "title": "Referenzen",
+    "subtitle": "Was Kollegen und Kunden über die Zusammenarbeit mit mir sagen",
+    "items": []
+  },
+  "commandPalette": {
+    "title": "Kommandozeile",
+    "description": "Befehl suchen...",
+    "placeholder": "Befehl eingeben oder suchen...",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "navigation": "Navigation",
+    "sections": "Bereiche",
+    "actions": "Aktionen",
+    "home": "Startseite",
+    "github": "GitHub-Profil öffnen",
+    "email": "E-Mail senden"
+  },
+  "contact": {
+    "title": "Kontakt aufnehmen",
+    "infoTitle": "Kontaktinformationen",
+    "email": "E-Mail",
+    "github": "GitHub",
+    "location": "Standort",
+    "locationValue": "Deutschland",
+    "downloadResume": "Lebenslauf herunterladen"
+  },
+  "imprint": {
+    "title": "Impressum",
+    "description": "Impressum und rechtliche Informationen",
+    "backHome": "Zurück zur Startseite",
+    "infoTitle": "Angaben gemäß § 5 TMG",
+    "contactTitle": "Kontakt",
+    "responsibleTitle": "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
+    "liabilityContentTitle": "Haftung für Inhalte",
+    "liabilityContent": "Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
+    "liabilityLinksTitle": "Haftung für Links",
+    "liabilityLinks": "Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.",
+    "copyrightTitle": "Urheberrecht",
+    "copyright": "Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers."
+  },
+  "cookies": {
+    "title": "Cookie-Einwilligung",
+    "description": "Wir verwenden Cookies, um Ihr Surferlebnis zu verbessern und unseren Datenverkehr zu analysieren. Durch Klicken auf 'Alle akzeptieren' stimmen Sie der Verwendung von Cookies zu.",
+    "acceptAll": "Alle akzeptieren",
+    "rejectAll": "Alle ablehnen",
+    "customize": "Anpassen",
+    "essential": "Notwendige Cookies",
+    "essentialDesc": "Erforderlich für das ordnungsgemäße Funktionieren der Website. Diese können nicht deaktiviert werden.",
+    "analytics": "Analyse-Cookies",
+    "analyticsDesc": "Helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem Informationen anonym gesammelt und gemeldet werden.",
+    "save": "Einstellungen speichern",
+    "required": "Benötigt",
+    "back": "Zurück"
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "description": "Die Datenschutzerklärung",
+    "controller": {
+      "title": "1. Verantwortlicher",
+      "name": "Tim",
+      "address": "[Deine Anschrift hier einfügen]",
+      "email": "[Deine E-Mail hier einfügen]"
+    },
+    "general": {
+      "title": "2. Allgemeine Hinweise",
+      "text": "Diese Website dient ausschließlich der Darstellung meiner beruflichen Tätigkeiten als Software Engineer. Personenbezogene Daten werden nur verarbeitet, soweit dies für den Betrieb der Website erforderlich ist (Art. 6 Abs. 1 lit. f DSGVO)."
+    },
+    "logs": {
+      "title": "3. Zugriffsdaten und Logfiles",
+      "text": "Beim Aufruf dieser Website werden automatisch Server-Logfiles erstellt (IP-Adresse, Zeitstempel, Browsertyp, Betriebssystem, aufgerufene Seite). Diese Daten dienen der Sicherheit und werden nach spätestens 7 Tagen gelöscht."
+    },
+    "cloudflare": {
+      "title": "4. Nutzung von Cloudflare",
+      "pre": "Diese Website wird über einen",
+      "strong": "Cloudflare Tunnel",
+      "post": "bereitgestellt, betrieben von:",
+      "provider": "Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA",
+      "policyLink": "https://www.cloudflare.com/privacypolicy/",
+      "text": "Cloudflare verarbeitet technische Verbindungsdaten (z. B. IP-Adressen) zur Bereitstellung und Absicherung der Website. Die Verarbeitung erfolgt im berechtigten Interesse an einem sicheren und effizienten Betrieb (Art. 6 Abs. 1 lit. f DSGVO)."
+    },
+    "contact": {
+      "title": "5. Kontaktaufnahme",
+      "text": "Bei Kontaktaufnahme per E-Mail werden Ihre Daten zur Bearbeitung gespeichert. Eine Weitergabe an Dritte erfolgt nicht."
+    },
+    "rights": {
+      "title": "6. Rechte der Betroffenen",
+      "text": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenübertragbarkeit gemäß Art. 15–21 DSGVO. Sie können außerdem Beschwerde bei einer Aufsichtsbehörde einreichen."
+    },
+    "nocookies": {
+      "title": "7. Keine Cookies",
+      "text": "Diese Website verwendet keine Cookies, Tracking-Tools oder Social-Media-Plugins."
+    },
+    "changes": {
+      "title": "8. Änderungen",
+      "text": "Diese Datenschutzerklärung kann bei technischen oder rechtlichen Änderungen angepasst werden. Die jeweils aktuelle Version ist auf dieser Seite verfügbar."
+    }
+  }
+}

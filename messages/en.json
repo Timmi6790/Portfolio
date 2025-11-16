@@ -1,0 +1,156 @@
+{
+  "loading": {
+    "title": "Loading..."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try refreshing the page.",
+    "tryAgain": "Try again",
+    "goHome": "Go home",
+    "errorIdLabel": "Error ID:"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "name": "Tim",
+    "title": "Software Developer",
+    "location": "Based in Germany",
+    "tagline": "Passionate about building great software",
+    "github": "GitHub",
+    "contact": "Contact Me"
+  },
+  "about": {
+    "title": "About Me",
+    "learning": {
+      "title": "Currently Learning",
+      "description": "Expanding my skills in <highlight>Rust</highlight> and <highlight>Next.js</highlight>, exploring modern web development and systems programming."
+    },
+    "expertise": {
+      "title": "Expertise",
+      "description": "Specialized in <highlight>Java</highlight> development with years of experience building robust applications and contributing to open-source projects."
+    }
+  },
+  "skills": {
+    "title": "Skills & Technologies",
+    "expertise": "Expertise",
+    "learning": "Currently Learning",
+    "tools": "Tools & Platforms"
+  },
+  "experience": {
+    "title": "Experience",
+    "items": []
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "A selection of my open-source contributions and personal projects",
+    "stats": {
+      "repositories": "Repositories",
+      "stars": "Total Stars",
+      "forks": "Total Forks"
+    },
+    "contributions": {
+      "title": "GitHub Contributions",
+      "totalAmount": "{count} contributions in the last year",
+      "more": "More",
+      "less": "Less"
+    },
+    "viewAll": "View All Projects on GitHub",
+    "view": "Open project"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "What colleagues and clients say about working with me",
+    "items": []
+  },
+  "commandPalette": {
+    "title": "Command Palette",
+    "description": "Search for a command to run...",
+    "placeholder": "Type a command or search...",
+    "noResults": "No results found.",
+    "navigation": "Navigation",
+    "sections": "Sections",
+    "actions": "Actions",
+    "home": "Home",
+    "github": "Open GitHub Profile",
+    "email": "Send Email"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "infoTitle": "Contact Information",
+    "email": "Email",
+    "github": "GitHub",
+    "location": "Location",
+    "locationValue": "Germany",
+    "downloadResume": "Download Resume"
+  },
+  "imprint": {
+    "title": "Imprint",
+    "description": "Imprint and legal information",
+    "backHome": "Back to Home",
+    "infoTitle": "Information according to § 5 TMG",
+    "contactTitle": "Contact",
+    "responsibleTitle": "Responsible for content according to § 55 Abs. 2 RStV",
+    "liabilityContentTitle": "Liability for content",
+    "liabilityContent": "As a service provider, we are responsible for our own content on these pages in accordance with general legislation pursuant to Section 7 (1) of the German Telemedia Act (TMG). However, according to Sections 8 to 10 TMG, we are not obligated as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
+    "liabilityLinksTitle": "Liability for links",
+    "liabilityLinks": "Our website contains links to external third-party websites over whose content we have no influence. Therefore, we cannot accept any liability for this third-party content. The respective provider or operator of the pages is always responsible for the content of the linked pages.",
+    "copyrightTitle": "Copyright",
+    "copyright": "The content and works created by the site operators on these pages are subject to German copyright law. The reproduction, editing, distribution and any kind of use outside the limits of copyright require the written consent of the respective author or creator."
+  },
+  "cookies": {
+    "title": "Cookie Consent",
+    "description": "We use cookies to enhance your browsing experience and analyze our traffic. By clicking 'Accept All', you consent to our use of cookies.",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject All",
+    "customize": "Customize",
+    "essential": "Essential Cookies",
+    "essentialDesc": "Required for the website to function properly. These cannot be disabled.",
+    "analytics": "Analytics Cookies",
+    "analyticsDesc": "Help us understand how visitors interact with our website by collecting and reporting information anonymously.",
+    "save": "Save Preferences",
+    "required": "Required",
+    "back": "Back"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "description": "This privacy policy explains how your personal data is processed when you visit this website.",
+    "controller": {
+      "title": "1. Controller",
+      "name": "Tim",
+      "address": "[Insert your address here]",
+      "email": "[Insert your email here]"
+    },
+    "general": {
+      "title": "2. General Information",
+      "text": "This website is a personal portfolio for professional presentation as a software engineer. Personal data is processed only as necessary to operate this site (Art. 6(1)(f) GDPR)."
+    },
+    "logs": {
+      "title": "3. Access Data and Logs",
+      "text": "When visiting this website, the server automatically records log files (IP address, timestamp, browser type, OS, requested page). These are kept for up to 7 days for security reasons and then deleted."
+    },
+    "cloudflare": {
+      "title": "4. Use of Cloudflare",
+      "pre": "This website is delivered through a",
+      "strong": "Cloudflare Tunnel",
+      "post": "provided by:",
+      "provider": "Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA",
+      "policyLink": "https://www.cloudflare.com/privacypolicy/",
+      "text": "Cloudflare processes technical connection data (e.g. IP addresses) to deliver and secure the website. Processing is based on a legitimate interest in secure and efficient operation (Art. 6(1)(f) GDPR)."
+    },
+    "contact": {
+      "title": "5. Contact",
+      "text": "If you contact me by email, your data will be stored for the purpose of handling the request. Your data will not be shared with third parties."
+    },
+    "rights": {
+      "title": "6. Data Subject Rights",
+      "text": "You have the right to access, rectify, delete, restrict, or object to processing, and to data portability under Articles 15–21 GDPR. You may also lodge a complaint with your local data protection authority."
+    },
+    "nocookies": {
+      "title": "7. No Cookies or Tracking",
+      "text": "This website uses no cookies, analytics, or social media plugins."
+    },
+    "changes": {
+      "title": "8. Changes",
+      "text": "This privacy policy may be updated if technical or legal changes occur. The latest version will always be available on this page."
+    }
+  }
+}

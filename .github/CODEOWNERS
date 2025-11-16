@@ -1,0 +1,8 @@
+# Code Owners
+# These owners will be the default owners for everything in the repo
+* @Timmi6790
+
+# Specific file ownership
+/Dockerfile @Timmi6790
+/.github/ @Timmi6790
+/components/ @Timmi6790

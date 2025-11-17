@@ -1,0 +1,36 @@
+Proprietary License – Portfolio Project
+Copyright (c) 2025 The Licensor. All rights reserved.
+
+1. Grant
+You are granted a limited, non-exclusive, non-transferable, revocable license to
+(a) view the source, and (b) clone and run the Software locally for personal,
+non-commercial evaluation only.
+
+2. Restrictions
+You may NOT: (i) copy, modify, merge, translate, or create derivative works;
+(ii) distribute, sublicense, sell, rent, lease, lend, or host the Software or
+any portion of it; (iii) deploy the Software publicly or provide it as a
+service; (iv) remove or alter notices; (v) use names, logos, images, or other
+assets except as displayed by the Software for evaluation; (vi) use the
+Software or assets to train machine learning models or related datasets;
+(vii) perform or publish benchmarks without prior written permission.
+
+3. Third-Party Components
+Any third-party code, fonts, or media included remain under their respective
+licenses. You must comply with those terms.
+
+4. Termination
+This license terminates automatically upon breach and may be revoked by the
+Licensor at any time. Upon termination, you must cease all use and destroy all copies.
+
+5. Disclaimer of Warranty
+THE SOFTWARE IS PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND.
+
+6. Limitation of Liability
+IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIMS OR DAMAGES ARISING FROM
+USE OF THE SOFTWARE.
+
+Definitions
+“Licensor” means the copyright owner of the Software.
+“Software” means the source code and all accompanying files in this repository,
+except where a different license is expressly noted.

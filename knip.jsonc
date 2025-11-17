@@ -1,5 +1,8 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
   "include": ["dependencies"],
-  "exclude": ["binaries", "exports", "files", "types"]
+  "exclude": ["binaries", "exports", "files", "types"],
+  "ignoreDependencies": [
+    "@types/webpack"
+  ]
 }

@@ -45,8 +45,6 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^20.0.0",
-    "@commitlint/types": "latest",
     "@lingual/i18n-check": "latest",
     "@next/bundle-analyzer": "^16.0.1",
     "@next/eslint-plugin-next": "16.0.3",
@@ -58,6 +56,7 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@types/webpack": "^5.28.5",
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/coverage-v8": "4.0.10",
     "cross-env": "^10.1.0",

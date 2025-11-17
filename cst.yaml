@@ -1,0 +1,27 @@
+schemaVersion: 2.0.0
+metadataTest:
+  entrypoint: ["/nodejs/bin/node"]
+  cmd: ["server.js"]
+  workdir: "/app"
+  exposedPorts: ["3000"]
+  env:
+    - key: NODE_ENV
+      value: production
+    - key: NEXT_TELEMETRY_DISABLED
+      value: "1"
+    - key: HOSTNAME
+      value: "0.0.0.0"
+    - key: PORT
+      value: "3000"
+
+fileExistenceTests:
+  - name: server.js present
+    path: /app/server.js
+    shouldExist: true
+  - name: next static present
+    path: /app/.next/static
+    shouldExist: true
+
+userTests:
+  - name: running as nonroot
+    user: "nonroot"

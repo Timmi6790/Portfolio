@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -34,6 +38,7 @@ jobs:
 
       - name: Unit/DOM tests
         run: pnpm test -- --coverage --run
+
   build:
     name: Production build
     runs-on: ubuntu-latest
@@ -49,3 +54,94 @@ jobs:
 
       - name: Build
         run: pnpm run build
+
+  dockerfile-lint:
+    name: Dockerfile Lint (Hadolint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          config: .hadolint.yaml
+          format: tty
+
+  unit:
+    name: Unit / Lint / Typecheck
+    runs-on: ubuntu-latest
+    needs: dockerfile-lint
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Setup base environment
+        uses: ./.github/actions/build-dependency
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Unit tests
+        env:
+          CI: 'true'
+        run: pnpm run test:unit
+
+  build-image:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: unit
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Setup Docker
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build with Buildx (load locally)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: app:test-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  image-structure:
+    name: Image Structure Test (CST)
+    runs-on: ubuntu-latest
+    needs: build-image
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Container Structure Test
+        run: |
+          docker pull gcr.io/gcp-runtimes/container-structure-test:latest
+          docker run --rm \
+            -v $PWD/cst.yaml:/cst.yaml \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            gcr.io/gcp-runtimes/container-structure-test:latest test \
+            --image app:test-${{ github.sha }} --config /cst.yaml
+
+  vuln-scan:
+    name: Vulnerability Scan (Trivy)
+    runs-on: ubuntu-latest
+    needs: build-image
+    steps:
+      - name: Scan image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: app:test-${{ github.sha }}
+          format: table
+          vuln-type: 'os,library'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true

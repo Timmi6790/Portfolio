@@ -5,7 +5,7 @@ metadataTest:
   cmd: ['server.js']
   workdir: '/app'
   exposedPorts: ['3000']
-  user: 'nonroot'
+  user: '65532'
   envVars:
     - key: NODE_ENV
       value: production
@@ -82,13 +82,17 @@ commandTests:
       ['-e', "require('fs').writeFile('/.cst_wr','x',e=>process.exit(e?0:1))"]
     exitCode: 0
 
-  - name: cannot bind privileged port 80
+  - name: CAP_SYS_ADMIN absent
     command: '/nodejs/bin/node'
     args:
-      [
-        '-e',
-        "const http=require('http');const s=http.createServer(()=>{});s.listen(80,()=>process.exit(1)).on('error',e=>process.exit(e&&e.code==='EACCES'?0:1))",
-      ]
+      - '-e'
+      - |
+        const fs=require('fs');
+        const m=fs.readFileSync('/proc/self/status','utf8').match(/^CapEff:\s*([0-9A-Fa-f]+)$/m);
+        if(!m){process.exit(1)}
+        const eff=BigInt('0x'+m[1]);
+        const CAP_SYS_ADMIN=1n<<21n;
+        process.exit((eff & CAP_SYS_ADMIN)===0n?0:1);
     exitCode: 0
 
   - name: server.js readable

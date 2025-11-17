@@ -84,7 +84,7 @@ jobs:
         run: pnpm run lint
 
       - name: Typecheck
-        run: pnpm run typecheck
+        run: pnpm run type-check
 
       - name: Unit tests
         env:

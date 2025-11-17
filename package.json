@@ -21,7 +21,8 @@
     "test:ci": "vitest run --coverage --reporter=dot",
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
-    "e2e:report": "playwright show-report"
+    "e2e:report": "playwright show-report",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -118,7 +119,9 @@
     "eslint-plugin-sort-class-members": "^1.21.0",
     "eslint-plugin-unicorn": "^62.0.0",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.1.0",
+    "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.0",
     "tailwindcss": "^4.1.9",

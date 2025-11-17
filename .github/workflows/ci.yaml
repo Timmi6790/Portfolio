@@ -43,6 +43,9 @@ jobs:
       - name: Unit/DOM tests
         run: pnpm test -- --coverage --run
 
+      - name: Knip Depenedency check
+        run: pnpm run lint:deps
+
   build:
     name: Production build
     runs-on: ubuntu-latest

@@ -97,6 +97,8 @@ const nextConfig: NextConfig = {
   // Enable strict mode for better development experience
   reactStrictMode: true,
 
+  serverExternalPackages: ['@tailwindcss/oxide'],
+
   // Enable typed routes for better TypeScript support
   typedRoutes: true,
 }

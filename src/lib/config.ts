@@ -6,6 +6,7 @@ export interface SiteConfig {
   readonly github: string
   readonly githubUsername: string
   readonly name: string
+  readonly resumeDirectory: string
   readonly seo: {
     readonly keywords: readonly string[]
   }
@@ -35,6 +36,7 @@ export const siteConfig: SiteConfig = {
 
   githubUsername: 'Timmi6790',
   name: 'Tim',
+  resumeDirectory: 'resume',
   seo: {
     keywords: [
       'Tim',
@@ -48,16 +50,16 @@ export const siteConfig: SiteConfig = {
       'Germany',
     ],
   },
+
   skills: {
     expertise: ['Java', 'Spring Boot', 'Maven', 'Gradle'],
     learning: ['Rust', 'Next.js', 'React', 'TypeScript'],
     tools: ['Git', 'GitHub', 'Docker', 'Linux'],
   },
-
   title: 'Tim - Software Developer',
+
   twitter: '@Timmi6790',
 
   url: 'https://timmi6790.de',
-
   username: 'Timmi6790',
 }

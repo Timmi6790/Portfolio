@@ -45,7 +45,7 @@ interface ResolvedOptions {
 
 interface ScrollSnapState {
   bottomElement: HTMLElement
-  isSnapping: boolean
+
   options: ResolvedOptions
   topElement: HTMLElement
 }
@@ -210,7 +210,9 @@ export const ScrollSnapPairController: FC<
   useEffect(effectCallback, [
     properties.topSectionId,
     properties.bottomSectionId,
-    properties.options,
+    properties.options?.minDelta,
+    properties.options?.snapTolerance,
+    properties.options?.topZone,
   ])
 
   return null

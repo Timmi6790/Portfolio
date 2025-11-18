@@ -1,5 +1,8 @@
 'use server'
 
+import { access } from 'node:fs/promises'
+import path from 'node:path'
+
 import { type JSX } from 'react'
 
 import { type Locale } from 'next-intl'
@@ -31,7 +34,7 @@ interface InfoCardProperties {
 }
 
 interface ResumeCardProperties {
-  readonly locale: Locale
+  readonly details: ResumeDetails
   readonly translations: Translations<'contact'>
 }
 
@@ -109,14 +112,63 @@ const InfoCard: FCStrict<InfoCardProperties> = ({
   )
 }
 
+interface ResumeDetails {
+  readonly languageName: string
+  readonly path: string
+  readonly pdfLabel: string
+}
+
+const getResumeLanguageName: (locale: Locale) => string = (
+  locale: Locale
+): string => {
+  switch (locale) {
+    case 'de': {
+      return 'Deutsch'
+    }
+    case 'en': {
+      return 'English'
+    }
+    default: {
+      return locale.toUpperCase()
+    }
+  }
+}
+
+const getResumeDetails: (
+  locale: Locale
+) => Promise<ResumeDetails | null> = async (
+  locale: Locale
+): Promise<ResumeDetails | null> => {
+  const fileName: string = `${locale}.pdf`
+  const languageName: string = getResumeLanguageName(locale)
+
+  const publicPath: string = `/${siteConfig.resumeDirectory}/${fileName}`
+  const fileSystemPath: string = path.join(
+    process.cwd(),
+    'public',
+    siteConfig.resumeDirectory,
+    fileName
+  )
+
+  try {
+    await access(fileSystemPath)
+    const pdfLabel: string = `PDF • ${languageName}`
+
+    return {
+      languageName,
+      path: publicPath,
+      pdfLabel,
+    }
+  } catch {
+    return null
+  }
+}
+
 const ResumeCard: FCStrict<ResumeCardProperties> = ({
-  locale,
+  details,
   translations,
 }: ResumeCardProperties): JSX.Element => {
-  const resumePath: string =
-    locale === 'de' ? '/resume-de.pdf' : '/resume-en.pdf'
-  const languageName: string = locale === 'de' ? 'Deutsch' : 'English'
-  const pdfLabel: string = `PDF • ${languageName}`
+  const { path: resumePath, pdfLabel }: ResumeDetails = details
 
   return (
     <Card className="overflow-hidden border-2 shadow-xl">
@@ -160,6 +212,8 @@ export const ContactSection: FCAsync<ContactSectionProperties> = async ({
     namespace: 'contact',
   })
 
+  const resumeDetails: ResumeDetails | null = await getResumeDetails(locale)
+
   return (
     <section className="relative bg-muted/30 px-4 py-20" id="contact">
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
@@ -174,7 +228,9 @@ export const ContactSection: FCAsync<ContactSectionProperties> = async ({
 
         <div className="mx-auto max-w-2xl space-y-6">
           <InfoCard translations={translations} />
-          <ResumeCard locale={locale} translations={translations} />
+          {resumeDetails === null ? null : (
+            <ResumeCard details={resumeDetails} translations={translations} />
+          )}{' '}
         </div>
       </div>
     </section>

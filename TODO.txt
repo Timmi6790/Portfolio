@@ -4,3 +4,4 @@
 * Improve dark reader support for the hero title
 * Reset github token
 * Main page snap issues with footer
+* Add resumes

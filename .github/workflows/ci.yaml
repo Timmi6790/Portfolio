@@ -6,41 +6,212 @@ on:
     branches: [main]
 
 concurrency:
-  group: pr-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
   IMAGE_TAG: app:test-${{ github.sha }}
   STORED_IMAGE_NAME: docker-image-tar
+  NODE_MODULES_CACHE_KEY: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
 
 permissions:
   contents: read
+  checks: write
+  pull-requests: write
+  actions: read
 
 jobs:
-  test:
-    name: Test & Build
+  # Detect which files changed to conditionally run jobs
+  changes:
+    name: Detect Changes
     runs-on: ubuntu-latest
-
+    permissions:
+      pull-requests: read
+    outputs:
+      source: ${{ steps.filter.outputs.source }}
+      tests: ${{ steps.filter.outputs.tests }}
+      e2e: ${{ steps.filter.outputs.e2e }}
+      docker: ${{ steps.filter.outputs.docker }}
+      dockerfile-lint: ${{ steps.filter.outputs.dockerfile-lint }}
+      lighthouse: ${{ steps.filter.outputs.lighthouse }}
+      bundle: ${{ steps.filter.outputs.bundle }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
-      - name: Setup base environment
-        uses: ./.github/actions/build-dependency
+      - name: Check for file changes
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
+        id: filter
+        with:
+          filters: |
+            # Common paths used across multiple filters
+            source: &source_files
+              - &src_path 'src/**'
+              - &config_files '*.config.*'
+              - &pkg_json 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'messages/**'
+              - 'public/**'
 
-      - name: Lint (ESLint 9) – fail on warnings
+            tests:
+              - *src_path
+              - 'test/**'
+              - 'vitest.config.ts'
+              - *pkg_json
+
+            e2e:
+              - *src_path
+              - 'tests/**'
+              - 'playwright.config.ts'
+              - *pkg_json
+
+            docker:
+              - 'Dockerfile'
+              - 'docker-compose.yml'
+              - '.dockerignore'
+              - *src_path
+              - *pkg_json
+
+            dockerfile-lint:
+              - 'Dockerfile'
+              - '.hadolint.yaml'
+
+            lighthouse:
+              - *src_path
+              - 'public/**'
+              - '.github/lighthouse/**'
+              - *config_files
+              - *pkg_json
+
+            bundle:
+              - *src_path
+              - *config_files
+              - *pkg_json
+
+  # Install dependencies once and cache for all parallel jobs
+  install-deps:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.source == 'true'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup environment and install dependencies
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'install'
+
+      - name: Cache node_modules
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: node_modules
+          key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+  # Quality checks - run in parallel using cached dependencies
+  lint:
+    name: Lint (ESLint)
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Run ESLint
         run: pnpm run lint --max-warnings=0
 
-      - name: Format check (Prettier)
+  format-check:
+    name: Format Check (Prettier)
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Run Prettier
         run: pnpm run format:check
 
-      - name: Type check (TS)
+  type-check:
+    name: Type Check (TypeScript)
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Run TypeScript
         run: pnpm run type-check
 
-      - name: i18n check
+  i18n-check:
+    name: i18n Validation
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Run i18n check
         run: pnpm run i18n-check
 
-      - name: Unit/DOM tests
+  knip-check:
+    name: Dependency Check (Knip)
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Run Knip
+        run: pnpm run lint:deps
+
+  # Unit and component tests
+  test:
+    name: Unit & Component Tests
+    runs-on: ubuntu-latest
+    needs: install-deps
+    if: needs.changes.outputs.tests == 'true'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Run tests
         run: pnpm run test:ci
 
       - name: Upload coverage to Codecov
@@ -52,12 +223,12 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
-      - name: Knip Dependency check
-        run: pnpm run lint:deps
-
+  # Production build - shared across multiple jobs
   build:
-    name: Production build
+    name: Production Build
     runs-on: ubuntu-latest
+    needs: [changes, lint, format-check, type-check, i18n-check, knip-check]
+    if: needs.changes.outputs.source == 'true'
     timeout-minutes: 15
     env:
       NEXT_TELEMETRY_DISABLED: 1
@@ -65,15 +236,224 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
-      - name: Setup base environment
-        uses: ./.github/actions/build-dependency
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Restore Next.js cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Build
         run: pnpm run build
 
-  dockerfile-lint:
-    name: Dockerfile Lint (Hadolint)
+      - name: Upload build artifact
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: nextjs-build
+          path: .next
+          retention-days: 1
+
+  # E2E tests using shared build
+  e2e:
+    name: E2E Tests
     runs-on: ubuntu-latest
+    needs: [changes, build]
+    if: needs.changes.outputs.e2e == 'true'
+    timeout-minutes: 30
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
+      TEST_LOCALE: en
+      BASE_URL: http://localhost:3000
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Restore build artifact
+        uses: ./.github/actions/restore-build
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-playwright-
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps
+
+      - name: Ensure Playwright is correctly installed
+        run: pnpm exec playwright install
+
+      - name: Run E2E tests
+        run: pnpm exec playwright test --reporter=github,html,junit
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: playwright-report
+          if-no-files-found: ignore
+          retention-days: 14
+
+  # Lighthouse audit using shared build
+  lighthouse:
+    name: Lighthouse Audit
+    runs-on: ubuntu-latest
+    needs: [changes, build]
+    if: needs.changes.outputs.lighthouse == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        formFactor: [mobile, desktop]
+    timeout-minutes: 15
+    env:
+      BASE_URL: 'http://localhost:3000'
+      TARGET_PATHS: |
+        /en
+        /de
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Restore build artifact
+        uses: ./.github/actions/restore-build
+
+      - name: Start Next.js server
+        run: pnpm run start & npx wait-on@latest "$BASE_URL"
+
+      - name: Warm up URLs
+        run: |
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            url="${BASE_URL}${path}"
+            echo "Warming $url"
+            for i in 1 2; do
+              curl -sS -o /dev/null --retry 5 --retry-connrefused --retry-delay 1 --max-time 20 "$url"
+            done
+          done <<< "${TARGET_PATHS}"
+
+      - name: Resolve URL list for Lighthouse
+        id: resolve-urls
+        run: |
+          {
+            echo 'urls<<EOF'
+            while IFS= read -r path; do
+              [ -z "$path" ] && continue
+              echo "${BASE_URL}${path}"
+            done <<< "${TARGET_PATHS}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@fcd65974f7c4c2bf0ee9d09b84d2489183c29726 # v12
+        with:
+          urls: ${{ steps.resolve-urls.outputs.urls }}
+          configPath: './.github/lighthouse/lighthouserc.js'
+          uploadArtifacts: false
+          temporaryPublicStorage: true
+        env:
+          LHCI_FORM_FACTOR: ${{ matrix.formFactor }}
+
+  # Bundle analysis using shared build
+  bundle-analysis:
+    name: Bundle Analysis
+    runs-on: ubuntu-latest
+    needs: [changes, build]
+    if: needs.changes.outputs.bundle == 'true'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+      - name: Setup with cache
+        uses: ./.github/actions/setup-pnpm-node
+        with:
+          mode: 'cache'
+          cache-key: ${{ env.NODE_MODULES_CACHE_KEY }}
+
+      - name: Restore build artifact
+        uses: ./.github/actions/restore-build
+
+      - name: Analyze bundle
+        run: npx -p nextjs-bundle-analysis report
+
+      - name: Upload bundle
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: bundle
+          path: .next/analyze/__bundle_analysis.json
+
+      - name: Download base branch bundle stats
+        uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
+        if: success() && github.event.number
+        with:
+          workflow: ci.yaml
+          branch: ${{ github.event.pull_request.base.ref }}
+          path: .next/analyze/base
+
+      - name: Compare with base branch bundle
+        if: success() && github.event.number
+        run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
+
+      - name: Get comment body
+        id: get-comment-body
+        if: success() && github.event.number
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
+
+      - name: Find existing comment
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
+        if: success() && github.event.number
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: '<!-- __NEXTJS_BUNDLE -->'
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        if: success() && github.event.number && steps.fc.outputs.comment-id == ''
+        with:
+          issue-number: ${{ github.event.number }}
+          body: ${{ steps.get-comment-body.outputs.body }}
+
+      - name: Update comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        if: success() && github.event.number && steps.fc.outputs.comment-id != ''
+        with:
+          issue-number: ${{ github.event.number }}
+          body: ${{ steps.get-comment-body.outputs.body }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          edit-mode: replace
+
+  # Dockerfile linting
+  dockerfile-lint:
+    name: Dockerfile Lint
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.dockerfile-lint == 'true'
     steps:
       - name: Checkout repo
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
@@ -85,22 +465,24 @@ jobs:
           config: .hadolint.yaml
           format: tty
 
-  build-image:
+  # Docker build and verification
+  docker-build:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    needs: test
+    needs: [changes, test]
+    if: needs.changes.outputs.docker == 'true'
     steps:
       - name: Checkout repo
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
-      - name: Setup Docker
+      - name: Setup Docker QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
 
-      - name: Set up Docker Buildx
+      - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
 
-      - name: Build with Buildx (load locally)
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+      - name: Build with Buildx
+        uses: docker/build-push-action@263435318d21b8e361a7d2c83 # v6
         with:
           context: .
           push: false
@@ -108,37 +490,39 @@ jobs:
           tags: ${{ env.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
       - name: Save image as tar
         run: docker save $IMAGE_TAG -o image.tar
 
       - name: Upload image artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
-          name: $STORED_IMAGE_NAME
+          name: ${{ env.STORED_IMAGE_NAME }}
           path: image.tar
           retention-days: 1
 
-  image-structure:
-    name: Image Structure Test (CST)
+  # Container structure tests
+  docker-structure-test:
+    name: Container Structure Test
     runs-on: ubuntu-latest
-    needs: build-image
+    needs: docker-build
     steps:
       - name: Checkout repo
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
-      - name: Download build artifact
+      - name: Download image artifact
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
         with:
-          name: $STORED_IMAGE_NAME
+          name: ${{ env.STORED_IMAGE_NAME }}
           path: .
 
       - name: Load image
         run: |
           ls -lh .
           docker load -i image.tar
-          docker image inspect "$IMAGE_TAG" >/dev/null
+          docker image inspect "$IMAGE_TAG" > /dev/null
 
-      - name: Container Structure Test
+      - name: Run structure tests
         run: |
           docker pull gcr.io/gcp-runtimes/container-structure-test:latest
           docker run --rm \
@@ -147,19 +531,21 @@ jobs:
             gcr.io/gcp-runtimes/container-structure-test:latest test \
             --image $IMAGE_TAG --config /cst.yaml
 
-  vuln-scan:
-    name: Vulnerability Scan (Trivy)
+  # Vulnerability scanning
+  docker-security-scan:
+    name: Security Scan (Trivy)
     runs-on: ubuntu-latest
-    needs: build-image
+    needs: docker-build
     steps:
-      - name: Download build artifact
+      - name: Download image artifact
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
         with:
-          name: $STORED_IMAGE_NAME
+          name: ${{ env.STORED_IMAGE_NAME }}
 
-      - name: Setup scanner
+      - name: Setup Trivy scanner
         uses: aquasecurity/setup-trivy@e6c2c5e321ed9123bda567646e2f96565e34abe1 # v0.2.4
-      - name: Scan image tar
+
+      - name: Scan image
         run: |
           trivy image --input image.tar \
             --format table \

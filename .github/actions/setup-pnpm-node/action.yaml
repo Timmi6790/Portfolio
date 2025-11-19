@@ -1,0 +1,45 @@
+name: 'Setup Node.js & pnpm'
+description: 'Sets up pnpm and Node.js, then either installs dependencies or restores from cache'
+
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: false
+    default: '24'
+  pnpm-version:
+    description: 'pnpm version'
+    required: false
+    default: '10'
+  mode:
+    description: 'Setup mode: "install" to install deps, "cache" to restore from cache'
+    required: true
+  cache-key:
+    description: 'Cache key for node_modules (required when mode is "cache")'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+        run_install: false
+
+    - name: Setup Node.js
+      uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      if: ${{ inputs.mode == 'install' }}
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+    - name: Restore node_modules from cache
+      if: ${{ inputs.mode == 'cache' }}
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: node_modules
+        key: ${{ inputs.cache-key }}

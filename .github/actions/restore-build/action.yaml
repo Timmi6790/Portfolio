@@ -1,0 +1,27 @@
+name: 'Restore Next.js build artifact'
+description: 'Downloads and extracts Next.js build artifact'
+
+inputs:
+  artifact-name:
+    description: 'Name of the build artifact'
+    required: false
+    default: 'nextjs-build'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: .next
+
+    - name: Verify build artifact
+      shell: bash
+      run: |
+        if [ ! -d ".next" ]; then
+          echo "Error: .next directory not found after artifact download"
+          exit 1
+        fi
+        echo "✓ Build artifact restored successfully"
+        ls -lh .next

@@ -9,6 +9,7 @@ import { ContactSection } from '@/components/contact-section'
 import { ExperienceSection } from '@/components/experience-section'
 import { HeroSection } from '@/components/hero-section'
 import { ProjectsSection } from '@/components/projects-section'
+import { ScrollSnapPairController } from '@/components/scroll-snap-pair-controller'
 import { SkillsSection } from '@/components/skills-section'
 import { TestimonialsSection } from '@/components/testimonials-section'
 import { ensureLocaleFromParameters } from '@/i18n/locale'
@@ -54,7 +55,7 @@ const DeferredSections: (
 }: DeferredSectionsProperties): JSX.Element => {
   const { contributionData, projects, stats }: GitHubData = use(dataPromise)
   return (
-    <div className="snap-start">
+    <>
       <AboutSection locale={locale} />
       <SkillsSection locale={locale} />
       <ProjectsSection
@@ -67,7 +68,7 @@ const DeferredSections: (
       <ExperienceSection locale={locale} />
       <TestimonialsSection locale={locale} />
       <ContactSection locale={locale} />
-    </div>
+    </>
   )
 }
 
@@ -82,11 +83,21 @@ const Home: RoutePageFC<HomeProperties> = async ({
   const dataPromise: Promise<GitHubData> = fetchGitHubData()
 
   return (
-    <main className="h-screen snap-y snap-mandatory overflow-y-scroll bg-background">
-      <HeroSection locale={locale} />
-      <Suspense fallback={null}>
-        <DeferredSections dataPromise={dataPromise} locale={locale} />
-      </Suspense>
+    <main className="bg-background">
+      <section className="min-h-screen" id="hero-section">
+        <HeroSection locale={locale} />
+      </section>
+
+      <section id="main-section">
+        <Suspense fallback={null}>
+          <DeferredSections dataPromise={dataPromise} locale={locale} />
+        </Suspense>
+      </section>
+
+      <ScrollSnapPairController
+        bottomSectionId="main-section"
+        topSectionId="hero-section"
+      />
     </main>
   )
 }

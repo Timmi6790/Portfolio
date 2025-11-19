@@ -125,13 +125,11 @@ export const generateMetadata: GenerateMetadataFC<
 /* ---------- viewport ---------- */
 export const viewport: Viewport = {
   initialScale: 1,
-  // Avoids auto-detecting phone numbers/emails as links on iOS:
   interactiveWidget: 'resizes-content',
   themeColor: [
     { color: '#000000', media: '(prefers-color-scheme: dark)' },
     { color: '#ffffff', media: '(prefers-color-scheme: light)' },
   ],
-  // Optional but helpful:
   viewportFit: 'cover',
   width: 'device-width',
 }
@@ -170,7 +168,11 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
           <ThemeProvider defaultTheme="dark">
             {/* Non-critical client UI mounts after idle inside this wrapper */}
             <DeferredClientUi />
-            <main id="content">{children}</main>
+            {/* 
+              Do not use <main> here. 
+              Child pages (e.g., page.tsx) are responsible for providing a single <main> element per page for accessibility.
+            */}
+            <div id="content">{children}</div>
             <LegalFooter locale={locale} />
           </ThemeProvider>
         </NextIntlClientProvider>

@@ -213,12 +213,6 @@
     line-height: 1.5;
     text-rendering: optimizeLegibility;
   }
-
-  /* Added smooth scrolling and custom scrollbar styles */
-  html {
-    scroll-behavior: smooth;
-  }
-
   /* Custom scrollbar for webkit browsers */
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;

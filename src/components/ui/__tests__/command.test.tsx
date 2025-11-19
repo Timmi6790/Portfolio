@@ -52,6 +52,7 @@ vi.mock('cmdk', () => {
 // Mock lucide icons
 vi.mock('lucide-react', () => ({
   SearchIcon: () => <div data-testid="search-icon">Search</div>,
+  XIcon: () => <div data-testid="x-icon">X</div>,
 }))
 
 describe('Command components', () => {

@@ -324,7 +324,7 @@ jobs:
           path: |
             .next
             !.next/cache
-          key: nextjs-build-${{ github.sha }}
+          key: nextjs-build-${{ github.run_id }}
 
   # E2E tests using shared build
   e2e:

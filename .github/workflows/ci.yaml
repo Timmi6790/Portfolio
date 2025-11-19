@@ -466,10 +466,10 @@ jobs:
           mode: 'cache'
           cache-key: *cache_key
 
-      - name: Restore build artifact
-        uses: ./.github/actions/restore-build
+      - name: Build and Analyze
+        run: pnpm run analyze
 
-      - name: Analyze bundle
+      - name: Generate Report
         run: npx -p nextjs-bundle-analysis report
 
       - name: Upload bundle
@@ -497,13 +497,17 @@ jobs:
         id: get-comment-body
         if: success() && github.event.number
         run: |
-          echo "body<<EOF" >> $GITHUB_OUTPUT
-          echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
-          echo EOF >> $GITHUB_OUTPUT
+          if [ -f .next/analyze/__bundle_analysis_comment.txt ]; then
+            echo "body<<EOF" >> $GITHUB_OUTPUT
+            cat .next/analyze/__bundle_analysis_comment.txt >> $GITHUB_OUTPUT
+            echo EOF >> $GITHUB_OUTPUT
+          else
+            echo "body=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Find existing comment
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
-        if: success() && github.event.number
+        if: success() && github.event.number && steps.get-comment-body.outputs.body != ''
         id: fc
         with:
           issue-number: ${{ github.event.number }}
@@ -511,14 +515,14 @@ jobs:
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-        if: success() && github.event.number && steps.fc.outputs.comment-id == ''
+        if: success() && github.event.number && steps.fc.outputs.comment-id == '' && steps.get-comment-body.outputs.body != ''
         with:
           issue-number: ${{ github.event.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
 
       - name: Update comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-        if: success() && github.event.number && steps.fc.outputs.comment-id != ''
+        if: success() && github.event.number && steps.fc.outputs.comment-id != '' && steps.get-comment-body.outputs.body != ''
         with:
           issue-number: ${{ github.event.number }}
           body: ${{ steps.get-comment-body.outputs.body }}

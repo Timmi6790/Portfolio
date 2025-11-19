@@ -118,24 +118,46 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Check for existing cache
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Check for existing node_modules cache
         id: cache-check
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: node_modules
-          key: &cache_key node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          key: &cache_key node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           lookup-only: true
+
+      - name: Restore pnpm store cache
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        id: store-restore
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
 
       - name: Install dependencies
         if: steps.cache-check.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
-      - name: Cache node_modules
+      - name: Save node_modules cache
         if: steps.cache-check.outputs.cache-hit != 'true'
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: node_modules
           key: *cache_key
+
+      - name: Save pnpm store cache
+        if: steps.cache-check.outputs.cache-hit != 'true' && steps.store-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
   # Quality checks - run in parallel using cached dependencies
   lint:
@@ -455,6 +477,7 @@ jobs:
         with:
           name: bundle
           path: .next/analyze/__bundle_analysis.json
+          retention-days: 1
 
       - name: Download base branch bundle stats
         uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
@@ -518,9 +541,9 @@ jobs:
           config: .hadolint.yaml
           format: tty
 
-  # Docker build and verification
-  docker-build:
-    name: Build Docker Image
+  # Consolidated Docker pipeline (Build -> Test -> Scan)
+  docker-pipeline:
+    name: Docker Pipeline
     runs-on: ubuntu-latest
     needs: [changes, test]
     if: needs.changes.outputs.docker == 'true'
@@ -544,37 +567,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Save image as tar
-        run: docker save $IMAGE_TAG -o image.tar
-
-      - name: Upload image artifact
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
-        with:
-          name: ${{ env.STORED_IMAGE_NAME }}
-          path: image.tar
-          retention-days: 1
-
-  # Container structure tests
-  docker-structure-test:
-    name: Container Structure Test
-    runs-on: ubuntu-latest
-    needs: docker-build
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-
-      - name: Download image artifact
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
-        with:
-          name: ${{ env.STORED_IMAGE_NAME }}
-          path: .
-
-      - name: Load image
-        run: |
-          ls -lh .
-          docker load -i image.tar
-          docker image inspect "$IMAGE_TAG" > /dev/null
-
       - name: Run structure tests
         run: |
           docker pull gcr.io/gcp-runtimes/container-structure-test:latest
@@ -584,24 +576,12 @@ jobs:
             gcr.io/gcp-runtimes/container-structure-test:latest test \
             --image $IMAGE_TAG --config /cst.yaml
 
-  # Vulnerability scanning
-  docker-security-scan:
-    name: Security Scan (Trivy)
-    runs-on: ubuntu-latest
-    needs: docker-build
-    steps:
-      - name: Download image artifact
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # v0.29.0
         with:
-          name: ${{ env.STORED_IMAGE_NAME }}
-
-      - name: Setup Trivy scanner
-        uses: aquasecurity/setup-trivy@e6c2c5e321ed9123bda567646e2f96565e34abe1 # v0.2.4
-
-      - name: Scan image
-        run: |
-          trivy image --input image.tar \
-            --format table \
-            --vuln-type os,library \
-            --severity HIGH,CRITICAL \
-            --ignore-unfixed
+          image-ref: ${{ env.IMAGE_TAG }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

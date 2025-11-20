@@ -507,16 +507,21 @@ jobs:
         if: success() && github.event.number
         run: |
           if [ -f .next/analyze/__bundle_analysis_comment.txt ]; then
-            echo "body<<BUNDLE_ANALYSIS_COMMENT_END" >> $GITHUB_OUTPUT
-            cat .next/analyze/__bundle_analysis_comment.txt >> $GITHUB_OUTPUT
-            echo "BUNDLE_ANALYSIS_COMMENT_END" >> $GITHUB_OUTPUT
+            {
+              echo "body-base64=$(base64 -w 0 .next/analyze/__bundle_analysis_comment.txt)"
+            } >> $GITHUB_OUTPUT
           else
-            echo "body=" >> $GITHUB_OUTPUT
+            echo "body-base64=" >> $GITHUB_OUTPUT
           fi
+
+      - name: Decode comment body
+        if: success() && github.event.number && steps.get-comment-body.outputs.body-base64 != ''
+        id: decoded-body
+        run: echo "content=$(echo '${{ steps.get-comment-body.outputs.body-base64 }}' | base64 -d)" >> $GITHUB_OUTPUT
 
       - name: Find existing comment
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
-        if: success() && github.event.number && steps.get-comment-body.outputs.body != ''
+        if: success() && github.event.number && steps.decoded-body.outputs.content != ''
         id: fc
         with:
           issue-number: ${{ github.event.number }}
@@ -524,17 +529,17 @@ jobs:
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-        if: success() && github.event.number && steps.fc.outputs.comment-id == '' && steps.get-comment-body.outputs.body != ''
+        if: success() && github.event.number && steps.fc.outputs.comment-id == '' && steps.decoded-body.outputs.content != ''
         with:
           issue-number: ${{ github.event.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
+          body: ${{ steps.decoded-body.outputs.content }}
 
       - name: Update comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-        if: success() && github.event.number && steps.fc.outputs.comment-id != '' && steps.get-comment-body.outputs.body != ''
+        if: success() && github.event.number && steps.fc.outputs.comment-id != '' && steps.decoded-body.outputs.content != ''
         with:
           issue-number: ${{ github.event.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
+          body: ${{ steps.decoded-body.outputs.content }}
           comment-id: ${{ steps.fc.outputs.comment-id }}
           edit-mode: replace
 

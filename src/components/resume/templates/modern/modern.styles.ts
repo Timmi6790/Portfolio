@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { StyleSheet } from '@react-pdf/renderer'
 
 // Modern professional color scheme
@@ -28,8 +29,15 @@ export const styles = StyleSheet.create({
   achievement: {
     color: colors.primary,
     fontSize: 10,
-    lineHeight: 1.6,
-    marginBottom: 4,
+    lineHeight: 1.4,
+    marginBottom: 2,
+    marginLeft: 16,
+  },
+  achievementCompact: {
+    color: colors.primary,
+    fontSize: 9,
+    lineHeight: 1.2,
+    marginBottom: 0,
     marginLeft: 16,
   },
   // Company name and location
@@ -37,11 +45,16 @@ export const styles = StyleSheet.create({
     alignItems: 'baseline',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 2,
+    marginBottom: 1,
   },
   companyText: {
     color: colors.accent,
     fontSize: 11,
+    fontWeight: 600,
+  },
+  companyTextCompact: {
+    color: colors.accent,
+    fontSize: 10,
     fontWeight: 600,
   },
   // Contact item in sidebar
@@ -65,6 +78,11 @@ export const styles = StyleSheet.create({
     fontSize: 9,
     fontStyle: 'italic',
   },
+  dateTextCompact: {
+    color: colors.secondary,
+    fontSize: 8,
+    fontStyle: 'italic',
+  },
   // Education item
   educationDegree: {
     color: colors.dark,
@@ -82,28 +100,44 @@ export const styles = StyleSheet.create({
   },
   // Experience item
   experienceItem: {
-    marginBottom: 16,
+    marginBottom: 8,
+  },
+  experienceItemCompact: {
+    marginBottom: 5,
   },
   // Job title and dates row
   jobHeader: {
     alignItems: 'baseline',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 2,
+  },
+  jobHeaderCompact: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 1,
   },
   jobTitle: {
     color: colors.dark,
     fontSize: 12,
     fontWeight: 700,
   },
+  jobTitleCompact: {
+    color: colors.dark,
+    fontSize: 11,
+    fontWeight: 700,
+  },
   // Left sidebar (contact, skills, education)
   leftColumn: {
     backgroundColor: colors.background,
-    padding: 20,
+    flex: 1,
+    padding: 16,
     width: '35%',
   },
   // Main container
   mainContainer: {
+    flex: 1,
     flexDirection: 'row',
   },
   // Name in header
@@ -122,20 +156,20 @@ export const styles = StyleSheet.create({
   // Project description
   projectDescription: {
     color: colors.primary,
-    fontSize: 10,
-    lineHeight: 1.5,
-    marginBottom: 3,
+    fontSize: 9,
+    lineHeight: 1.4,
+    marginBottom: 2,
   },
   // Project item
   projectItem: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   // Project name
   projectName: {
     color: colors.dark,
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: 600,
-    marginBottom: 3,
+    marginBottom: 2,
   },
   // Project tech stack
   projectTech: {
@@ -145,15 +179,15 @@ export const styles = StyleSheet.create({
   },
   // Right column (summary, experience, projects)
   rightColumn: {
-    padding: 20,
+    padding: 16,
     width: '65%',
   },
   // Section divider
   sectionDivider: {
     backgroundColor: colors.accent,
     height: 2,
-    marginBottom: 12,
-    marginTop: 4,
+    marginBottom: 6,
+    marginTop: 3,
     width: 40,
   },
   // Section title
@@ -162,8 +196,8 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 700,
     letterSpacing: 0.8,
-    marginBottom: 4,
-    marginTop: 16,
+    marginBottom: 3,
+    marginTop: 12,
     textTransform: 'uppercase',
   },
   // First section (no top margin)
@@ -172,7 +206,7 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 700,
     letterSpacing: 0.8,
-    marginBottom: 4,
+    marginBottom: 3,
     marginTop: 0,
     textTransform: 'uppercase',
   },
@@ -200,8 +234,8 @@ export const styles = StyleSheet.create({
   summary: {
     color: colors.primary,
     fontSize: 10,
-    lineHeight: 1.7,
-    marginBottom: 16,
+    lineHeight: 1.5,
+    marginBottom: 12,
   },
   // Title/role in header
   title: {
@@ -215,7 +249,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderBottomColor: colors.border,
     borderBottomWidth: 1,
-    padding: 20,
-    paddingBottom: 16,
+    padding: 16,
+    paddingBottom: 12,
   },
 })

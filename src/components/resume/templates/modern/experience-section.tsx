@@ -10,12 +10,16 @@ interface ExperienceSectionProperties {
   readonly translations: ResumeTranslations
 }
 
+// eslint-disable-next-line max-lines-per-function
 export const ExperienceSection: FC<ExperienceSectionProperties> = ({
   translations,
 }: ExperienceSectionProperties): ReactElement => {
   const experiences: ResumeExperience[] = translations.raw(
     'resume.experience'
   ) as ResumeExperience[]
+
+  // Use compact styles if there are more than 2 experience entries
+  const isCompact: boolean = experiences.length > 2
 
   return (
     <>
@@ -27,18 +31,32 @@ export const ExperienceSection: FC<ExperienceSectionProperties> = ({
         (exp: ResumeExperience, index: number): ReactElement => (
           <View
             key={`${exp.company}-${index.toString()}`}
-            style={styles.experienceItem}
+            style={
+              isCompact ? styles.experienceItemCompact : styles.experienceItem
+            }
           >
-            <View style={styles.jobHeader}>
-              <Text style={styles.jobTitle}>{exp.title}</Text>
-              <Text style={styles.dateText}>
+            <View
+              style={isCompact ? styles.jobHeaderCompact : styles.jobHeader}
+            >
+              <Text
+                style={isCompact ? styles.jobTitleCompact : styles.jobTitle}
+              >
+                {exp.title}
+              </Text>
+              <Text
+                style={isCompact ? styles.dateTextCompact : styles.dateText}
+              >
                 {exp.startDate}
                 {' - '}
                 {exp.endDate}
               </Text>
             </View>
             <View style={styles.companyRow}>
-              <Text style={styles.companyText}>
+              <Text
+                style={
+                  isCompact ? styles.companyTextCompact : styles.companyText
+                }
+              >
                 {exp.company}
                 {' • '}
                 {exp.location}
@@ -48,7 +66,9 @@ export const ExperienceSection: FC<ExperienceSectionProperties> = ({
               (achievement: string, achievementIndex: number): ReactElement => (
                 <Text
                   key={`achievement_${achievementIndex.toString()}`}
-                  style={styles.achievement}
+                  style={
+                    isCompact ? styles.achievementCompact : styles.achievement
+                  }
                 >
                   {'• '}
                   {achievement}

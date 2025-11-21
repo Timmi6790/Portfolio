@@ -116,27 +116,51 @@
     "experience": [
       {
         "achievements": [
-          "Led development of microservices architecture serving 1M+ users",
-          "Reduced application load time by 60% through optimization",
-          "Mentored team of 5 junior developers"
+          "Investigated and reproduced gameplay and backend issues on a large-scale Minecraft server network, helping developers diagnose root causes and improve overall stability over time.",
+          "Handled live incident reports from players and internal monitoring, quickly reproducing issues, assessing impact and ensuring critical problems were escalated and tracked to resolution.",
+          "Collaborated closely with developers and community staff to reproduce, triage and verify fixes for critical production issues."
         ],
-        "company": "Tech Company Inc.",
-        "endDate": "Present",
-        "location": "San Francisco, CA",
-        "startDate": "2021",
-        "title": "Senior Software Engineer"
+        "company": "Mineplex LLC",
+        "endDate": "2023-01",
+        "location": "Remote",
+        "startDate": "2018-11",
+        "title": "Quality Assurance Engineer"
       },
       {
         "achievements": [
-          "Built real-time messaging system using WebSockets",
-          "Implemented CI/CD pipeline reducing deployment time by 80%",
-          "Developed RESTful APIs handling 10k requests/minute"
+          "Designed and implemented backend services and data-processing pipelines primarily in Java (e.g. Spring Boot) and TypeScript/Node.js, with selected components in Rust where performance or safety was critical, exposing REST and gRPC APIs with clear contracts and strong validation.",
+          "Built and maintained CI/CD pipelines (e.g. GitHub Actions) and Kubernetes-based deployments, automating tests, security checks and releases for multiple services.",
+          "Provisioned and operated backend infrastructure (databases, message brokers, caches and reverse proxies), using infrastructure-as-code and monitoring to keep systems reliable, observable and easy to debug."
         ],
-        "company": "Startup XYZ",
-        "endDate": "2021",
+        "company": "Self-employed",
+        "endDate": "present",
         "location": "Remote",
-        "startDate": "2019",
+        "startDate": "2021-10",
+        "title": "Independent Software Developer"
+      },
+      {
+        "achievements": [
+          "Implemented and maintained gameplay and backend features for large-scale Minecraft minigames, with a focus on stability, debuggability and player impact.",
+          "Investigated complex production bugs across multiple plugins and services, turning vague reports into reproducible cases and concrete fixes in the codebase.",
+          "Worked closely with product, community and operations teams to plan and deliver gameplay features, incorporating player feedback into the development roadmap."
+        ],
+        "company": "Mineplex LLC",
+        "endDate": "2023-01",
+        "location": "Remote",
+        "startDate": "2021-10",
         "title": "Software Engineer"
+      },
+      {
+        "achievements": [
+          "Implemented core front-end and back-end engine components for an internal and external development platform in Java, TypeScript and Rust, enabling teams to build and integrate services consistently across the stack.",
+          "Built and maintained CI/CD and GitOps workflows on Kubernetes-based infrastructure, standardizing deployments, release strategies and configuration across multiple services and environments.",
+          "Implemented partner-specific features and integrations as white-labeled solutions on top of the platform, allowing partners to deliver customised products while relying on the shared core infrastructure and tooling."
+        ],
+        "company": "Mineplex Studios LLC",
+        "endDate": "present",
+        "location": "Remote",
+        "startDate": "2023-08",
+        "title": "Senior Software Engineer"
       }
     ],
     "projects": [

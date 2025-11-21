@@ -116,27 +116,51 @@
     "experience": [
       {
         "achievements": [
-          "Leitete die Entwicklung einer Microservices-Architektur für über 1 Million Benutzer",
-          "Reduzierte die Ladezeit der Anwendung durch Optimierung um 60%",
-          "Betreute ein Team von 5 Junior-Entwicklern"
+          "Gameplay- und Backend-Probleme auf einem groß angelegten Minecraft-Servernetzwerk untersucht und reproduziert, um Entwicklern bei der Ursachenanalyse zu helfen und die Stabilität schrittweise zu verbessern.",
+          "Live-Incident-Meldungen von Spielern und internen Monitoring-Systemen bearbeitet, Probleme schnell reproduziert, Auswirkungen bewertet und kritische Fehler bis zur Behebung nachverfolgt.",
+          "Eng mit Entwickler- und Community-Team zusammengearbeitet, um kritische Produktionsfehler zu reproduzieren, zu priorisieren und deren Behebung zu verifizieren."
         ],
-        "company": "Tech Company Inc.",
-        "endDate": "Gegenwart",
-        "location": "San Francisco, CA",
-        "startDate": "2021",
-        "title": "Senior Software Engineer"
+        "company": "Mineplex LLC",
+        "endDate": "2023-01",
+        "location": "Remote",
+        "startDate": "2018-11",
+        "title": "Qualitätssicherung Engineer"
       },
       {
         "achievements": [
-          "Baute ein Echtzeit-Messaging-System mit WebSockets",
-          "Implementierte eine CI/CD-Pipeline, die die Bereitstellungszeit um 80% reduzierte",
-          "Entwickelte RESTful-APIs, die 10.000 Anfragen/Minute verarbeiten"
+          "Backend-Services und Datenverarbeitungspipelines hauptsächlich in Java (z. B. Spring Boot) sowie TypeScript/Node.js entwickelt, mit ausgewählten Komponenten in Rust für performance- oder sicherheitskritische Teile, und über REST- und gRPC-APIs mit klar definierten Schnittstellen und starker Validierung bereitgestellt.",
+          "CI/CD-Pipelines (z. B. GitHub Actions) sowie Kubernetes-basierte Deployments aufgebaut und gepflegt, um Tests, Security-Checks und Releases für mehrere Services zu automatisieren.",
+          "Backend-Infrastruktur (Datenbanken, Message-Broker, Caches und Reverse Proxies) bereitgestellt und betrieben und mithilfe von Infrastructure-as-Code und Monitoring zuverlässig, beobachtbar und gut debugbar gehalten."
         ],
-        "company": "Startup XYZ",
-        "endDate": "2021",
+        "company": "Selbstständig",
+        "endDate": "present",
         "location": "Remote",
-        "startDate": "2019",
+        "startDate": "2021-10",
+        "title": "Selbstständiger Softwareentwickler"
+      },
+      {
+        "achievements": [
+          "Gameplay- und Backend-Features für groß angelegte Minecraft-Minispiele implementiert und gewartet, mit Fokus auf Stabilität, Debuggability und Spielererlebnis.",
+          "Komplexe Produktionsfehler über mehrere Plugins und Services hinweg untersucht, unklare Meldungen in reproduzierbare Fälle und konkrete Code-Fixes überführt.",
+          "Eng mit Product-, Community- und Operations-Teams zusammengearbeitet, um Gameplay-Features zu planen und umzusetzen und Spielerfeedback in die Entwicklungsroadmap einfließen zu lassen."
+        ],
+        "company": "Mineplex LLC",
+        "endDate": "2023-01",
+        "location": "Remote",
+        "startDate": "2021-10",
         "title": "Software Engineer"
+      },
+      {
+        "achievements": [
+          "Zentrale Frontend- und Backend-Engine-Komponenten für eine interne und externe Entwicklungsplattform in Java, TypeScript und Rust implementiert, sodass Teams Services konsistent über den gesamten Stack hinweg entwickeln und integrieren konnten.",
+          "CI/CD- und GitOps-Workflows auf einer Kubernetes-basierten Infrastruktur aufgebaut und gepflegt, um Deployments, Release-Strategien und Konfiguration über mehrere Services und Umgebungen hinweg zu standardisieren.",
+          "Partnerspezifische Funktionen und Integrationen als White-Label-Lösungen auf Basis der Plattform implementiert, sodass Partner individuelle Produkte bereitstellen konnten, während sie auf die gemeinsame Kerninfrastruktur und das gemeinsame Tooling zurückgreifen."
+        ],
+        "company": "Mineplex Studios LLC",
+        "endDate": "present",
+        "location": "Remote",
+        "startDate": "2023-08",
+        "title": "Senior Software Engineer"
       }
     ],
     "projects": [

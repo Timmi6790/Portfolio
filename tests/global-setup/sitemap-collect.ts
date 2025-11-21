@@ -57,6 +57,7 @@ async function fetchText(url: string): Promise<string> {
 }
 
 function extract(xml: string, re: RegExp): string[] {
+  // @ts-ignore
   return [...xml.matchAll(re)].map((m) => m[1].trim())
 }
 

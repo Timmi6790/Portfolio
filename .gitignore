@@ -58,3 +58,7 @@ playwright-report/
 test-results/
 tests/.cache
 public/resume/**
+
+# Serwist
+public/sw*
+public/swe-worker*

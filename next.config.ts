@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next'
 
 import bundleAnalyzer from '@next/bundle-analyzer'
+import withSerwistInit from '@serwist/next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 import type { Header } from 'next/dist/lib/load-custom-routes'
@@ -15,6 +16,11 @@ const withNextIntl: ReturnType<typeof createNextIntlPlugin> =
 
 const withBundleAnalyzer: ReturnType<typeof bundleAnalyzer> = bundleAnalyzer({
   enabled: process.env['ANALYZE'] === 'true',
+})
+
+const withSerwist: ReturnType<typeof withSerwistInit> = withSerwistInit({
+  swDest: 'public/sw.js',
+  swSrc: 'src/app/sw.ts',
 })
 
 type HeaderValues = Header['headers'][0]['value']
@@ -88,6 +94,23 @@ const nextConfig: NextConfig = {
         ],
         source: '/:path*',
       },
+      {
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/javascript; charset=utf-8',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self'",
+          },
+        ],
+        source: '/sw.js',
+      },
     ]
   },
 
@@ -99,6 +122,8 @@ const nextConfig: NextConfig = {
 
   poweredByHeader: false,
 
+  reactCompiler: true,
+
   // Enable strict mode for better development experience
   reactStrictMode: true,
 
@@ -108,4 +133,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 }
 
-export default withBundleAnalyzer(withNextIntl(nextConfig))
+export default withSerwist(withBundleAnalyzer(withNextIntl(nextConfig)))

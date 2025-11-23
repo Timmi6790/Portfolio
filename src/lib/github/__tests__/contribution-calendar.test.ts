@@ -4,8 +4,8 @@ import {
   dayLabelTriple,
   isoDate,
   makeDataMap,
-  sundayOfWeekUTC,
   sumCount,
+  sundayOfWeekUTC,
 } from '../contribution-calendar'
 import type { ContributionPoint } from '@/types/github'
 

@@ -47,7 +47,7 @@ export default tseslint.config(
   // Disallow JS/CJS/MJS everywhere...
   {
     files: ['**/*.{js,jsx,cjs,mjs}'],
-    ignores: ['eslint.config.mjs', 'postcss.config.mjs'], // ...except these two
+    ignores: ['eslint.config.mjs', 'postcss.config.mjs', '.lintstagedrc.mjs'], // ...except these two
     rules: {
       'no-restricted-syntax': [
         'error',
@@ -62,7 +62,7 @@ export default tseslint.config(
 
   // Allow + lightly lint our two Node-side config files
   {
-    files: ['eslint.config.mjs', 'postcss.config.mjs'],
+    files: ['eslint.config.mjs', 'postcss.config.mjs', '.lintstagedrc.mjs'],
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',

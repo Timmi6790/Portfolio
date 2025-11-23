@@ -9,7 +9,7 @@ vi.mock('next-intl/server', () => ({
 }))
 
 // Mock LegalPageLayout
-vi.mock('@/components/legal-page-layout', () => ({
+vi.mock('@/components/layout/legal-page-layout', () => ({
   LegalPageLayout: ({ children, title }: any) => (
     <div data-testid="legal-layout">
       <h1>{title}</h1>

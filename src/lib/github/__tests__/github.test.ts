@@ -32,9 +32,12 @@ const mockFetch = vi.fn()
 global.fetch = mockFetch
 
 // Import after mocks
-const { getFeaturedProjects, getUserStats, getContributionData } = await import(
-  '../github'
-)
+const {
+  getFeaturedProjects,
+  getUserStats,
+  getContributionData,
+  getGithubUser,
+} = await import('../client')
 
 describe('github', () => {
   beforeEach(() => {
@@ -223,6 +226,40 @@ describe('github', () => {
 
       const data = await getContributionData()
       expect(data).toEqual([])
+    })
+  })
+  describe('getGithubUser', () => {
+    it('aggregates data correctly', async () => {
+      // Mock sub-functions
+      mockOctokitGet.mockResolvedValue({
+        data: {
+          name: 'repo-1',
+          stargazers_count: 10,
+          forks_count: 5,
+        },
+      })
+      mockOctokitPaginate.mockResolvedValue([
+        { stargazers_count: 10, forks_count: 5 },
+      ])
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          data: {
+            user: {
+              contributionsCollection: {
+                contributionCalendar: {
+                  weeks: [],
+                },
+              },
+            },
+          },
+        }),
+      })
+
+      const data = await getGithubUser()
+      expect(data.projects).toBeDefined()
+      expect(data.stats).toBeDefined()
+      expect(data.contributionData).toBeDefined()
     })
   })
 })

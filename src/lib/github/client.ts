@@ -298,7 +298,7 @@ export interface GitHubData {
   stats: UserStats
 }
 
-export const fetchGitHubData: () => Promise<
+export const getGithubUser: () => Promise<
   Readonly<GitHubData>
 > = async (): Promise<GitHubData> => {
   const projects: GitHubProject[] = await getFeaturedProjects()

@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Button } from '../ui/button'
-import { Card } from '../ui/card'
-import { Heading } from '../ui/heading'
+import { Button } from '../button'
+import { Card } from '../card'
+import { Heading } from '../heading'
 
 describe('UI Components', () => {
   describe('Button', () => {

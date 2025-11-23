@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
 
-import { BackToHome } from '@/components/back-to-home'
+import { BackToHome } from '@/components/common/back-to-home'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { FCWithChildren, WithChildren } from '@/types/fc'
 import type { LocalePageProperties } from '@/types/i18n'

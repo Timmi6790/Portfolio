@@ -28,8 +28,8 @@ vi.mock('next-intl/server', () => ({
 }))
 
 // Mock github data fetching
-vi.mock('@/lib/github', () => ({
-  fetchGitHubData: vi.fn().mockResolvedValue({
+vi.mock('@/lib/github/client', () => ({
+  getGithubUser: vi.fn().mockResolvedValue({
     contributionData: [],
     projects: [],
     stats: { stars: 0, forks: 0, repositories: 0 },
@@ -46,14 +46,17 @@ vi.mock('@/lib/config', () => ({
 }))
 
 // Mock components to avoid deep rendering complexity in integration test
-vi.mock('@/components/hero-section', () => ({
+vi.mock('@/components/sections/hero-section', () => ({
   HeroSection: () => <div data-testid="hero-section">Hero</div>,
 }))
 
-vi.mock('@/components/scroll-snap-pair-controller', () => ({
-  ScrollSnapPairController: () => null,
-}))
-vi.mock('@/components/deferred-sections', () => ({
+vi.mock(
+  '@/components/features/scroll-snap/scroll-snap-pair-controller',
+  () => ({
+    ScrollSnapPairController: () => null,
+  })
+)
+vi.mock('@/components/sections/deferred-sections', () => ({
   DeferredSections: () => (
     <div data-testid="deferred-sections">Deferred Sections</div>
   ),
@@ -78,8 +81,8 @@ describe('Page', () => {
     expect(screen.getByRole('main')).toBeDefined()
 
     // Verify mocks were called
-    const { fetchGitHubData } = await import('@/lib/github')
-    expect(fetchGitHubData).toHaveBeenCalled()
+    const { getGithubUser } = await import('@/lib/github/client')
+    expect(getGithubUser).toHaveBeenCalled()
 
     // Wait for deferred sections
     await waitFor(() => {

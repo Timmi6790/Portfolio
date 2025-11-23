@@ -16,7 +16,7 @@ const { getTheme, setTheme, setThemeSpy } = vi.hoisted(() => {
 })
 
 // Mock your theme provider: no redeclarations, no module augmentation.
-vi.mock('@/components/theme-provider', () => {
+vi.mock('@/components/common/theme-provider', () => {
   return {
     useTheme: () => ({ theme: getTheme(), setTheme: setThemeSpy }),
   }

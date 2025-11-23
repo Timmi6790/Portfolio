@@ -7,7 +7,7 @@ import { type Locale } from 'next-intl'
 
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { LegalPageLayout } from '@/components/legal-page-layout'
+import { LegalPageLayout } from '@/components/layout/legal-page-layout'
 import { Heading } from '@/components/ui/heading'
 import {
   ensureLocaleFromParameters,

@@ -44,7 +44,7 @@ vi.mock('@/lib/config', () => ({
   },
 }))
 
-vi.mock('@/components/theme-provider', () => ({
+vi.mock('@/components/common/theme-provider', () => ({
   ThemeProvider: ({ children }: any) => (
     <div data-testid="theme-provider">{children}</div>
   ),
@@ -55,7 +55,7 @@ vi.mock('@/app/[locale]/deferred-client-ui', () => ({
   default: () => <div data-testid="deferred-ui" />,
 }))
 
-vi.mock('@/components/legal-footer', () => ({
+vi.mock('@/components/layout/legal-footer', () => ({
   LegalFooter: () => <div data-testid="legal-footer" />,
 }))
 

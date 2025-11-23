@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { LegalPageLayout } from '../legal-page-layout'
 
 // Mock BackToHome
-vi.mock('../back-to-home', () => ({
+vi.mock('../../common/back-to-home', () => ({
   BackToHome: () => <div data-testid="back-to-home">Back</div>,
 }))
 

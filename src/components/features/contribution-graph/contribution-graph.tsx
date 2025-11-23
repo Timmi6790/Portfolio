@@ -16,7 +16,7 @@ import {
   type MonthLabel,
   sumCount,
   type WeekModel,
-} from '@/lib/contribution-calendar'
+} from '@/lib/github/contribution-calendar'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import {
   CONTRIBUTION_LEVELS,

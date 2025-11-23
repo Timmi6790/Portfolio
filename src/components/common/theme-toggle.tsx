@@ -4,7 +4,7 @@ import { type JSX } from 'react'
 
 import { Moon, Sun } from 'lucide-react'
 
-import { type Theme, useTheme } from '@/components/theme-provider'
+import { type Theme, useTheme } from '@/components/common/theme-provider'
 import { Button } from '@/components/ui/button'
 import type { FCStrict } from '@/types/fc'
 

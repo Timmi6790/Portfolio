@@ -9,8 +9,8 @@ import { Inter } from 'next/font/google'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
 import DeferredClientUi from '@/app/[locale]/deferred-client-ui'
-import { LegalFooter } from '@/components/legal-footer'
-import { ThemeProvider } from '@/components/theme-provider'
+import { ThemeProvider } from '@/components/common/theme-provider'
+import { LegalFooter } from '@/components/layout/legal-footer'
 import {
   ensureLocaleFromParameters,
   maybeLocaleFromParameters,

@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
-import { ContributionGraph } from '@/components/contribution-graph'
+import { ContributionGraph } from '@/components/features/contribution-graph/contribution-graph'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'

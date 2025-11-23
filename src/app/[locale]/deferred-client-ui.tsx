@@ -65,17 +65,18 @@ const pickToaster: (
 
 /* ---------- typed importers (explicit return types) ---------- */
 const importThemeToggle: () => Promise<ThemeToggleModule> =
-  (): Promise<ThemeToggleModule> => import('@/components/theme-toggle')
+  (): Promise<ThemeToggleModule> => import('@/components/common/theme-toggle')
 
 const importLanguageSwitcher: () => Promise<LanguageSwitcherModule> =
   (): Promise<LanguageSwitcherModule> =>
-    import('@/components/language-switcher')
+    import('@/components/common/language-switcher')
 
 const importCommandPalette: () => Promise<CommandPaletteModule> =
-  (): Promise<CommandPaletteModule> => import('@/components/command-palette')
+  (): Promise<CommandPaletteModule> =>
+    import('@/components/features/command-palette/command-palette')
 
 const importEasterEggs: () => Promise<EasterEggsModule> =
-  (): Promise<EasterEggsModule> => import('@/components/easter-eggs')
+  (): Promise<EasterEggsModule> => import('@/components/features/easter-eggs')
 
 const importSonner: () => Promise<SonnerModule> = (): Promise<SonnerModule> =>
   import('sonner')

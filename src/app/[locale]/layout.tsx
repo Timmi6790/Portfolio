@@ -11,6 +11,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import DeferredClientUi from '@/app/[locale]/deferred-client-ui'
 import { ThemeProvider } from '@/components/common/theme-provider'
 import { LegalFooter } from '@/components/layout/legal-footer'
+import { ReloadPrompt } from '@/components/pwa/reload-prompt'
 import {
   ensureLocaleFromParameters,
   maybeLocaleFromParameters,
@@ -168,6 +169,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
           <ThemeProvider defaultTheme="dark">
             {/* Non-critical client UI mounts after idle inside this wrapper */}
             <DeferredClientUi />
+            <ReloadPrompt />
             {/* 
               Do not use <main> here. 
               Child pages (e.g., page.tsx) are responsible for providing a single <main> element per page for accessibility.

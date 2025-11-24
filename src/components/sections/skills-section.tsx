@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-literals, @typescript-eslint/typedef */
+/* eslint-disable @typescript-eslint/typedef */
 'use server'
 
 import { type JSX } from 'react'
@@ -26,12 +26,11 @@ interface SkillsSectionProperties {
 const SkillList: FCStrict<{
   readonly items: readonly Skill[]
   readonly title: string
-   
 }> = ({ items, title }): JSX.Element => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 text-center lg:text-left">
       <h3 className="text-xl font-semibold text-foreground">{title}</h3>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
         {items.map((skill: Skill): JSX.Element => {
           const Icon: LucideIcon = getSkillIcon(skill.name)
           return (
@@ -82,9 +81,6 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
             {translations('title')}
           </Heading>
           <div className="mx-auto h-1.5 w-24 rounded-full bg-gradient-to-r from-primary to-primary/40" />
-          <p className="mt-4 text-muted-foreground">
-            {translations('expertise')} & {translations('learning')}
-          </p>
         </div>
 
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-8">

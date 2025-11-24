@@ -168,10 +168,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
           <ThemeProvider defaultTheme="dark">
             {/* Non-critical client UI mounts after idle inside this wrapper */}
             <DeferredClientUi />
-            {/* 
-              Do not use <main> here. 
-              Child pages (e.g., page.tsx) are responsible for providing a single <main> element per page for accessibility.
-            */}
+
             <div id="content">{children}</div>
             <LegalFooter locale={locale} />
           </ThemeProvider>

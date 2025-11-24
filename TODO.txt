@@ -4,3 +4,4 @@
 * Improve dark reader support for the hero title
 * Reset github token
 * Replace resume test data with real data
+* Add propper icons

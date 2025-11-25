@@ -14,7 +14,10 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --prefer-offline
 
 FROM build_base AS builder
+
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
+ARG GIT_SHA=unknown
+ENV GIT_SHA=$GIT_SHA
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

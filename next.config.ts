@@ -21,8 +21,17 @@ const withBundleAnalyzer: ReturnType<typeof bundleAnalyzer> = bundleAnalyzer({
 })
 
 // Use git commit hash as cache version
-// eslint-disable-next-line sonarjs/no-os-command-from-path
-const revision: string = execSync('git rev-parse HEAD', { encoding: 'utf8' })
+const revision: string = (
+  process.env.GIT_SHA ??
+  ((): string => {
+    try {
+      // eslint-disable-next-line sonarjs/no-os-command-from-path
+      return execSync('git rev-parse HEAD', { encoding: 'utf8' })
+    } catch {
+      return 'unknown'
+    }
+  })()
+)
   .trim()
   .slice(0, 7)
 

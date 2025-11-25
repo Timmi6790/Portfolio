@@ -7,6 +7,9 @@ declare global {
       // Enable bundle analyzer
       readonly ANALYZE?: 'false' | 'true'
 
+      // Git SHA, used during build time to determine worker revisions
+      readonly GIT_SHA?: string
+
       // GitHub API Token (optional but recommended)
       readonly GITHUB_TOKEN?: string
 

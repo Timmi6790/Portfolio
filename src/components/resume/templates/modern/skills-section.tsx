@@ -1,18 +1,50 @@
-import { type FC, type ReactElement } from 'react'
+import { type ReactElement } from 'react'
 
 import { Text, View } from '@react-pdf/renderer'
 
 import { siteConfig, type Skill } from '@/lib/config'
+import type { FCStrict } from '@/types/fc'
 import type { ResumeTranslations } from '@/types/resume'
 
 import { styles } from './modern.styles'
+
+interface SkillSectionProperties {
+  readonly skills: readonly Skill[]
+  readonly title: string
+}
+
+const SkillSection: FCStrict<SkillSectionProperties> = ({
+  skills,
+  title,
+}: SkillSectionProperties): ReactElement => (
+  <>
+    <Text style={styles.contactLabel}>{title}</Text>
+    <View style={styles.skillsContainer}>
+      {skills
+        .filter(
+          (skill: Skill): boolean =>
+            skill.confidence >= siteConfig.skills.resumeMinimumConfidence
+        )
+        .toSorted(
+          (skillOne: Skill, skillTwo: Skill): number =>
+            skillTwo.confidence - skillOne.confidence
+        )
+        .map(
+          (skill: Skill): ReactElement => (
+            <Text key={skill.name} style={styles.skillTag}>
+              {skill.name}
+            </Text>
+          )
+        )}
+    </View>
+  </>
+)
 
 interface SkillsSectionProperties {
   readonly translations: ResumeTranslations
 }
 
-// eslint-disable-next-line max-lines-per-function
-export const SkillsSection: FC<SkillsSectionProperties> = ({
+export const SkillsSection: FCStrict<SkillsSectionProperties> = ({
   translations,
 }: SkillsSectionProperties): ReactElement => (
   <>
@@ -21,56 +53,24 @@ export const SkillsSection: FC<SkillsSectionProperties> = ({
     </Text>
     <View style={styles.sectionDivider} />
 
-    <Text style={styles.contactLabel}>
-      {translations('resume.sectionTitles.skillsSubTypes.languages')}
-    </Text>
-    <View style={styles.skillsContainer}>
-      {siteConfig.skills.languages.map(
-        (skill: Skill): ReactElement => (
-          <Text key={skill.name} style={styles.skillTag}>
-            {skill.name}
-          </Text>
-        )
-      )}
-    </View>
+    <SkillSection
+      skills={siteConfig.skills.languages}
+      title={translations('resume.sectionTitles.skillsSubTypes.languages')}
+    />
 
-    <Text style={styles.contactLabel}>
-      {translations('resume.sectionTitles.skillsSubTypes.frameworks')}
-    </Text>
-    <View style={styles.skillsContainer}>
-      {siteConfig.skills.frameworks.map(
-        (skill: Skill): ReactElement => (
-          <Text key={skill.name} style={styles.skillTag}>
-            {skill.name}
-          </Text>
-        )
-      )}
-    </View>
+    <SkillSection
+      skills={siteConfig.skills.frameworks}
+      title={translations('resume.sectionTitles.skillsSubTypes.frameworks')}
+    />
 
-    <Text style={styles.contactLabel}>
-      {translations('resume.sectionTitles.skillsSubTypes.buildTools')}
-    </Text>
-    <View style={styles.skillsContainer}>
-      {siteConfig.skills.buildTools.map(
-        (skill: Skill): ReactElement => (
-          <Text key={skill.name} style={styles.skillTag}>
-            {skill.name}
-          </Text>
-        )
-      )}
-    </View>
+    <SkillSection
+      skills={siteConfig.skills.buildTools}
+      title={translations('resume.sectionTitles.skillsSubTypes.buildTools')}
+    />
 
-    <Text style={styles.contactLabel}>
-      {translations('resume.sectionTitles.skillsSubTypes.infrastructure')}
-    </Text>
-    <View style={styles.skillsContainer}>
-      {siteConfig.skills.infrastructure.map(
-        (skill: Skill): ReactElement => (
-          <Text key={skill.name} style={styles.skillTag}>
-            {skill.name}
-          </Text>
-        )
-      )}
-    </View>
+    <SkillSection
+      skills={siteConfig.skills.infrastructure}
+      title={translations('resume.sectionTitles.skillsSubTypes.infrastructure')}
+    />
   </>
 )

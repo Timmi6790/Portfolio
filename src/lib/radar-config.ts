@@ -11,7 +11,7 @@ import type {
 export const RADAR_CONFIG: RadarConfigType = {
   /** Animation settings */
   animation: {
-    sonarSweepAngle: 45, // degrees
+    sonarSweepAngle: 45,
     sonarSweepRadius: 100,
   },
 

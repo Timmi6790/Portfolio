@@ -13,6 +13,7 @@ import {
   FileCode,
   FileJson,
   GitBranch,
+  GitMerge,
   Globe,
   Layers,
   Layout,
@@ -27,6 +28,7 @@ import {
 } from 'lucide-react'
 
 export const SkillIcons: Record<string, LucideIcon> = {
+  ArgoCD: GitMerge,
   AWS: Cloud,
   Azure: Cloud,
   CSS: Layout,
@@ -48,6 +50,7 @@ export const SkillIcons: Record<string, LucideIcon> = {
   Kubernetes: Settings,
 
   Linux: Terminal,
+  Lua: Braces,
   Maven: Library,
   MongoDB: Database,
   'Next.js': AppWindow,

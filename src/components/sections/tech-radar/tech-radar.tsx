@@ -8,6 +8,12 @@ import { getTranslations } from 'next-intl/server'
 
 import styles from '@/components/sections/tech-radar/tech-radar.module.css'
 import { type Skill } from '@/lib/config'
+import {
+  LABEL_PATHS,
+  QUADRANT_ANGLES,
+  QUADRANT_STYLES,
+  RADAR_CONFIG,
+} from '@/lib/radar-config'
 import { calculateBlipPosition } from '@/lib/tech-radar-utilities'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
@@ -20,12 +26,6 @@ import type {
 } from '@/types/tech-radar'
 
 import { HoverProvider } from './hover-context'
-import {
-  LABEL_PATHS,
-  QUADRANT_ANGLES,
-  QUADRANT_STYLES,
-  RADAR_CONFIG,
-} from './radar-config'
 import { TechRadarInteractive } from './tech-radar-interactive'
 import { TechRadarTooltip } from './tech-radar-tooltip'
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/typedef */
 'use server'
 
 import { type JSX } from 'react'
@@ -21,28 +20,41 @@ interface SkillsSectionProperties {
   readonly locale: Locale
 }
 
-/* ────────────────────── subcomponents ────────────────────── */
-
-const SkillList: FCStrict<{
+interface SkillListProperties {
   readonly items: readonly Skill[]
   readonly title: string
-}> = ({ items, title }): JSX.Element => {
+}
+/* ────────────────────── subcomponents ────────────────────── */
+
+const SkillList: FCStrict<SkillListProperties> = ({
+  items,
+  title,
+}: SkillListProperties): JSX.Element => {
   return (
     <div className="space-y-4 text-center lg:text-left">
       <h3 className="text-xl font-semibold text-foreground">{title}</h3>
       <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
-        {items.map((skill: Skill): JSX.Element => {
-          const Icon: LucideIcon = getSkillIcon(skill.name)
-          return (
-            <div
-              className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:border-primary/50 hover:bg-accent/50"
-              key={skill.name}
-            >
-              <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-              <span>{skill.name}</span>
-            </div>
+        {items
+          .filter(
+            (skill: Skill): boolean =>
+              skill.confidence >= siteConfig.skills.sectionSideMinimumConfidence
           )
-        })}
+          .toSorted(
+            (skillOne: Skill, skillTwo: Skill): number =>
+              skillTwo.confidence - skillOne.confidence
+          )
+          .map((skill: Skill): JSX.Element => {
+            const Icon: LucideIcon = getSkillIcon(skill.name)
+            return (
+              <div
+                className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:border-primary/50 hover:bg-accent/50"
+                key={skill.name}
+              >
+                <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+                <span>{skill.name}</span>
+              </div>
+            )
+          })}
       </div>
     </div>
   )

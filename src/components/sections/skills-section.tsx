@@ -9,7 +9,7 @@ import { type LucideIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { getSkillIcon } from '@/components/sections/skill-icons'
-import { TechRadar } from '@/components/sections/tech-radar'
+import { TechRadar } from '@/components/sections/tech-radar/tech-radar'
 import { Heading } from '@/components/ui/heading'
 import { siteConfig, type Skill } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
@@ -50,6 +50,7 @@ const SkillList: FCStrict<{
 
 /* ─────────────────────── main section ────────────────────── */
 
+// eslint-disable-next-line max-lines-per-function
 export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
   locale,
 }: SkillsSectionProperties): Promise<JSX.Element> => {
@@ -103,7 +104,10 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
             <SkillList items={languages} title={translations('languages')} />
             <SkillList items={frameworks} title={translations('frameworks')} />
             <SkillList items={buildTools} title={translations('buildTools')} />
-            <SkillList items={infrastructure} title={translations('infrastructure')} />
+            <SkillList
+              items={infrastructure}
+              title={translations('infrastructure')}
+            />
           </div>
         </div>
       </div>

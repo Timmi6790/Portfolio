@@ -2,8 +2,9 @@
 
 import React, { type JSX, useState } from 'react'
 
-import { type Locale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
+import { getSkillIcon } from '@/components/sections/skill-icons'
 import { cn } from '@/lib/utilities'
 import type { Translations } from '@/types/i18n'
 import type { Blip } from '@/types/tech-radar'
@@ -14,13 +15,11 @@ import type { LucideIcon } from 'lucide-react'
 
 interface TechRadarClientProperties {
   readonly blips: readonly Blip[]
-  readonly locale: Locale
 }
 
 // noinspection JSUnusedLocalSymbols
 export const TechRadarClient: React.FC<TechRadarClientProperties> = ({
   blips,
-  locale,
 }: TechRadarClientProperties): JSX.Element => {
   const translations: Translations<'skills'> = useTranslations('skills')
 
@@ -199,7 +198,7 @@ export const TechRadarClient: React.FC<TechRadarClientProperties> = ({
       {hoveredBlip !== null && (
         <div
           className="pointer-events-none absolute z-50 flex flex-col items-center justify-center rounded-lg border border-border bg-popover px-3 py-2 text-sm shadow-md transition-opacity animate-in fade-in zoom-in-95"
-          style={(() => {
+          style={((): React.CSSProperties => {
             const hoveredBlipData: Blip | undefined = blips.find(
               (blip: Blip): boolean => blip.id === hoveredBlip
             )
@@ -212,14 +211,14 @@ export const TechRadarClient: React.FC<TechRadarClientProperties> = ({
             }
           })()}
         >
-          {(() => {
+          {((): JSX.Element | null => {
             const blip: Blip | undefined = blips.find(
               (item: Blip): boolean => item.id === hoveredBlip
             )
             if (!blip) {
               return null
             }
-            const Icon: LucideIcon = blip.icon
+            const Icon: LucideIcon = getSkillIcon(blip.iconName)
             return (
               <>
                 <Icon className="mb-1 h-4 w-4 text-primary" />

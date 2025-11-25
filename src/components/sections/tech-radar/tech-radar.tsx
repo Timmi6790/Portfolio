@@ -1,10 +1,5 @@
-'use client'
-
 import React, { type JSX } from 'react'
 
-import type { Locale } from 'next-intl'
-
-import { getSkillIcon } from '@/components/sections/skill-icons'
 import { TechRadarClient } from '@/components/sections/tech-radar/tech-radar-client'
 import { type Skill } from '@/lib/config'
 import { calculateBlipPosition } from '@/lib/tech-radar-utilities'
@@ -19,7 +14,6 @@ interface TechRadarProperties {
   readonly frameworks: readonly Skill[]
   readonly infrastructure: readonly Skill[]
   readonly languages: readonly Skill[]
-  readonly locale: Locale
 }
 
 interface QuadrantConfig {
@@ -27,44 +21,47 @@ interface QuadrantConfig {
   readonly start: number
 }
 
-const generateBlipsForCategory = (
+const generateBlipsForCategory: (
+  items: readonly Skill[],
+  quadrantKey: Blip['quadrant'],
+  config: QuadrantConfig
+) => Blip[] = (
   items: readonly Skill[],
   quadrantKey: Blip['quadrant'],
   config: QuadrantConfig
 ): Blip[] => {
-  return items.map((skill: Skill, index: number): Blip => {
-    const {
-      angle,
-      radius,
-      xCoordinate,
-      yCoordinate,
-    }: CalculateBlipPositionResult = calculateBlipPosition({
-      confidence: skill.confidence,
-      endAngle: config.end,
-      index,
-      seedOffset: 1000 + index,
-      startAngle: config.start,
-      total: items.length,
+    return items.map((skill: Skill, index: number): Blip => {
+      const {
+        angle,
+        radius,
+        xCoordinate,
+        yCoordinate,
+      }: CalculateBlipPositionResult = calculateBlipPosition({
+        confidence: skill.confidence,
+        endAngle: config.end,
+        index,
+        skillName: skill.name,
+        startAngle: config.start,
+        total: items.length,
+      })
+      return {
+        angle,
+        iconName: skill.name,
+        id: `${quadrantKey}-${skill.name}`,
+        name: skill.name,
+        quadrant: quadrantKey,
+        radius,
+        xCoordinate,
+        yCoordinate,
+      }
     })
-    return {
-      angle,
-      icon: getSkillIcon(skill.name),
-      id: `${quadrantKey}-${String(index)}`,
-      name: skill.name,
-      quadrant: quadrantKey,
-      radius,
-      xCoordinate,
-      yCoordinate,
-    }
-  })
-}
+  }
 
 export const TechRadar: React.FC<TechRadarProperties> = ({
   buildTools,
   frameworks,
   infrastructure,
   languages,
-  locale,
 }: TechRadarProperties): JSX.Element => {
   const quadrants: Record<TechRadarQuadrant, QuadrantConfig> = {
     buildTools: { end: Math.PI, start: Math.PI / 2 }, // bottom-left
@@ -84,5 +81,5 @@ export const TechRadar: React.FC<TechRadarProperties> = ({
     ),
   ]
 
-  return <TechRadarClient blips={allBlips} locale={locale} />
+  return <TechRadarClient blips={allBlips} />
 }

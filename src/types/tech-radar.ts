@@ -1,5 +1,3 @@
-import type { LucideIcon } from 'lucide-react'
-
 export type TechRadarQuadrant =
   | 'buildTools'
   | 'frameworks'
@@ -8,7 +6,7 @@ export type TechRadarQuadrant =
 
 export interface Blip {
   readonly angle: number
-  readonly icon: LucideIcon
+  readonly iconName: string
   readonly id: string
   readonly name: string
   readonly quadrant: TechRadarQuadrant
@@ -21,7 +19,7 @@ export interface CalculateBlipPositionParameters {
   readonly confidence: number
   readonly endAngle: number
   readonly index: number
-  readonly seedOffset: number
+  readonly skillName: string
   readonly startAngle: number
   readonly total: number
 }

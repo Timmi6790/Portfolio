@@ -10,7 +10,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 
 import DeferredClientUi from '@/app/[locale]/deferred-client-ui'
 import { ThemeProvider } from '@/components/common/theme-provider'
-import { DevelopmentServiceWorkerGuard } from '@/components/features/development-servervice-worker-cleanup'
+import { DevelopmentServiceWorkerGuard } from '@/components/features/development-service-worker-cleanup'
 import { LegalFooter } from '@/components/layout/legal-footer'
 import {
   ensureLocaleFromParameters,

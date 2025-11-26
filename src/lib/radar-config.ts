@@ -19,22 +19,22 @@ export const RADAR_CONFIG: RadarConfigType = {
   blips: {
     hoverScale: 1.5,
     maxRadius: 85,
-    minRadius: 25,
+    minRadius: 10,
     size: 3,
     strokeWidth: 0.5,
   },
 
   /** Background circle radii */
   circles: {
-    inner: 32.5,
-    middle: 67.5,
+    inner: 40,
+    middle: 70,
     outer: 97.5,
   },
 
   /** Jitter amounts for position randomization */
   jitter: {
-    angle: 0.2,
-    radius: 5,
+    angle: 0.1,
+    radius: 1,
   },
 
   /** Quadrant label positioning */
@@ -48,9 +48,9 @@ export const RADAR_CONFIG: RadarConfigType = {
   physics: {
     iterations: 200,
     maxSpeed: 4,
-    noiseAmount: 0.8,
+    noiseAmount: 0.5,
     repulsionStrength: 2.5,
-    springStrength: 0.15,
+    springStrength: 0.3,
     tangentForce: 0.05,
     wallRepulsionStrength: 2,
   },

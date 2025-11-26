@@ -41,7 +41,7 @@ async function getAboutTranslations(
 
   const summary: ReactNode = translations.rich('summary', {
     highlight: (chunks: ReactNode): JSX.Element => (
-      <span className="font-semibold" style={{ color: 'hsl(221, 83%, 40%)' }}>
+      <span className="font-semibold" style={{ color: 'hsl(221, 83%, 30%)' }}>
         {chunks}
       </span>
     ),

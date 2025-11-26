@@ -38,9 +38,10 @@
   },
   "skills": {
     "title": "Fähigkeiten & Technologien",
-    "expertise": "Expertise",
-    "learning": "Derzeit lerne ich",
-    "tools": "Tools & Plattformen"
+    "languages": "Sprachen",
+    "frameworks": "Frameworks",
+    "buildTools": "Build & Tools",
+    "infrastructure": "Infrastruktur"
   },
   "experience": {
     "title": "Berufserfahrung",
@@ -96,9 +97,10 @@
       "experience": "Berufserfahrung",
       "skills": "Technische Fähigkeiten",
       "skillsSubTypes": {
-        "expertise": "Expertise",
-        "learning": "Derzeit lerne ich",
-        "tools": "Tools & Plattformen"
+        "languages": "Sprachen",
+        "frameworks": "Frameworks",
+        "buildTools": "Build & Tools",
+        "infrastructure": "Infrastruktur"
       },
       "projects": "Projekte",
       "education": "Ausbildung",

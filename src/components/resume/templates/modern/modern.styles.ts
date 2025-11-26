@@ -216,6 +216,11 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginBottom: 12,
   },
+  skillsContainerCompact: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 6,
+  },
   // Skill tag
   skillTag: {
     backgroundColor: colors.white,
@@ -229,6 +234,19 @@ export const styles = StyleSheet.create({
     marginRight: 6,
     paddingHorizontal: 8,
     paddingVertical: 4,
+  },
+  skillTagCompact: {
+    backgroundColor: colors.white,
+    borderColor: colors.accent,
+    borderRadius: 3,
+    borderWidth: 1,
+    color: colors.accent,
+    fontSize: 8,
+    fontWeight: 500,
+    marginBottom: 3,
+    marginRight: 3,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
   },
   // Summary text
   summary: {

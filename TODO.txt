@@ -5,3 +5,5 @@
 * Reset github token
 * Replace resume test data with real data
 * Add propper icons
+* Ensure resume stays on one page
+* Ensure radar blips confidence level is correct

@@ -38,9 +38,10 @@
   },
   "skills": {
     "title": "Skills & Technologies",
-    "expertise": "Expertise",
-    "learning": "Currently Learning",
-    "tools": "Tools & Platforms"
+    "languages": "Languages",
+    "frameworks": "Frameworks",
+    "buildTools": "Build & Tools",
+    "infrastructure": "Infrastructure"
   },
   "experience": {
     "title": "Experience",
@@ -96,9 +97,10 @@
       "experience": "Experience",
       "skills": "Technical Skills",
       "skillsSubTypes": {
-        "expertise": "Expertise",
-        "learning": "Currently Learning",
-        "tools": "Tools & Platforms"
+        "languages": "Languages",
+        "frameworks": "Frameworks",
+        "buildTools": "Build & Tools",
+        "infrastructure": "Infrastructure"
       },
       "projects": "Projects",
       "education": "Education",

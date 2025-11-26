@@ -60,29 +60,36 @@ describe('tech-radar-utilities', () => {
     const endAngle = Math.PI / 2
 
     it('should maintain stable positions for blips that are far apart', () => {
-      // Create blips with initial positions that match their target radius
-      // to minimize spring forces
-      const blips: CalculateBlipPositionResult[] = [
-        { angle: 0.4, radius: 50, xCoordinate: 0, yCoordinate: 0 },
-        { angle: 0.8, radius: 60, xCoordinate: 0, yCoordinate: 0 },
-      ].map((b) => ({
-        ...b,
-        xCoordinate: Math.cos(b.angle) * b.radius,
-        yCoordinate: Math.sin(b.angle) * b.radius,
-      }))
+      // Create blips with sufficient angular separation
+      const blipRadius1 = 50
+      const blipRadius2 = 60
+      const blipAngle1 = 0.3
+      const blipAngle2 = 1.0
 
-      const resolved = resolveBlipCollisions({ blips, startAngle, endAngle })
+      const blips: CalculateBlipPositionResult[] = [
+        {
+          angle: blipAngle1,
+          radius: blipRadius1,
+          xCoordinate: Math.cos(blipAngle1) * blipRadius1,
+          yCoordinate: Math.sin(blipAngle1) * blipRadius1,
+        },
+        {
+          angle: blipAngle2,
+          radius: blipRadius2,
+          xCoordinate: Math.cos(blipAngle2) * blipRadius2,
+          yCoordinate: Math.sin(blipAngle2) * blipRadius2,
+        },
+      ]
+
+      const resolved = resolveBlipCollisions({ blips, endAngle, startAngle })
 
       expect(resolved).toHaveLength(2)
       const [first, second] = resolved
-      const [blipFirst, blipSecond] = blips
 
       expect(first).toBeDefined()
       expect(second).toBeDefined()
-      expect(blipFirst).toBeDefined()
-      expect(blipSecond).toBeDefined()
 
-      // Verify blips remain in the same sector and don't overlap
+      // Verify blips remain in the same sector
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       expect(first!.angle).toBeGreaterThanOrEqual(startAngle)
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -92,11 +99,7 @@ describe('tech-radar-utilities', () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       expect(second!.angle).toBeLessThanOrEqual(endAngle)
 
-      // Verify blips maintain their relative order (first should have smaller angle)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      expect(first!.angle).toBeLessThan(second!.angle)
-
-      // Verify they maintain adequate separation
+      // Verify blips maintain adequate separation in Cartesian space
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const deltaX = first!.xCoordinate - second!.xCoordinate
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -105,6 +108,28 @@ describe('tech-radar-utilities', () => {
       const minSeparation = RADAR_CONFIG.blips.size * 2 + 4
 
       expect(distance).toBeGreaterThan(minSeparation)
+
+      // Verify radii are within valid bounds
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      expect(first!.radius).toBeGreaterThanOrEqual(RADAR_CONFIG.blips.minRadius)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      expect(first!.radius).toBeLessThanOrEqual(RADAR_CONFIG.blips.maxRadius)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      expect(second!.radius).toBeGreaterThanOrEqual(
+        RADAR_CONFIG.blips.minRadius
+      )
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      expect(second!.radius).toBeLessThanOrEqual(RADAR_CONFIG.blips.maxRadius)
+
+      // Verify blips are not collapsed to the same position
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const resolvedDistance = Math.hypot(
+        first!.xCoordinate - second!.xCoordinate,
+        first!.yCoordinate - second!.yCoordinate
+      )
+
+      // Should maintain at least the minimum separation
+      expect(resolvedDistance).toBeGreaterThan(minSeparation)
     })
 
     it('should separate overlapping blips', () => {

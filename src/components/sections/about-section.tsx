@@ -86,7 +86,7 @@ const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
 
             {/* Key Competencies */}
             <div className="mx-auto max-w-lg">
-              <h3 className="mb-4 text-center text-sm font-semibold tracking-wider text-foreground/70 uppercase">
+              <h3 className="mb-4 text-center text-sm font-semibold tracking-wider text-foreground uppercase">
                 {translations('competenciesLabel')}
               </h3>
               <div className="flex flex-wrap justify-center gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2">

@@ -27,14 +27,14 @@
   },
   "about": {
     "title": "About Me",
-    "learning": {
-      "title": "Currently Learning",
-      "description": "Expanding my skills in <highlight>Rust</highlight> and <highlight>Next.js</highlight>, exploring modern web development and systems programming."
-    },
-    "expertise": {
-      "title": "Expertise",
-      "description": "Specialized in <highlight>Java</highlight> development with years of experience building robust applications and contributing to open-source projects."
-    }
+    "summary": "I’m a Software Developer specializing in scalable, high-performance backend systems. My core stack is <highlight>Java</highlight>, with growing experience in <highlight>Rust</highlight> and <highlight>Next.js</highlight>. I work end-to-end from code to production using containerized services, <highlight>Kubernetes</highlight>, <highlight>Helm</highlight>, and <highlight>GitOps</highlight>-focused workflows. I care about clean code, clear abstractions, and well-tested, reliable systems that are easy to operate and evolve.",
+    "competencies": [
+      "Backend Architecture",
+      "Scalability & Performance",
+      "Kubernetes, Helm & GitOps",
+      "Clean, Maintainable Code"
+    ],
+    "competenciesLabel": "Key Competencies"
   },
   "skills": {
     "title": "Skills & Technologies",

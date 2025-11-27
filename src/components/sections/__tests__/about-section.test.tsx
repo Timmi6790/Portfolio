@@ -5,21 +5,34 @@ import AboutSection from '../about-section'
 // Mock next-intl
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(async () => {
-    return Object.assign((key: string) => key, {
-      rich: (key: string, options?: any) => {
-        if (options?.highlight) {
-          return options.highlight(`highlighted-${key}`)
+    return Object.assign(
+      (key: string) => {
+        if (key === 'competenciesLabel') {
+          return 'Key Competencies'
         }
         return key
       },
-    })
+      {
+        raw: (key: string) => {
+          if (key === 'competencies') {
+            return [
+              'Backend Architecture',
+              'Cloud Native',
+              'Open Source',
+              'System Design',
+            ]
+          }
+          return []
+        },
+        rich: (key: string, options?: any) => {
+          if (options?.highlight) {
+            return options.highlight(`highlighted-${key}`)
+          }
+          return key
+        },
+      }
+    )
   }),
-}))
-
-// Mock Lucide icons
-vi.mock('lucide-react', () => ({
-  BookOpen: () => <div data-testid="book-open-icon">BookOpen</div>,
-  Code2: () => <div data-testid="code2-icon">Code2</div>,
 }))
 
 describe('AboutSection', () => {
@@ -30,19 +43,28 @@ describe('AboutSection', () => {
     expect(screen.getByText('title')).toBeDefined()
   })
 
-  it('renders learning card', async () => {
+  it('renders summary content', async () => {
     const Component = await AboutSection({ locale: 'en' })
     render(Component)
 
-    expect(screen.getByText('learning.title')).toBeDefined()
-    expect(screen.getByTestId('book-open-icon')).toBeDefined()
+    // The summary is rendered via the rich() call
+    expect(screen.getByText('highlighted-summary')).toBeDefined()
   })
 
-  it('renders expertise card', async () => {
+  it('renders competency badges', async () => {
     const Component = await AboutSection({ locale: 'en' })
     render(Component)
 
-    expect(screen.getByText('expertise.title')).toBeDefined()
-    expect(screen.getByTestId('code2-icon')).toBeDefined()
+    expect(screen.getByText('Backend Architecture')).toBeDefined()
+    expect(screen.getByText('Cloud Native')).toBeDefined()
+    expect(screen.getByText('Open Source')).toBeDefined()
+    expect(screen.getByText('System Design')).toBeDefined()
+  })
+
+  it('renders Key Competencies heading', async () => {
+    const Component = await AboutSection({ locale: 'en' })
+    render(Component)
+
+    expect(screen.getByText('Key Competencies')).toBeDefined()
   })
 })

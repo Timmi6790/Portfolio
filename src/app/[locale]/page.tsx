@@ -1,14 +1,18 @@
-import { type JSX, Suspense } from 'react'
+import { type JSX } from 'react'
 
 import { type Locale } from 'next-intl'
 
 import { setRequestLocale } from 'next-intl/server'
 
 import { ScrollSnapPairController } from '@/components/features/scroll-snap/scroll-snap-pair-controller'
-import { DeferredSections } from '@/components/sections/deferred-sections'
+import AboutSection from '@/components/sections/about-section'
+import { ContactSection } from '@/components/sections/contact-section'
+import { ExperienceSection } from '@/components/sections/experience-section'
 import { HeroSection } from '@/components/sections/hero-section'
+import { ProjectsSection } from '@/components/sections/projects-section'
+import { SkillsSection } from '@/components/sections/skills-section'
+import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { ensureLocaleFromParameters } from '@/i18n/locale'
-import { getGithubUser, type GitHubData } from '@/lib/github/client'
 import type { UnparsedLocalePageProperties } from '@/types/i18n'
 import type { PageParameters, RoutePageFC } from '@/types/page'
 
@@ -20,8 +24,6 @@ const Home: RoutePageFC<HomeProperties> = async ({
   const locale: Locale = await ensureLocaleFromParameters(params)
   setRequestLocale(locale)
 
-  const dataPromise: Promise<GitHubData> = getGithubUser()
-
   return (
     <main className="bg-background">
       <section className="min-h-screen" id="hero-section">
@@ -29,9 +31,12 @@ const Home: RoutePageFC<HomeProperties> = async ({
       </section>
 
       <section id="main-section">
-        <Suspense fallback={null}>
-          <DeferredSections dataPromise={dataPromise} locale={locale} />
-        </Suspense>
+        <AboutSection locale={locale} />
+        <SkillsSection locale={locale} />
+        <ProjectsSection locale={locale} />
+        <ExperienceSection locale={locale} />
+        <TestimonialsSection locale={locale} />
+        <ContactSection locale={locale} />
       </section>
 
       <ScrollSnapPairController

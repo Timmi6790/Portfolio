@@ -1,5 +1,3 @@
-'use server'
-
 import { type JSX, type ReactNode } from 'react'
 
 import { type Locale } from 'next-intl'

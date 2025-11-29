@@ -17,6 +17,9 @@
     "socials": {
       "github": "Github",
       "linkedin": "LinkedIn"
+    },
+    "footer": {
+      "copyright": "© {year} {name}. Alle Rechte vorbehalten"
     }
   },
   "hero": {

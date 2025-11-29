@@ -13,6 +13,9 @@ declare global {
       // GitHub API Token (optional but recommended)
       readonly GITHUB_TOKEN?: string
 
+      // Public revision
+      readonly NEXT_PUBLIC_REVISION: string
+
       // Next.js built-in
       readonly NODE_ENV: 'development' | 'production' | 'test'
     }

@@ -9,7 +9,8 @@ vi.mock('next-intl/server', () => ({
 
 // Mock routing Link
 vi.mock('@/i18n/routing', () => ({
-  Link: ({ children, href, ...props }: any) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Link: ({ children, href, prefetch, ...props }: any) => (
     <a href={href} {...props}>
       {children}
     </a>
@@ -37,5 +38,14 @@ describe('LegalFooter', () => {
     render(Component)
 
     expect(screen.getByText('privacy.title')).toBeDefined()
+  })
+
+  it('renders copyright and version', async () => {
+    process.env['NEXT_PUBLIC_REVISION'] = 'abc1234'
+    const Component = await LegalFooter({ locale: 'en' })
+    render(Component)
+
+    expect(screen.getByText('common.footer.copyright')).toBeDefined()
+    expect(screen.getByText('vabc1234')).toBeDefined()
   })
 })

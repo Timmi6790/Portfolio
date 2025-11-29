@@ -80,6 +80,10 @@ const PROD_CSP_FALLBACK: HeaderValues = [
 ].join('; ')
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_REVISION: revision,
+  },
+
   experimental: {
     inlineCss: true,
     optimizeCss: true,

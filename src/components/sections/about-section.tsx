@@ -78,7 +78,7 @@ const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
         </div>
 
         {/* Main Content Card */}
-        <Card className="border-border/50 bg-card/50 shadow-lg backdrop-blur-sm">
+        <Card className="border-2 p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-lg">
           <CardContent className="space-y-8 p-8 md:p-12">
             {/* Summary Text */}
             <div

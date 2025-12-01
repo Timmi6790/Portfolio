@@ -9,3 +9,4 @@
 * Ensure radar blips confidence level is correct
 * DPA's
 * Verify imprint and privacy policy
+* Docker/Helm seems to have issues with caching/file access

@@ -59,6 +59,14 @@ vi.mock('@/components/layout/legal-footer', () => ({
   LegalFooter: () => <div data-testid="legal-footer" />,
 }))
 
+vi.mock('@/components/common/theme-toggle', () => ({
+  ThemeToggle: () => <div data-testid="theme-toggle" />,
+}))
+
+vi.mock('@/components/common/language-switcher', () => ({
+  LanguageSwitcher: () => <div data-testid="language-switcher" />,
+}))
+
 describe('RootLayout', () => {
   const mockParams = Promise.resolve({ locale: 'en' })
 
@@ -101,6 +109,8 @@ describe('RootLayout', () => {
 
     const { getByTestId } = render(Component)
     expect(getByTestId('legal-footer')).toBeDefined()
+    expect(getByTestId('theme-toggle')).toBeDefined()
+    expect(getByTestId('language-switcher')).toBeDefined()
   })
 })
 

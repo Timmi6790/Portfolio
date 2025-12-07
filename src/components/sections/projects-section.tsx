@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/card'
 import { GridPattern } from '@/components/ui/grid-pattern'
 import { Heading } from '@/components/ui/heading'
-import { RadialGradient } from '@/components/ui/radial-gradient'
 import { Section, SECTION_BACKGROUNDS } from '@/components/ui/section'
 import { SectionContainer } from '@/components/ui/section-container'
 import { SectionHeader } from '@/components/ui/section-header'
@@ -339,8 +338,6 @@ export const ProjectsSection: FCAsync<ProjectsSectionProperties> = async ({
     >
       {/* Background patterns */}
       <GridPattern size={32} />
-      <RadialGradient position="top-right" size={600} />
-      <RadialGradient position="bottom-left" size={600} />
 
       <SectionContainer className="relative" size="xl">
         <SectionHeader

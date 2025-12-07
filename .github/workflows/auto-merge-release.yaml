@@ -35,15 +35,26 @@ jobs:
       RELEASE_BRANCH_PREFIX: 'release-please--'
       TARGET_LABEL: 'ready-to-merge'
     steps:
+      - name: Generate Bot Token
+        id: generate_token
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+
       - name: Label old release PRs
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ steps.generate_token.outputs.token }}
           script: |
             const AGE_THRESHOLD_DAYS = parseInt(process.env.AGE_THRESHOLD_DAYS || "7", 10);
             const RELEASE_LABEL = process.env.RELEASE_LABEL || "autorelease: pending";
             const RELEASE_BRANCH_PREFIX = process.env.RELEASE_BRANCH_PREFIX || "release-please--";
             const TARGET_LABEL = process.env.TARGET_LABEL || "ready-to-merge";
+
+            // Get the authenticated bot user to find its ID dynamically
+            const { data: currentUser } = await github.rest.users.getAuthenticated();
+            console.log(`Authenticated as: ${currentUser.login} (ID: ${currentUser.id})`);
 
             const AGE_THRESHOLD_MS = AGE_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
             const now = new Date();
@@ -56,10 +67,11 @@ jobs:
             });
 
             for (const pr of pullRequests) {
+              const isReleaseBot = pr.user.id === currentUser.id;
               const hasReleaseLabel = pr.labels.some(label => label.name === RELEASE_LABEL);
               const isReleaseBranch = pr.head.ref.startsWith(RELEASE_BRANCH_PREFIX);
 
-              if (hasReleaseLabel || isReleaseBranch) {
+              if (isReleaseBot && (hasReleaseLabel || isReleaseBranch)) {
                 const createdDate = new Date(pr.created_at);
                 const age = now - createdDate;
 
@@ -87,11 +99,23 @@ jobs:
       (needs.label-old-prs.result == 'success' || needs.label-old-prs.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
+      - name: Auto-approve
+        uses: hmarr/auto-approve-action@v4
+        with:
+          review-message: 'Auto-approved for Release Please automerge.'
+
+      - name: Generate Bot Token
+        id: generate_token
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+
       - id: automerge
         name: automerge
-        uses: 'pascalgn/automerge-action@v0.16.2'
+        uses: 'pascalgn/automerge-action@229d4e5d6dc1e51b2e157ae39d2c6c39f0469b82' # v0.16.2
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          GITHUB_TOKEN: '${{ steps.generate_token.outputs.token }}'
           MERGE_LABELS: 'ready-to-merge'
           MERGE_METHOD: 'squash'
           MERGE_COMMIT_MESSAGE: 'pull-request-title'

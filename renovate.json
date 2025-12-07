@@ -11,6 +11,7 @@
   "labels": ["dependencies"],
   "rebaseWhen": "auto",
   "timezone": "Europe/Berlin",
+  "stabilityDays": 0,
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true

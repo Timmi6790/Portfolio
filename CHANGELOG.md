@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.4.0](https://github.com/Timmi6790/Portfolio/compare/v1.3.1...v1.4.0) (2025-12-08)
+
+
+### Features
+
+* add propper fav icons ([#206](https://github.com/Timmi6790/Portfolio/issues/206)) ([669d38a](https://github.com/Timmi6790/Portfolio/commit/669d38a99956bc86c3ff9bc2848bf620a6dab1df))
+* harden setup ([79de214](https://github.com/Timmi6790/Portfolio/commit/79de2146c7b0a35492f7b96d4f60a882e65c533a))
+* hide section if no data is present ([#191](https://github.com/Timmi6790/Portfolio/issues/191)) ([a340edd](https://github.com/Timmi6790/Portfolio/commit/a340edd030c87225da63ccbb9532344c6d563fd0))
+
+
+### Bug Fixes
+
+* **config:** migrate Renovate config ([#203](https://github.com/Timmi6790/Portfolio/issues/203)) ([e6ffe89](https://github.com/Timmi6790/Portfolio/commit/e6ffe894f269720179c8c8ace84fc29075a08349))
+* **deps:** lock file maintenance ([#204](https://github.com/Timmi6790/Portfolio/issues/204)) ([a46c5f0](https://github.com/Timmi6790/Portfolio/commit/a46c5f09c8f90e573a5ce0c081dc8a678b4ca437))
+* **deps:** lock file maintenance ([#205](https://github.com/Timmi6790/Portfolio/issues/205)) ([315b4ee](https://github.com/Timmi6790/Portfolio/commit/315b4ee1014a7da83379235c304c5eb6dbea9a70))
+* **deps:** update actions/github-script action to v8 ([#198](https://github.com/Timmi6790/Portfolio/issues/198)) ([36b96bc](https://github.com/Timmi6790/Portfolio/commit/36b96bcbcb3a5da1e7e068fcc9d84cc89ff1b417))
+* **deps:** update dependency react-hook-form to v7.68.0 ([#209](https://github.com/Timmi6790/Portfolio/issues/209)) ([3e5518c](https://github.com/Timmi6790/Portfolio/commit/3e5518c19684aae850ae1eab68ee7f41f51d0fa7))
+* **deps:** update dependency tailwind-merge to v3.4.0 ([#210](https://github.com/Timmi6790/Portfolio/issues/210)) ([6fa9f41](https://github.com/Timmi6790/Portfolio/commit/6fa9f411fb2ea55c6796a35502142f8eee1eab14))
+
 ## [1.3.1](https://github.com/Timmi6790/Portfolio/compare/v1.3.0...v1.3.1) (2025-12-06)
 
 

@@ -73,7 +73,7 @@ importers:
         specifier: latest
         version: 20.2.0
       '@cyclonedx/cdxgen':
-        specifier: ^12.0.0
+        specifier: 12.0.0
         version: 12.0.0
       '@lingual/i18n-check':
         specifier: latest
@@ -145,7 +145,7 @@ importers:
         specifier: 2.2.1
         version: 2.2.1(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-no-unsanitized:
-        specifier: ^4.1.4
+        specifier: 4.1.4
         version: 4.1.4(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-perfectionist:
         specifier: 4.15.1
@@ -181,7 +181,7 @@ importers:
         specifier: 5.71.0
         version: 5.71.0(@types/node@24.10.1)(typescript@5.9.3)
       license-checker-rseidelsohn:
-        specifier: ^4.4.2
+        specifier: 4.4.2
         version: 4.4.2
       lint-staged:
         specifier: 16.2.7
@@ -202,7 +202,7 @@ importers:
         specifier: 4.1.17
         version: 4.1.17
       tsx:
-        specifier: ^4.21.0
+        specifier: 4.21.0
         version: 4.21.0
       typescript:
         specifier: 5.9.3
@@ -9076,7 +9076,7 @@ snapshots:
 
   compressible@2.0.18:
     dependencies:
-      mime-db: 1.52.0
+      mime-db: 1.54.0
     optional: true
 
   compression@1.8.1:

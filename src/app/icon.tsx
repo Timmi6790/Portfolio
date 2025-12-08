@@ -1,62 +1,18 @@
 import { type ImageResponse } from 'next/og'
 
 import {
-  generateIconResponse,
-  type IconDimension,
-  loadIconSvg,
-} from '@/lib/icon-loader'
+  createIcon,
+  generateDefaultIconResponser,
+  IconIds,
+  type IconProperties,
+  type IconType,
+} from '@/lib/icon-creator'
 
 export const runtime: string = 'nodejs'
 
-const IconIds: {
-  readonly FAV_ICONS: 'favicon'
-  readonly ICON_192: 'icon-192'
-  readonly ICON_512: 'icon-512'
-  readonly SCREENSHOT_WIDE: 'screenshot-wide'
-} = {
-  FAV_ICONS: 'favicon',
-  ICON_192: 'icon-192',
-  ICON_512: 'icon-512',
-  SCREENSHOT_WIDE: 'screenshot-wide',
-} as const
-
-type IconType = (typeof IconIds)[keyof typeof IconIds]
-
-interface IconProperties {
-  readonly contentType: string
-  readonly id: IconType
-  readonly size: IconDimension
-}
-
-function getImageDimension(iconId: IconType): IconDimension {
-  switch (iconId) {
-    case IconIds.SCREENSHOT_WIDE: {
-      return { height: 720, width: 1280 }
-    }
-    case IconIds.ICON_512: {
-      return { height: 512, width: 512 }
-    }
-    case IconIds.ICON_192: {
-      return { height: 192, width: 192 }
-    }
-    case IconIds.FAV_ICONS: {
-      return { height: 32, width: 32 }
-    }
-    default: {
-      // Exhaustive check: if we ever get here, iconId is not handled
-      throw new Error(`Unhandled iconId: ${String(iconId)}`)
-    }
-  }
-}
-
-function createIcon(iconId: IconType): IconProperties {
-  const dimension: IconDimension = getImageDimension(iconId)
-  return { contentType: 'image/png', id: iconId, size: dimension }
-}
-
 export function generateImageMetadata(): IconProperties[] {
   return [
-    createIcon(IconIds.FAV_ICONS),
+    createIcon(IconIds.FAV_ICON),
     createIcon(IconIds.ICON_192),
     createIcon(IconIds.ICON_512),
     createIcon(IconIds.SCREENSHOT_WIDE),
@@ -70,9 +26,5 @@ export default async function Icon({
   id: Promise<IconType>
 }): Promise<ImageResponse> {
   const iconId: IconType = await id
-
-  const svg: string = await loadIconSvg()
-  const iconDimension: IconDimension = getImageDimension(iconId)
-
-  return generateIconResponse(svg, iconDimension)
+  return generateDefaultIconResponser(iconId)
 }

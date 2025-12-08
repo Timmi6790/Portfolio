@@ -1,13 +1,18 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import AppleIcon, { generateImageMetadata } from '@/app/apple-icon'
-import * as iconLoader from '@/lib/icon-loader'
+import * as iconCreator from '@/lib/icon-creator'
 
-// Mock the icon-loader dependency
-vi.mock('@/lib/icon-loader', () => ({
-  generateIconResponse: vi.fn(),
-  loadIconSvg: vi.fn().mockResolvedValue('mock-svg'),
-}))
+// Mock the icon-creator dependency
+vi.mock('@/lib/icon-creator', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/icon-creator')>()
+  return {
+    ...actual,
+    generateDefaultIconResponser: vi
+      .fn()
+      .mockImplementation(() => 'mock-response'),
+  }
+})
 
 describe('AppleIcon', () => {
   describe('generateImageMetadata', () => {
@@ -28,11 +33,9 @@ describe('AppleIcon', () => {
     it('should generate apple icon with correct params', async () => {
       await AppleIcon()
 
-      expect(iconLoader.loadIconSvg).toHaveBeenCalled()
-      expect(iconLoader.generateIconResponse).toHaveBeenCalledWith('mock-svg', {
-        height: 180,
-        width: 180,
-      })
+      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+        'apple'
+      )
     })
   })
 })

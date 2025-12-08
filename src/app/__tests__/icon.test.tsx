@@ -1,13 +1,18 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import Icon, { generateImageMetadata } from '@/app/icon'
-import * as iconLoader from '@/lib/icon-loader'
+import * as iconCreator from '@/lib/icon-creator'
 
-// Mock the icon-loader dependency
-vi.mock('@/lib/icon-loader', () => ({
-  generateIconResponse: vi.fn().mockImplementation(() => 'mock-response'),
-  loadIconSvg: vi.fn().mockResolvedValue('mock-svg'),
-}))
+// Mock the icon-creator dependency
+vi.mock('@/lib/icon-creator', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/icon-creator')>()
+  return {
+    ...actual,
+    generateDefaultIconResponser: vi
+      .fn()
+      .mockImplementation(() => 'mock-response'),
+  }
+})
 
 describe('Icon', () => {
   describe('generateImageMetadata', () => {
@@ -39,41 +44,32 @@ describe('Icon', () => {
   })
 
   describe('Icon Component', () => {
-    it('should generate icon for favicon', async () => {
-      await Icon({ id: Promise.resolve('favicon') })
-
-      expect(iconLoader.loadIconSvg).toHaveBeenCalled()
-      expect(iconLoader.generateIconResponse).toHaveBeenCalledWith('mock-svg', {
-        height: 32,
-        width: 32,
-      })
+    it('should respond for favicon', async () => {
+      await Icon({ id: Promise.resolve('favicon' as any) })
+      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+        'favicon'
+      )
     })
 
-    it('should generate icon for icon-192', async () => {
-      await Icon({ id: Promise.resolve('icon-192') })
-
-      expect(iconLoader.generateIconResponse).toHaveBeenCalledWith('mock-svg', {
-        height: 192,
-        width: 192,
-      })
+    it('should respond for icon-192', async () => {
+      await Icon({ id: Promise.resolve('icon-192' as any) })
+      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+        'icon-192'
+      )
     })
 
-    it('should generate icon for icon-512', async () => {
-      await Icon({ id: Promise.resolve('icon-512') })
-
-      expect(iconLoader.generateIconResponse).toHaveBeenCalledWith('mock-svg', {
-        height: 512,
-        width: 512,
-      })
+    it('should respond for icon-512', async () => {
+      await Icon({ id: Promise.resolve('icon-512' as any) })
+      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+        'icon-512'
+      )
     })
 
-    it('should generate icon for screenshot-wide', async () => {
-      await Icon({ id: Promise.resolve('screenshot-wide') })
-
-      expect(iconLoader.generateIconResponse).toHaveBeenCalledWith('mock-svg', {
-        height: 720,
-        width: 1280,
-      })
+    it('should respond for screenshot-wide', async () => {
+      await Icon({ id: Promise.resolve('screenshot-wide' as any) })
+      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+        'screenshot-wide'
+      )
     })
   })
 })

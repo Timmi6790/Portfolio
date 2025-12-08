@@ -31,35 +31,31 @@ function createStandaloneOutputExclusion(dependency: string): string {
   return `node_modules/.pnpm/${dependency}`
 }
 
-type HeaderValues = Header['headers'][0]['value']
-
-const DEV_CSP: HeaderValues = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "object-src 'none'",
-  "img-src 'self' data: https:",
-  "font-src 'self' data: https:",
-  "style-src 'self' 'unsafe-inline'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:",
-  "connect-src 'self'",
-  "worker-src 'self' blob:",
-  "frame-ancestors 'none'",
-].join('; ')
-
-const PROD_CSP_FALLBACK: HeaderValues = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "object-src 'none'",
-  "img-src 'self' data: https:",
-  "font-src 'self' data: https:",
-  "style-src 'self' 'unsafe-inline'",
-  "script-src 'self' 'unsafe-inline'",
-  "connect-src 'self'",
-  "worker-src 'self' blob:",
-  "frame-ancestors 'none'",
-].join('; ')
+function getCspHeader(): string {
+  return `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' blob: data: https:;
+    font-src 'self' data: https:;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    connect-src 'self' ${process.env.NODE_ENV === 'development' ? 'ws:' : ''};
+    worker-src 'self' blob:;
+    upgrade-insecure-requests;
+  `
+    .replaceAll(/\s{2,}/g, ' ')
+    .trim()
+}
 
 const nextConfig: NextConfig = {
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
+  },
+
   env: {
     NEXT_PUBLIC_REVISION: revision,
   },
@@ -69,30 +65,37 @@ const nextConfig: NextConfig = {
     optimizeCss: true,
     optimizePackageImports: [
       'lucide-react',
-      '@radix-ui/react-icons',
+      'date-fns',
+      '@radix-ui/react-slot',
+      'class-variance-authority',
       'clsx',
       'tailwind-merge',
     ],
+    sri: {
+      algorithm: 'sha512',
+    },
     turbopackFileSystemCacheForDev: true,
-    typedEnv: true,
+    webVitalsAttribution: ['CLS', 'LCP'],
   },
 
   headers(): Header[] {
-    const isDevelopment: boolean = process.env.NODE_ENV !== 'production'
-    const contentSecurityPolicy: HeaderValues = isDevelopment
-      ? DEV_CSP
-      : PROD_CSP_FALLBACK
-
     return [
       {
         headers: [
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          {
+            key: 'Content-Security-Policy',
+            value: getCspHeader(),
+          },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value:
+              'accelerometer=(), camera=(), browsing-topics=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=(), sync-xhr=(), autoplay=(), display-capture=(), picture-in-picture=()',
           },
+          { key: 'Origin-Agent-Cluster', value: '?1' },
           // Security hardening
           {
             key: 'Strict-Transport-Security',
@@ -102,12 +105,15 @@ const nextConfig: NextConfig = {
           { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
           { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
-          { key: 'Content-Security-Policy', value: contentSecurityPolicy },
         ],
         source: '/:path*',
       },
       {
         headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: getCspHeader(),
+          },
           {
             key: 'Content-Type',
             value: 'application/javascript; charset=utf-8',
@@ -116,16 +122,11 @@ const nextConfig: NextConfig = {
             key: 'Cache-Control',
             value: 'no-cache, no-store, must-revalidate',
           },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self'",
-          },
         ],
         source: '/sw.js',
       },
     ]
   },
-
   images: {
     formats: ['image/avif', 'image/webp'],
   },

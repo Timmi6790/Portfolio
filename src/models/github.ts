@@ -5,7 +5,8 @@ export const gitHubProjectSchema = z.object({
   description: z.string(),
   forks_count: z.number(),
   homepage: z.string().optional(),
-  html_url: z.url(),
+  // eslint-disable-next-line @typescript-eslint/no-deprecated, sonarjs/deprecation
+  html_url: z.string().url(),
   language: z.string(),
   name: z.string(),
   stargazers_count: z.number(),

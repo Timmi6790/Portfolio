@@ -11,6 +11,7 @@ import perfectionist from 'eslint-plugin-perfectionist'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import reactCompiler from 'eslint-plugin-react-compiler'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
+import noUnsanitized from 'eslint-plugin-no-unsanitized'
 
 const TSLINT_FILES = ['**/*.{ts,tsx}']
 
@@ -34,6 +35,7 @@ export default tseslint.config(
       '**/.next/',
       '**/out/',
       '**/public/',
+      '**/.stryker-tmp/',
       '**next-env.d.ts',
       '**/playwright-report/',
       '**/test-results/',
@@ -87,7 +89,8 @@ export default tseslint.config(
     sonarRecommended,
     securityPlugin.configs.recommended,
     react.configs.flat.recommended,
-    reactCompiler.configs.recommended
+    reactCompiler.configs.recommended,
+    noUnsanitized.configs.recommended
   ),
 
   // Project rules
@@ -113,6 +116,7 @@ export default tseslint.config(
       sonarjs,
       'no-secrets': noSecrets,
       perfectionist,
+      'no-unsanitized': noUnsanitized,
     },
     settings: {
       react: { version: 'detect' },

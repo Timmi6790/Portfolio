@@ -1,1 +1,2 @@
+pnpm audit --prod
 npx lint-staged

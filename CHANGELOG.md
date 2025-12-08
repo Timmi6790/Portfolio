@@ -30,7 +30,7 @@
 * improve serwist ([377ed33](https://github.com/Timmi6790/Portfolio/commit/377ed3357196eb1e5bb70729fdf26038a6de701d))
 * improve skill section styling ([6971d72](https://github.com/Timmi6790/Portfolio/commit/6971d72fdca6abb37b193503f71cdcd22107da08))
 * **Project:** add more projects & improve render ([#128](https://github.com/Timmi6790/Portfolio/issues/128)) ([07c155f](https://github.com/Timmi6790/Portfolio/commit/07c155f1e229852fe0d7bb8bfafb3c7bd34725b3))
-* **Resume:** add propper work experience ([#150](https://github.com/Timmi6790/Portfolio/issues/150)) ([8b7fd2a](https://github.com/Timmi6790/Portfolio/commit/8b7fd2a3f8526243cca0ace3b46c5a380595fcde))
+* **Resume:** add proper work experience ([#150](https://github.com/Timmi6790/Portfolio/issues/150)) ([8b7fd2a](https://github.com/Timmi6790/Portfolio/commit/8b7fd2a3f8526243cca0ace3b46c5a380595fcde))
 * **Skill:** redesign skills section ([#158](https://github.com/Timmi6790/Portfolio/issues/158)) ([ece9a81](https://github.com/Timmi6790/Portfolio/commit/ece9a816bf6d1edf344cee8c29092e4723c76c16))
 
 
@@ -59,7 +59,7 @@
 * improve serwist ([377ed33](https://github.com/Timmi6790/Portfolio/commit/377ed3357196eb1e5bb70729fdf26038a6de701d))
 * improve skill section styling ([6971d72](https://github.com/Timmi6790/Portfolio/commit/6971d72fdca6abb37b193503f71cdcd22107da08))
 * **Project:** add more projects & improve render ([#128](https://github.com/Timmi6790/Portfolio/issues/128)) ([07c155f](https://github.com/Timmi6790/Portfolio/commit/07c155f1e229852fe0d7bb8bfafb3c7bd34725b3))
-* **Resume:** add propper work experience ([#150](https://github.com/Timmi6790/Portfolio/issues/150)) ([8b7fd2a](https://github.com/Timmi6790/Portfolio/commit/8b7fd2a3f8526243cca0ace3b46c5a380595fcde))
+* **Resume:** add proper work experience ([#150](https://github.com/Timmi6790/Portfolio/issues/150)) ([8b7fd2a](https://github.com/Timmi6790/Portfolio/commit/8b7fd2a3f8526243cca0ace3b46c5a380595fcde))
 * **Skill:** redesign skills section ([#158](https://github.com/Timmi6790/Portfolio/issues/158)) ([ece9a81](https://github.com/Timmi6790/Portfolio/commit/ece9a816bf6d1edf344cee8c29092e4723c76c16))
 
 

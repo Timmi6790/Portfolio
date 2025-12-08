@@ -2,7 +2,7 @@ import { type ImageResponse } from 'next/og'
 
 import {
   createIcon,
-  generateDefaultIconResponser,
+  generateDefaultIconResponse,
   IconIds,
   type IconProperties,
   type IconType,
@@ -26,5 +26,5 @@ export default async function Icon({
   id: Promise<IconType>
 }): Promise<ImageResponse> {
   const iconId: IconType = await id
-  return generateDefaultIconResponser(iconId)
+  return generateDefaultIconResponse(iconId)
 }

@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import {
   createIcon,
-  generateDefaultIconResponser,
+  generateDefaultIconResponse,
   generateIconResponse,
   getImageDimension,
   IconIds,
@@ -107,7 +107,7 @@ describe('icon-creator', () => {
       const mockBuffer = Buffer.from(mockSvgContent)
       mockedReadFile.mockResolvedValue(mockBuffer as any)
 
-      const response = await generateDefaultIconResponser(IconIds.ICON_192)
+      const response = await generateDefaultIconResponse(IconIds.ICON_192)
 
       expect(response).toBeInstanceOf(ImageResponse)
       expect(path.join).toHaveBeenCalled()

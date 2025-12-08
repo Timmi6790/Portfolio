@@ -67,7 +67,7 @@ export async function loadIconSvg(): Promise<string> {
   return buffer.toString('base64')
 }
 
-export async function generateDefaultIconResponser(
+export async function generateDefaultIconResponse(
   iconId: IconType
 ): Promise<ImageResponse> {
   const svg: string = await loadIconSvg()

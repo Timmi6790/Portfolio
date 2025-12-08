@@ -2,7 +2,7 @@ import { type ImageResponse } from 'next/og'
 
 import {
   createIcon,
-  generateDefaultIconResponser,
+  generateDefaultIconResponse,
   IconIds,
   type IconProperties,
 } from '@/lib/icon-creator'
@@ -14,5 +14,5 @@ export function generateImageMetadata(): IconProperties[] {
 }
 
 export default async function AppleIcon(): Promise<ImageResponse> {
-  return generateDefaultIconResponser(IconIds.APPLE)
+  return generateDefaultIconResponse(IconIds.APPLE)
 }

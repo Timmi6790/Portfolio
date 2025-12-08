@@ -46,28 +46,28 @@ describe('Icon', () => {
   describe('Icon Component', () => {
     it('should respond for favicon', async () => {
       await Icon({ id: Promise.resolve('favicon' as any) })
-      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+      expect(iconCreator.generateDefaultIconResponse).toHaveBeenCalledWith(
         'favicon'
       )
     })
 
     it('should respond for icon-192', async () => {
       await Icon({ id: Promise.resolve('icon-192' as any) })
-      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+      expect(iconCreator.generateDefaultIconResponse).toHaveBeenCalledWith(
         'icon-192'
       )
     })
 
     it('should respond for icon-512', async () => {
       await Icon({ id: Promise.resolve('icon-512' as any) })
-      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+      expect(iconCreator.generateDefaultIconResponse).toHaveBeenCalledWith(
         'icon-512'
       )
     })
 
     it('should respond for screenshot-wide', async () => {
       await Icon({ id: Promise.resolve('screenshot-wide' as any) })
-      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+      expect(iconCreator.generateDefaultIconResponse).toHaveBeenCalledWith(
         'screenshot-wide'
       )
     })

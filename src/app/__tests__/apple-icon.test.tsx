@@ -33,7 +33,7 @@ describe('AppleIcon', () => {
     it('should generate apple icon with correct params', async () => {
       await AppleIcon()
 
-      expect(iconCreator.generateDefaultIconResponser).toHaveBeenCalledWith(
+      expect(iconCreator.generateDefaultIconResponse).toHaveBeenCalledWith(
         'apple'
       )
     })

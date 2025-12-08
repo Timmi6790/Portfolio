@@ -308,9 +308,6 @@ jobs:
   build:
     name: Production Build
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      attestations: write
     needs:
       [
         changes,
@@ -345,14 +342,6 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
-
-      - name: Generate SBOM
-        run: pnpm run sbom
-
-      - name: Attest SBOM
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: sbom.xml
 
       - name: Build
         run: pnpm run build

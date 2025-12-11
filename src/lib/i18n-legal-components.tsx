@@ -15,6 +15,8 @@ export interface LegalRichTagsFunctionMappers {
   emailLink: RichTagsFunction
   heading: RichTagsFunction
   link: RichTagsFunction
+  list: RichTagsFunction
+  listItem: RichTagsFunction
   section: RichTagsFunction
   text: RichTagsFunction
 }
@@ -36,7 +38,9 @@ export const legalPageComponentMappings: LegalRichTagsFunctionMappers = {
    * Contact block - displays contact information
    */
   contactBlock: (chunks: ReactNode): ReactElement => (
-    <div className="text-sm text-muted-foreground">{chunks}</div>
+    <div className="text-sm whitespace-pre-line text-muted-foreground">
+      {chunks}
+    </div>
   ),
 
   /**
@@ -72,6 +76,22 @@ export const legalPageComponentMappings: LegalRichTagsFunctionMappers = {
     >
       {chunks}
     </a>
+  ),
+
+  /**
+   * Unordered list
+   */
+  list: (chunks: ReactNode): ReactElement => (
+    <ul className="my-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+      {chunks}
+    </ul>
+  ),
+
+  /**
+   * List item
+   */
+  listItem: (chunks: ReactNode): ReactElement => (
+    <li className="pl-1">{chunks}</li>
   ),
 
   /**

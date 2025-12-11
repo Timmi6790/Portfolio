@@ -1,6 +1,6 @@
 'use server'
 
-import type { JSX, ReactNode } from 'react'
+import type { JSX } from 'react'
 
 import type { Metadata } from 'next'
 import { type Locale } from 'next-intl'
@@ -62,21 +62,40 @@ const PrivacyPolicyPage: RoutePageFC<PrivacyPageProperties> = async ({
 
   const lastUpdated: Date = new Date(siteConfig.legals.privacyPolicyLastChange)
 
-  // Render the content using rich text with component mappings
-  const content: ReactNode = translations.rich('content', {
-    // Variables for placeholder replacement
-    cloudflarePolicyUrl: siteConfig.legals.cloudflare.policyUrl,
-    cloudflareProvider: siteConfig.legals.cloudflare.address,
-    controllerAddress: siteConfig.legals.address,
-    controllerEmail: siteConfig.email,
-    controllerName: siteConfig.fullName,
-    logRetentionDays: siteConfig.legals.logRetentionDays,
-    secondContact: siteConfig.legals.secondContact,
-    serverLocation: siteConfig.legals.serverLocationCountry,
+  const privacyKeys: string[] = [
+    'controller',
+    'general',
+    'encryption',
+    'logs',
+    'cloudflare',
+    'contact',
+    'rights',
+    'cookies',
+    'noTracking',
+    'changes',
+  ] as const
 
-    // Use shared component mappings
-    ...legalPageComponentMappings,
-  })
+  // Render the content using rich text with component mappings
+  const content: JSX.Element[] = privacyKeys.map(
+    (key: string): JSX.Element => (
+      <div key={key}>
+        {translations.rich(key, {
+          // Variables for placeholder replacement
+          cloudflarePolicyUrl: siteConfig.legals.cloudflare.policyUrl,
+          cloudflareProvider: siteConfig.legals.cloudflare.address,
+          controllerAddress: siteConfig.legals.address,
+          controllerEmail: siteConfig.email,
+          controllerName: siteConfig.fullName,
+          logRetentionDays: siteConfig.legals.logRetentionDays,
+          secondContact: siteConfig.legals.secondContact,
+          serverLocation: siteConfig.legals.serverLocationCountry,
+
+          // Use shared component mappings
+          ...legalPageComponentMappings,
+        })}
+      </div>
+    )
+  )
 
   return (
     <LegalPageLayout locale={locale} title={translations('title')}>

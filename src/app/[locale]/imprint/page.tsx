@@ -1,6 +1,6 @@
 'use server'
 
-import type { JSX, ReactNode } from 'react'
+import type { JSX } from 'react'
 
 import type { Metadata } from 'next'
 import { type Locale } from 'next-intl'
@@ -62,19 +62,36 @@ const ImprintPage: RoutePageFC<ImprintPageProperties> = async ({
 
   const lastUpdated: Date = new Date(siteConfig.legals.imprintLastChange)
 
-  // Render the content using rich text with component mappings
-  const content: ReactNode = translations.rich('content', {
-    // Variables for placeholder replacement
-    address: siteConfig.legals.address,
-    country: siteConfig.legals.serverLocationCountry,
-    email: siteConfig.email,
-    name: siteConfig.fullName,
-    secondContact: siteConfig.legals.secondContact,
-    vatId: siteConfig.legals.vatId,
+  const imprintKeys: string[] = [
+    'tmg',
+    'contact',
+    'vat',
+    'mstv',
+    'dispute',
+    'liabilityContent',
+    'liabilityLinks',
+    'copyright',
+  ] as const
 
-    // Use shared component mappings
-    ...legalPageComponentMappings,
-  })
+  // Render the content using rich text with component mappings
+  const content: JSX.Element[] = imprintKeys.map(
+    (key: string): JSX.Element => (
+      <div key={key}>
+        {translations.rich(key, {
+          // Variables for placeholder replacement
+          address: siteConfig.legals.address,
+          country: siteConfig.legals.serverLocationCountry,
+          email: siteConfig.email,
+          name: siteConfig.fullName,
+          secondContact: siteConfig.legals.secondContact,
+          vatId: siteConfig.legals.vatId,
+
+          // Use shared component mappings
+          ...legalPageComponentMappings,
+        })}
+      </div>
+    )
+  )
 
   return (
     <LegalPageLayout locale={locale} title={translations('title')}>

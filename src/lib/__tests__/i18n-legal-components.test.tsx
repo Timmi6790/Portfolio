@@ -67,6 +67,30 @@ describe('legalPageComponentMappings', () => {
     })
   })
 
+  describe('list', () => {
+    it('renders unordered list with correct classes', () => {
+      const { container } = render(
+        legalPageComponentMappings.list(<li>Item</li>)
+      )
+      const list = container.querySelector('ul')
+      expect(list).toBeDefined()
+      expect(list?.className).toContain('list-disc')
+      expect(list?.className).toContain('pl-5')
+    })
+  })
+
+  describe('listItem', () => {
+    it('renders list item with correct classes', () => {
+      const { container } = render(
+        legalPageComponentMappings.listItem('Item content')
+      )
+      const item = container.querySelector('li')
+      expect(item).toBeDefined()
+      expect(item?.textContent).toBe('Item content')
+      expect(item?.className).toContain('pl-1')
+    })
+  })
+
   describe('section', () => {
     it('renders section wrapper', () => {
       const { container } = render(

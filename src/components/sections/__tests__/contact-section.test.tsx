@@ -50,4 +50,15 @@ describe('ContactSection', () => {
     const { ContactSection } = await import('../contact-section')
     expect(typeof ContactSection).toBe('function')
   })
+
+  it('displays LinkedIn link in InfoCard', async () => {
+    const { InfoCard } = await import('../contact-section')
+    // Mock translation function
+    const t = (key: string) => key
+    // @ts-expect-error - mock types
+    const result = InfoCard({ country: 'Test Country', translations: t })
+    const resultString = JSON.stringify(result)
+    // Check if the username extracted from linkedin url is present
+    expect(resultString.includes('testuser')).toBe(true)
+  })
 })

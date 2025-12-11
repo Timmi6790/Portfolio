@@ -2,7 +2,15 @@ import { type JSX } from 'react'
 
 import { type Locale } from 'next-intl'
 
-import { Download, FileText, GitBranch, Mail, MapPin } from 'lucide-react'
+import {
+  Download,
+  FileText,
+  GitBranch,
+  // eslint-disable-next-line sonarjs/deprecation
+  Linkedin,
+  Mail,
+  MapPin,
+} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { Button } from '@/components/ui/button'
@@ -47,7 +55,7 @@ interface ResumeCardProperties {
 /* ───────────────────────────── subviews ───────────────────────────── */
 
 // eslint-disable-next-line max-lines-per-function
-const InfoCard: FCStrict<InfoCardProperties> = ({
+export const InfoCard: FCStrict<InfoCardProperties> = ({
   country,
   translations,
 }: InfoCardProperties): JSX.Element => {
@@ -103,6 +111,31 @@ const InfoCard: FCStrict<InfoCardProperties> = ({
               </a>
             </p>
           </div>
+
+          {typeof siteConfig.linkedin === 'string' ? (
+            <div className="group flex items-center gap-4 rounded-lg p-3 transition-all hover:bg-muted/50">
+              <div
+                aria-hidden="true"
+                className="rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 p-3 transition-transform duration-300 group-hover:scale-110"
+              >
+                {/* eslint-disable-next-line @typescript-eslint/no-deprecated, sonarjs/deprecation */}
+                <Linkedin className="h-6 w-6 text-primary" />
+              </div>
+              <p>
+                <span className="block text-sm text-muted-foreground">
+                  {translations('linkedin')}
+                </span>
+                <a
+                  className="text-lg font-medium text-foreground transition-colors hover:text-primary"
+                  href={siteConfig.linkedin}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {siteConfig.fullName}
+                </a>
+              </p>
+            </div>
+          ) : null}
 
           <div className="group flex items-center gap-4 rounded-lg p-3 transition-all hover:bg-muted/50">
             <div

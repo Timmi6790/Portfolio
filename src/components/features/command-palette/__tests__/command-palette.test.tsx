@@ -17,6 +17,7 @@ vi.mock('lucide-react', () => ({
   FileText: () => <div data-testid="file-icon">File</div>,
   CookieIcon: () => <div data-testid="cookie-icon">Cookie</div>,
   GitBranch: () => <div data-testid="git-icon">Git</div>,
+  Linkedin: () => <div data-testid="linkedin-icon">LinkedIn</div>,
   Mail: () => <div data-testid="mail-icon">Mail</div>,
 }))
 
@@ -30,6 +31,7 @@ vi.mock('@/i18n/routing', () => ({
 vi.mock('@/lib/config', () => ({
   siteConfig: {
     github: 'https://github.com/test',
+    linkedin: 'https://linkedin.com/test',
     email: 'test@test.com',
   },
 }))
@@ -110,6 +112,20 @@ describe('CommandPalette', () => {
 
     await waitFor(() => {
       expect(screen.queryByTestId('command-input')).toBeDefined()
+    })
+  })
+
+  it('includes LinkedIn action when configured', async () => {
+    const { CommandPalette } = await import('../command-palette')
+    const { container } = render(<CommandPalette />)
+
+    // Open dialog
+    fireEvent.keyDown(document, { key: 'k', metaKey: true })
+
+    await waitFor(() => {
+      // "linkedin" is the key returned by the mock translation for tPalette('linkedin')
+      expect(container.textContent).toContain('linkedin')
+      expect(screen.queryByTestId('linkedin-icon')).toBeDefined()
     })
   })
 })

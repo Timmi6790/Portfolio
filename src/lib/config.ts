@@ -94,7 +94,7 @@ export const siteConfig: SiteConfig = {
     serverLocationCountry: 'Germany',
     vatId: 'DE347101415',
   },
-  linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/tim-schoenle',
   location: 'Germany',
   name: 'Tim',
   resumeDirectory: 'resume',

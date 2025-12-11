@@ -18,6 +18,8 @@ import {
   FileText,
   GitBranch,
   Home,
+  // eslint-disable-next-line sonarjs/deprecation
+  Linkedin,
   Mail,
   MessageSquare,
   User,
@@ -254,6 +256,13 @@ const ActionsGroup: FCStrict<ActionsGroupProperties> = ({
       openNewTab(siteConfig.github)
     })
   }
+  const goLinkedIn: (_value: string) => void = (_value: string): void => {
+    run((): void => {
+      if (typeof siteConfig.linkedin === 'string') {
+        openNewTab(siteConfig.linkedin)
+      }
+    })
+  }
   const emailMe: (_value: string) => void = (_value: string): void => {
     run((): void => {
       sendMailTo(siteConfig.email)
@@ -266,6 +275,13 @@ const ActionsGroup: FCStrict<ActionsGroupProperties> = ({
         <GitBranch className="mr-2 h-4 w-4" />
         <span>{tPalette('github')}</span>
       </CommandItem>
+      {typeof siteConfig.linkedin === 'string' ? (
+        <CommandItem onSelect={goLinkedIn}>
+          {/* eslint-disable-next-line @typescript-eslint/no-deprecated, sonarjs/deprecation */}
+          <Linkedin className="mr-2 h-4 w-4" />
+          <span>{tPalette('linkedin')}</span>
+        </CommandItem>
+      ) : null}
       <CommandItem onSelect={emailMe}>
         <Mail className="mr-2 h-4 w-4" />
         <span>{tPalette('email')}</span>

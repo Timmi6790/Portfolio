@@ -26,7 +26,7 @@ RUN corepack enable
 RUN --mount=type=cache,target=/app/.next/cache pnpm run build
 RUN find .next/static -type f -name '*.map' -delete
 
-FROM gcr.io/distroless/nodejs24-debian12:nonroot@sha256:b5bad30c810389860685e58663b073b89e547ca8d0805cbd881abbacaab6dcfe AS runner
+FROM gcr.io/distroless/nodejs24-debian12:nonroot@sha256:77eb1d627c076bc481706c68ac118fef75ebb35d8ce4d9e711ecd0f675fa9d20 AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000

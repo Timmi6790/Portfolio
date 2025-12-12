@@ -171,19 +171,7 @@
         "title": "Senior Software Engineer"
       }
     ],
-    "projects": [
-      {
-        "description": "Full-Stack-Online-Shop mit Zahlungsintegration und Echtzeit-Bestandsverwaltung",
-        "name": "E-Commerce Platform",
-        "technologies": ["React", "Node.js", "MongoDB", "Stripe"],
-        "url": "https://github.com/johndoe/ecommerce"
-      },
-      {
-        "description": "Kollaboratives Projektmanagement-Tool mit Echtzeit-Updates und Teamfunktionen",
-        "name": "Task Management App",
-        "technologies": ["Next.js", "TypeScript", "PostgreSQL", "Prisma"]
-      }
-    ]
+    "projects": []
   },
   "imprint": {
     "title": "Impressum",

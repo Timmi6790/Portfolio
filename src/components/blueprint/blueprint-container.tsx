@@ -3,6 +3,7 @@ import { type JSX, type ReactNode } from 'react'
 import type { FCStrict, FCWithRequiredChildren } from '@/types/fc'
 
 import { BlueprintGrid } from './blueprint-grid'
+import { BlueprintSectionWrapper } from './blueprint-primitives'
 
 interface BlueprintContainerProperties {
   readonly children: ReactNode
@@ -45,9 +46,10 @@ export const BlueprintContainer: FCWithRequiredChildren<
 }: BlueprintContainerProperties & {
   readonly isLazy?: boolean
 }): JSX.Element => (
-  <section
-    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${isLazy ? 'content-auto' : ''} ${className ?? ''}`}
-    id={componentId}
+  <BlueprintSectionWrapper
+    className={className ?? ''}
+    componentId={componentId}
+    isLazy={isLazy}
   >
     <BlueprintGrid />
 
@@ -71,5 +73,5 @@ export const BlueprintContainer: FCWithRequiredChildren<
 
     {/* Overlay Elements (positioned relative to section) */}
     {overlay}
-  </section>
+  </BlueprintSectionWrapper>
 )

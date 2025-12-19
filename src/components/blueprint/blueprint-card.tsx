@@ -3,6 +3,7 @@ import { type JSX, type ReactNode } from 'react'
 import type { FCWithRequiredChildren } from '@/types/fc'
 
 import { BlueprintLabel } from './blueprint-label'
+import { BlueprintCardBackground } from './blueprint-primitives'
 import { MeasurementLine } from './measurement-line'
 
 interface BlueprintCardProperties {
@@ -22,7 +23,7 @@ export const BlueprintCard: FCWithRequiredChildren<BlueprintCardProperties> = ({
     className={`relative ${noPadding ? '' : 'p-8 md:p-12'} w-full ${className ?? ''}`}
   >
     {/* Technical Frame for Content */}
-    <div className="absolute inset-0 border border-brand/20 bg-blueprint-card-bg/90 backdrop-blur-md" />
+    <BlueprintCardBackground />
 
     {/* Corner Markers */}
     <div className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-brand" />

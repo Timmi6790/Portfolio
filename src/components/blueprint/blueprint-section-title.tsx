@@ -2,6 +2,11 @@ import { type JSX } from 'react'
 
 import type { FCStrict } from '@/types/fc'
 
+import {
+  BlueprintHeading,
+  BlueprintSubheading,
+  BlueprintTinyLabel,
+} from './blueprint-primitives'
 import { MeasurementLine } from './measurement-line'
 
 interface BlueprintSectionTitleProperties {
@@ -25,23 +30,16 @@ export const BlueprintSectionTitle: FCStrict<
     <div className="absolute inset-0 scale-[1.02] border border-brand/10" />
 
     {/* Section Identifier */}
-    <div
-      aria-hidden="true"
-      className="absolute -top-3 left-4 bg-blueprint-bg px-2 font-mono text-[10px] tracking-[0.2em] text-brand uppercase"
-    >
-      {sectionLabel}
+    <div className="absolute -top-3 left-4 bg-blueprint-bg px-2">
+      <BlueprintTinyLabel>{sectionLabel}</BlueprintTinyLabel>
     </div>
 
     {/* Title Block */}
     <div className="flex flex-col items-center gap-2">
       {Boolean(greeting) && (
-        <span className="mb-2 block font-mono text-xl tracking-[0.3em] text-brand uppercase sm:text-2xl">
-          {greeting}
-        </span>
+        <BlueprintSubheading>{greeting}</BlueprintSubheading>
       )}
-      <h2 className="[text-shadow:0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] font-mono text-4xl font-bold tracking-tighter text-blueprint-text sm:text-6xl">
-        {title.toUpperCase()}
-      </h2>
+      <BlueprintHeading>{title.toUpperCase()}</BlueprintHeading>
       <div className="my-4 h-px w-32 bg-gradient-to-r from-transparent via-brand to-transparent" />
       {Boolean(subtitle) && (
         <p className="font-mono text-lg tracking-widest text-blueprint-muted uppercase sm:text-2xl">

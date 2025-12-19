@@ -1,6 +1,6 @@
 import { type JSX, type ReactNode } from 'react'
 
-import type { FCWithRequiredChildren } from '@/types/fc'
+import type { FCStrict, FCWithRequiredChildren } from '@/types/fc'
 
 import { BlueprintGrid } from './blueprint-grid'
 
@@ -11,23 +11,42 @@ interface BlueprintContainerProperties {
   readonly overlay?: ReactNode
 }
 
-const RULER_TICKS: readonly { id: string }[] = Array.from(
-  { length: 20 },
-  (_item: unknown, index: number): { id: string } => ({
-    id: `tick-${index.toString()}`,
-  })
+interface BlueprintRulerProperties {
+  readonly className?: string
+}
+
+const RULER_PATH: string =
+  'M0 0v8 M4 0v4 M8 0v4 M12 0v4 M16 0v4 M20 0v8 M24 0v4 M28 0v4 M32 0v4 M36 0v4 M40 0v8 M44 0v4 M48 0v4 M52 0v4 M56 0v4 M60 0v8 M64 0v4 M68 0v4 M72 0v4 M76 0v4 M80 0v8'
+
+const BlueprintRuler: FCStrict<BlueprintRulerProperties> = ({
+  className,
+}: BlueprintRulerProperties): JSX.Element => (
+  <svg
+    aria-hidden="true"
+    className={`absolute h-2 w-24 overflow-visible ${className ?? ''}`}
+  >
+    <path
+      className="stroke-brand/40"
+      d={RULER_PATH}
+      fill="none"
+      strokeWidth="1"
+    />
+  </svg>
 )
 
 export const BlueprintContainer: FCWithRequiredChildren<
-  BlueprintContainerProperties
+  BlueprintContainerProperties & { readonly isLazy?: boolean }
 > = ({
   children,
   className,
   id: componentId,
+  isLazy = false, // Default to eager loading
   overlay,
-}: BlueprintContainerProperties): JSX.Element => (
+}: BlueprintContainerProperties & {
+  readonly isLazy?: boolean
+}): JSX.Element => (
   <section
-    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${className ?? ''}`}
+    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${isLazy ? 'content-auto' : ''} ${className ?? ''}`}
     id={componentId}
   >
     <BlueprintGrid />
@@ -40,27 +59,9 @@ export const BlueprintContainer: FCWithRequiredChildren<
       <div className="absolute bottom-0 left-0 h-2 w-2 -translate-x-1/2 translate-y-1/2 border-r border-brand" />
       <div className="absolute right-0 bottom-0 h-2 w-2 translate-x-1/2 translate-y-1/2 border-l border-brand" />
 
-      {/* Scale/Ruler markings on edges */}
-      <div className="absolute top-0 left-10 flex gap-1">
-        {RULER_TICKS.map(
-          (tick: { id: string }, index: number): JSX.Element => (
-            <div
-              className={`h-${index % 5 === 0 ? '2' : '1'} w-px bg-brand/40`}
-              key={tick.id}
-            />
-          )
-        )}
-      </div>
-      <div className="absolute right-10 bottom-0 flex gap-1">
-        {RULER_TICKS.map(
-          (tick: { id: string }, index: number): JSX.Element => (
-            <div
-              className={`h-${index % 5 === 0 ? '2' : '1'} w-px bg-brand/40`}
-              key={tick.id}
-            />
-          )
-        )}
-      </div>
+      {/* Scale/Ruler markings on edges - SVG optimization to reduce DOM size */}
+      <BlueprintRuler className="top-0 left-10" />
+      <BlueprintRuler className="right-10 bottom-0 rotate-180" />
     </div>
 
     {/* Content */}

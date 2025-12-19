@@ -232,7 +232,7 @@ export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
     await getGithubUser()
 
   return (
-    <BlueprintContainer className="content-auto" id="projects">
+    <BlueprintContainer id="projects" isLazy={true}>
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center">
         <BlueprintSectionTitle
           sectionLabel="// OPEN_SOURCE_MODULES"

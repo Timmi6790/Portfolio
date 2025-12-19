@@ -116,10 +116,7 @@ const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
 
 export const TestimonialsSection: AsyncPageFC<
   TestimonialsSectionProperties
-> = async ({
-  locale,
-  performance,
-}: TestimonialsSectionProperties): Promise<JSX.Element> => {
+> = async ({ locale }: TestimonialsSectionProperties): Promise<JSX.Element> => {
   const translations: Translations<'testimonials'> = await getTranslations({
     locale,
     namespace: 'testimonials',
@@ -141,10 +138,10 @@ export const TestimonialsSection: AsyncPageFC<
   return (
     <Section
       background={SECTION_BACKGROUNDS.GRADIENT}
-      className="content-auto min-h-screen"
+      className="min-h-screen"
       id="testimonials"
       isEmpty={testimonials.length === 0}
-      performance={performance ?? false}
+      performance={true}
     >
       <SectionContainer size="xl">
         <SectionHeader

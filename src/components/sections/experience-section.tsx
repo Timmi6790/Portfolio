@@ -222,7 +222,7 @@ export const ExperienceSection: AsyncPageFC<
   )
 
   return (
-    <BlueprintContainer id="experience">
+    <BlueprintContainer id="experience" isLazy={true}>
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center">
         <BlueprintSectionTitle
           sectionLabel="// CAREER_HISTORY"

@@ -10,6 +10,7 @@ interface BlueprintSectionProperties {
   readonly className?: string
   readonly dividerLabel?: string
   readonly id: string
+  readonly isLazy?: boolean
   readonly sectionLabel: string
   readonly subtitle?: string
   readonly title: string
@@ -22,13 +23,14 @@ export const BlueprintSection: FCWithRequiredChildren<
   className,
   dividerLabel,
   id: sectionId,
+  isLazy,
   sectionLabel,
   subtitle,
   title,
 }: BlueprintSectionProperties & {
   readonly children: ReactNode
 }): JSX.Element => (
-  <BlueprintContainer id={sectionId}>
+  <BlueprintContainer id={sectionId} isLazy={isLazy ?? false}>
     <div
       className={`mx-auto flex w-full max-w-6xl flex-col items-center ${className ?? ''}`}
     >

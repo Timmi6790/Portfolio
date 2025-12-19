@@ -24,7 +24,7 @@ const cardVariants = cva(
         overlay:
           'group relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary/10 before:via-transparent before:to-primary/5 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100',
         pattern:
-          'relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] before:bg-[size:16px_16px] before:opacity-50',
+          'relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(to_right,var(--pattern-grid)_1px,transparent_1px),linear-gradient(to_bottom,var(--pattern-grid)_1px,transparent_1px)] before:bg-[size:16px_16px] before:opacity-50',
         premium:
           'group relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary/10 before:via-transparent before:to-primary/5 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100 after:absolute after:top-0 after:left-0 after:h-1 after:w-0 after:bg-gradient-to-r after:from-primary after:to-primary/40 after:transition-all after:duration-500 group-hover:after:w-full',
         topBar:

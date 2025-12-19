@@ -19,7 +19,7 @@ export const GridPattern: FCStrict<GridPatternProperties> = ({
   return (
     <div
       className={cn(
-        'absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)]',
+        'absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--pattern-grid)_1px,transparent_1px),linear-gradient(to_bottom,var(--pattern-grid)_1px,transparent_1px)]',
         className
       )}
       style={{

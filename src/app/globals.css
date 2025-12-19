@@ -3,54 +3,73 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Tell browsers we support dark mode */
+/* Unified Blueprint Dark Theme */
 :root {
-  color-scheme: light dark;
-  --background: #ffffff;
-  --foreground: #333333;
-  --card: #ffffff;
-  --card-foreground: #333333;
-  --popover: #ffffff;
-  --popover-foreground: #333333;
+  color-scheme: dark;
+
+  /* Blueprint Core Colors */
+  --blueprint-bg: #0b1021;
+  --blueprint-card-bg: #0f1629;
+  --blueprint-text: #e6f1ff;
+  --blueprint-muted: #88b0d6;
+  --brand: #60a5fa;
+
+  /* Semantic Overrides */
+  --background: var(--blueprint-bg);
+  --foreground: var(--blueprint-text);
+  --card: var(--blueprint-card-bg);
+  --card-foreground: var(--blueprint-text);
+  --popover: var(--blueprint-card-bg);
+  --popover-foreground: var(--blueprint-text);
+
   --primary: #2563eb;
   --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #4b5563;
-  --muted: #f9fafb;
-  --muted-foreground: #6b7280;
-  --accent: #e0f2fe;
-  --accent-foreground: #1e3a8a;
+
+  --secondary: #1d283a;
+  --secondary-foreground: var(--blueprint-text);
+
+  --muted: #1d283a;
+  --muted-foreground: var(--blueprint-muted);
+
+  --accent: #1e3a8a;
+  --accent-foreground: #bfdbfe;
+
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
+
+  --border: #1e293b;
+  --input: #1e293b;
   --ring: #2563eb;
-  --chart-1: #3b82f6;
-  --chart-2: #2563eb;
-  --chart-3: #1d4ed8;
-  --chart-4: #1e40af;
-  --chart-5: #1e3a8a;
+
+  --chart-1: #60a5fa;
+  --chart-2: #3b82f6;
+  --chart-3: #2563eb;
+  --chart-4: #1d4ed8;
+  --chart-5: #1e40af;
+
   --radius: 0.375rem;
-  --sidebar: #f9fafb;
-  --sidebar-foreground: #333333;
+
+  --sidebar: var(--blueprint-bg);
+  --sidebar-foreground: var(--blueprint-text);
   --sidebar-primary: #2563eb;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e0f2fe;
-  --sidebar-accent-foreground: #1e3a8a;
-  --sidebar-border: #e5e7eb;
+  --sidebar-accent: #1e3a8a;
+  --sidebar-accent-foreground: #bfdbfe;
+  --sidebar-border: #1e293b;
   --sidebar-ring: #3b82f6;
+
+  /* Shadows */
   --shadow-x: 0px;
   --shadow-y: 1px;
   --shadow-blur: 2px;
   --shadow-spread: 0px;
   --shadow-opacity: 0.05;
   --shadow-color: #000000;
-  --brand: #60a5fa;
-  --blueprint-bg: #0b1021;
-  --blueprint-card-bg: #0f1629;
-  --blueprint-text: #e6f1ff;
-  --blueprint-muted: #88b0d6;
-  /* App Layout Variables */
+
+  /* Pattern */
+  --pattern-grid: #ffffff08;
+
+  /* App Layout */
   --app-padding: 1rem;
 }
 
@@ -58,53 +77,6 @@
   :root {
     --app-padding: 2rem;
   }
-}
-
-.dark {
-  color-scheme: dark;
-  --background: #171717;
-  --foreground: #e5e5e5;
-  --card: #262626;
-  --card-foreground: #e5e5e5;
-  --popover: #262626;
-  --popover-foreground: #e5e5e5;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --secondary: #262626;
-  --secondary-foreground: #e5e5e5;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --accent: #1e3a8a;
-  --accent-foreground: #bfdbfe;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #404040;
-  --input: #404040;
-  --ring: #2563eb;
-  --chart-1: #60a5fa;
-  --chart-2: #3b82f6;
-  --chart-3: #2563eb;
-  --chart-4: #1d4ed8;
-  --chart-5: #1e40af;
-  --sidebar: #171717;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #2563eb;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e3a8a;
-  --sidebar-accent-foreground: #bfdbfe;
-  --sidebar-border: #404040;
-  --sidebar-ring: #3b82f6;
-  --shadow-x: 0px;
-  --shadow-y: 1px;
-  --shadow-blur: 2px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.05;
-  --shadow-color: #000000;
-  --brand: #60a5fa;
-  --blueprint-bg: #0b1021;
-  --blueprint-card-bg: #0f1629;
-  --blueprint-text: #e6f1ff;
-  --blueprint-muted: #88b0d6;
 }
 
 @theme inline {
@@ -115,6 +87,7 @@
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
   --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -134,15 +107,18 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -151,12 +127,16 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
   --color-brand: var(--brand);
   --color-blueprint-bg: var(--blueprint-bg);
   --color-blueprint-card-bg: var(--blueprint-card-bg);
   --color-blueprint-text: var(--blueprint-text);
   --color-blueprint-muted: var(--blueprint-muted);
-  /* computed shadow variables below - do not modify */
+
+  --color-pattern-grid: var(--pattern-grid);
+
+  /* computed shadow variables */
   --shadow-2xs: var(--shadow-x) var(--shadow-y)
     color-mix(
       in srgb,

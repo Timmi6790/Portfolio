@@ -39,7 +39,7 @@ export const HeaderSection: FCStrict<HeaderSectionProperties> = ({
 }: HeaderSectionProperties): JSX.Element => {
   const selectClassName: string =
     variant === 'blueprint'
-      ? 'h-9 w-24 rounded-md border border-brand/30 bg-[#0B1021] px-3 py-1 text-sm text-brand shadow-sm focus-visible:ring-1 focus-visible:ring-brand focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
+      ? 'h-9 w-24 rounded-md border border-brand/30 bg-blueprint-bg px-3 py-1 text-sm text-brand shadow-sm focus-visible:ring-1 focus-visible:ring-brand focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
       : 'h-9 w-24 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
 
   return (
@@ -68,7 +68,7 @@ export const HeaderSection: FCStrict<HeaderSectionProperties> = ({
           {years.map(
             (year: number): JSX.Element => (
               <option
-                className="bg-[#0B1021] text-brand"
+                className="bg-blueprint-bg text-brand"
                 key={year}
                 value={year}
               >

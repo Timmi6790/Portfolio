@@ -27,7 +27,7 @@ const CLOSE_BRACKET: string = ']'
 const CompetencyBadge: FCStrict<CompetencyBadgeProperties> = ({
   label,
 }: CompetencyBadgeProperties): JSX.Element => (
-  <div className="group relative overflow-hidden px-4 py-2 font-mono text-xs tracking-widest text-brand uppercase transition-all hover:text-[#E6F1FF]">
+  <div className="group relative overflow-hidden px-4 py-2 font-mono text-xs tracking-widest text-brand uppercase transition-all hover:text-blueprint-text">
     <span className="relative z-10 flex items-center gap-2">
       <span className="text-brand/50">{OPEN_BRACKET}</span>
       {label}
@@ -50,7 +50,7 @@ async function getAboutTranslations(
   // Technical highlighting
   const summary: ReactNode = translations.rich('summary', {
     highlight: (chunks: ReactNode): JSX.Element => (
-      <span className="border-b border-brand/30 bg-brand/10 px-1 font-bold text-[#E6F1FF]">
+      <span className="border-b border-brand/30 bg-brand/10 px-1 font-bold text-blueprint-text">
         {chunks}
       </span>
     ),
@@ -79,13 +79,13 @@ export const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
       <BlueprintCard className="mt-8" label="BIO_DATA_LOG">
         <div className="flex flex-col gap-12 text-center">
           {/* Summary Text */}
-          <div className="font-mono text-sm leading-relaxed tracking-wide text-[#88B0D6] md:text-base">
+          <div className="font-mono text-sm leading-relaxed tracking-wide text-blueprint-muted md:text-base">
             {summary}
           </div>
 
           {/* Competencies */}
           <div className="flex flex-col items-center gap-6">
-            <h3 className="border border-brand/30 bg-brand/5 px-4 py-1 font-mono text-xs font-bold tracking-[0.2em] text-[#E6F1FF] uppercase">
+            <h3 className="border border-brand/30 bg-brand/5 px-4 py-1 font-mono text-xs font-bold tracking-[0.2em] text-blueprint-text uppercase">
               {translations('competenciesLabel')}
             </h3>
 

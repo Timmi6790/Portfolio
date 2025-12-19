@@ -35,18 +35,18 @@ const BlueprintStatus: FCStrict<{
     {/* Detail Block A - Aligned to End (Right) of Left Column */}
     <div className="shadow-[0_0_10px_color-mix(in srgb, var(--brand), transparent 90%)] flex w-full flex-col gap-2 justify-self-center border-l-2 border-brand bg-brand/5 py-2 pl-4 text-left sm:max-w-[280px] sm:justify-self-end">
       <span className="text-[10px] font-bold text-brand">{LOCATION_LABEL}</span>
-      <span className="text-sm font-bold text-[#E6F1FF]">{location}</span>
+      <span className="text-sm font-bold text-blueprint-text">{location}</span>
     </div>
 
     {/* Decorative Hex - Centered in Middle Column */}
-    <div className="mx-auto hidden h-8 w-8 shrink-0 rotate-45 items-center justify-center border border-brand bg-[#0B1021] sm:flex">
+    <div className="mx-auto hidden h-8 w-8 shrink-0 rotate-45 items-center justify-center border border-brand bg-blueprint-bg sm:flex">
       <div className="h-3 w-3 animate-pulse bg-brand shadow-[0_0_8px_#60A5FA]" />
     </div>
 
     {/* Detail Block B - Aligned to Start (Left) of Right Column */}
     <div className="shadow-[0_0_10px_color-mix(in srgb, var(--brand), transparent 90%)] flex w-full flex-col gap-2 justify-self-center border-r-2 border-brand bg-brand/5 py-2 pr-4 text-right sm:max-w-[280px] sm:justify-self-start">
       <span className="text-[10px] font-bold text-brand">{MISSION_LABEL}</span>
-      <span className="flex items-center justify-end gap-3 text-sm font-bold text-[#E6F1FF]">
+      <span className="flex items-center justify-end gap-3 text-sm font-bold text-blueprint-text">
         {tagline}
       </span>
     </div>
@@ -66,7 +66,7 @@ const HeroActionButtons: FCStrict<{
   <div className="mt-16 flex flex-wrap gap-8">
     {/* Custom Technical Button */}
     <a
-      className="group relative px-8 py-3 font-mono text-sm tracking-widest text-brand uppercase transition-colors hover:text-[#E6F1FF]"
+      className="group relative px-8 py-3 font-mono text-sm tracking-widest text-brand uppercase transition-colors hover:text-blueprint-text"
       href={siteConfig.socials.github}
       rel="noreferrer"
       target="_blank"
@@ -82,7 +82,7 @@ const HeroActionButtons: FCStrict<{
     </a>
 
     <a
-      className="group relative px-8 py-3 font-mono text-sm tracking-widest text-[#0B1021] uppercase transition-colors hover:text-[#E6F1FF]"
+      className="group relative px-8 py-3 font-mono text-sm tracking-widest text-blueprint-bg uppercase transition-colors hover:text-blueprint-text"
       href={`mailto:${siteConfig.email}`}
     >
       <span className="relative z-10 flex items-center gap-2 font-bold">

@@ -15,7 +15,7 @@ export const BlueprintGrid: FCStrict<BlueprintDecorationProperties> = ({
     className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? ''}`}
   >
     {/* Deep Background Base */}
-    <div className="absolute inset-0 bg-[#0B1021] dark:bg-[#0B1021]" />
+    <div className="absolute inset-0 bg-blueprint-bg dark:bg-blueprint-bg" />
 
     {/* Major Grid Lines (100px) */}
     <div

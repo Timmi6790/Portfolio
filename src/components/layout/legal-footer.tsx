@@ -66,7 +66,7 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
 }: FooterNavigationProperties): JSX.Element => (
   <nav
     aria-label="Legal navigation"
-    className="order-1 flex items-center gap-px border border-brand/20 bg-[#0B1021]/50 backdrop-blur-md md:order-2"
+    className="order-1 flex items-center gap-px border border-brand/20 bg-blueprint-bg/50 backdrop-blur-md md:order-2"
   >
     <Link
       className="group relative px-8 py-3 transition-all hover:bg-brand/10"
@@ -108,7 +108,7 @@ export const LegalFooter: AsyncPageFC<LegalFooterProperties> = async ({
   const revision: string = environment.NEXT_PUBLIC_REVISION ?? '1.0.0'
 
   return (
-    <footer className="relative w-full overflow-hidden border-t border-brand/30 bg-[#0B1021] text-[#E6F1FF]">
+    <footer className="relative w-full overflow-hidden border-t border-brand/30 bg-blueprint-bg text-blueprint-text">
       {/* Blueprint Grid Background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"

@@ -21,7 +21,7 @@ export const BlueprintCard: FCWithRequiredChildren<BlueprintCardProperties> = ({
     className={`relative ${noPadding ? '' : 'p-8 md:p-12'} w-full ${className ?? ''}`}
   >
     {/* Technical Frame for Content */}
-    <div className="absolute inset-0 border border-brand/20 bg-[#0F1629]/90 backdrop-blur-md" />
+    <div className="absolute inset-0 border border-brand/20 bg-blueprint-card-bg/90 backdrop-blur-md" />
 
     {/* Corner Markers */}
     <div className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-brand" />
@@ -34,7 +34,7 @@ export const BlueprintCard: FCWithRequiredChildren<BlueprintCardProperties> = ({
     <div className="absolute right-0 bottom-12 h-16 w-1 bg-brand/40" />
 
     {Boolean(label) && (
-      <div className="absolute -top-3 left-[var(--app-padding)] border border-brand/30 bg-[#0B1021] px-2 font-mono text-xs tracking-widest text-brand uppercase">
+      <div className="absolute -top-3 left-[var(--app-padding)] border border-brand/30 bg-blueprint-bg px-2 font-mono text-xs tracking-widest text-brand uppercase">
         {label}
       </div>
     )}

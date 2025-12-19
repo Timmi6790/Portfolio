@@ -34,7 +34,7 @@ const ErrorActions: FCStrict<ErrorActionsProperties> = ({
   return (
     <div className="mt-6 flex gap-4">
       <button
-        className="flex items-center gap-2 border border-brand bg-brand/10 px-6 py-3 font-mono text-xs tracking-wider text-brand uppercase transition-all hover:bg-brand/20 hover:text-[#E6F1FF]"
+        className="flex items-center gap-2 border border-brand bg-brand/10 px-6 py-3 font-mono text-xs tracking-wider text-brand uppercase transition-all hover:bg-brand/20 hover:text-blueprint-text"
         onClick={reset}
       >
         <RotateCcw className="h-4 w-4" />
@@ -42,7 +42,7 @@ const ErrorActions: FCStrict<ErrorActionsProperties> = ({
       </button>
 
       <button
-        className="flex items-center gap-2 border border-brand/30 bg-transparent px-6 py-3 font-mono text-xs tracking-wider text-brand/70 uppercase transition-all hover:border-brand hover:bg-brand/5 hover:text-[#E6F1FF]"
+        className="flex items-center gap-2 border border-brand/30 bg-transparent px-6 py-3 font-mono text-xs tracking-wider text-brand/70 uppercase transition-all hover:border-brand hover:bg-brand/5 hover:text-blueprint-text"
         onClick={goHome}
       >
         <Home className="h-4 w-4" />
@@ -64,7 +64,7 @@ const ErrorPage: FCStrict<ErrorPageProperties> = ({
   const translations: Translations<'error'> = useTranslations('error')
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#0B1021] p-4 text-[#E6F1FF]">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-blueprint-bg p-4 text-blueprint-text">
       {/* Blueprint Grid Background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
@@ -93,7 +93,7 @@ const ErrorPage: FCStrict<ErrorPageProperties> = ({
                 {translations('title')}
               </h1>
               <div className="w- full my-2 h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
-              <p className="font-mono text-sm text-[#88B0D6]">
+              <p className="font-mono text-sm text-blueprint-muted">
                 {translations('description')}
               </p>
             </div>

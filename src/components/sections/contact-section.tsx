@@ -37,15 +37,15 @@ const ContactItem: FCStrict<ContactItemProperties> = ({
     rel="noreferrer"
     target="_blank"
   >
-    <div className="flex h-10 w-10 items-center justify-center rounded-none border border-brand bg-[#0B1021] text-brand shadow-[0_0_5px_#60A5FA]">
+    <div className="flex h-10 w-10 items-center justify-center rounded-none border border-brand bg-blueprint-bg text-brand shadow-[0_0_5px_#60A5FA]">
       {icon}
     </div>
     <div className="flex flex-col">
-      <span className="font-mono text-sm font-bold tracking-wide text-[#E6F1FF] transition-colors group-hover:text-brand">
+      <span className="font-mono text-sm font-bold tracking-wide text-blueprint-text transition-colors group-hover:text-brand">
         {label}
       </span>
       {Boolean(subLabel) && (
-        <span className="font-mono text-xs tracking-wider text-[#88B0D6] uppercase">
+        <span className="font-mono text-xs tracking-wider text-blueprint-muted uppercase">
           {subLabel}
         </span>
       )}
@@ -132,7 +132,7 @@ export const ContactSection: AsyncPageFC<ContactSectionProperties> = async ({
         <ContactColumns locale={locale} translations={translations} />
 
         <div className="mt-16 text-center">
-          <div className="inline-block border border-brand/20 bg-[#0B1021] px-4 py-2 font-mono text-xs tracking-[0.2em] text-brand/60 uppercase">
+          <div className="inline-block border border-brand/20 bg-blueprint-bg px-4 py-2 font-mono text-xs tracking-[0.2em] text-brand/60 uppercase">
             {TRANSMISSION_END}
           </div>
         </div>

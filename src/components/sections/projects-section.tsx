@@ -45,7 +45,7 @@ const ContributionGraph: ComponentType<ContributionGraphModule.ContributionGraph
       ),
     {
       loading: (): JSX.Element => (
-        <div className="h-[180px] w-full animate-pulse rounded-lg bg-[#0F1629]/50" />
+        <div className="h-[180px] w-full animate-pulse rounded-lg bg-blueprint-card-bg/50" />
       ),
     }
   )
@@ -70,14 +70,14 @@ const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
           <Folder className="h-5 w-5 text-brand" />
-          <h3 className="font-mono text-lg font-bold tracking-tight text-[#E6F1FF]">
+          <h3 className="font-mono text-lg font-bold tracking-tight text-blueprint-text">
             {name}
           </h3>
         </div>
       </div>
 
       {/* Description */}
-      <p className="mb-6 line-clamp-3 flex-grow font-mono text-xs leading-relaxed text-[#88B0D6]">
+      <p className="mb-6 line-clamp-3 flex-grow font-mono text-xs leading-relaxed text-blueprint-muted">
         {description}
       </p>
 
@@ -99,7 +99,7 @@ const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
         </div>
 
         <a
-          className="decoration-brand underline-offset-4 transition-colors hover:text-[#E6F1FF] hover:underline"
+          className="decoration-brand underline-offset-4 transition-colors hover:text-blueprint-text hover:underline"
           href={url}
           rel="noreferrer"
           target="_blank"
@@ -127,23 +127,27 @@ const ProjectStats: FCStrict<ProjectStatsProperties> = ({
   stats,
 }: ProjectStatsProperties): JSX.Element => (
   <div className="mt-8 grid w-full grid-cols-3 gap-4 md:w-2/3 lg:w-1/2">
-    <Card className="flex flex-col items-center justify-center border-brand/30 bg-[#0B1021]/50 p-4">
-      <span className="text-3xl font-bold text-[#E6F1FF]">
+    <Card className="flex flex-col items-center justify-center border-brand/30 bg-blueprint-bg/50 p-4">
+      <span className="text-3xl font-bold text-blueprint-text">
         {stats.repositories}
       </span>
-      <span className="font-mono text-xs text-[#88B0D6] uppercase">
+      <span className="font-mono text-xs text-blueprint-muted uppercase">
         {REPO_TEXT}
       </span>
     </Card>
-    <Card className="flex flex-col items-center justify-center border-brand/30 bg-[#0B1021]/50 p-4">
-      <span className="text-3xl font-bold text-[#E6F1FF]">{stats.stars}</span>
-      <span className="font-mono text-xs text-[#88B0D6] uppercase">
+    <Card className="flex flex-col items-center justify-center border-brand/30 bg-blueprint-bg/50 p-4">
+      <span className="text-3xl font-bold text-blueprint-text">
+        {stats.stars}
+      </span>
+      <span className="font-mono text-xs text-blueprint-muted uppercase">
         {STARS_TEXT}
       </span>
     </Card>
-    <Card className="flex flex-col items-center justify-center border-brand/30 bg-[#0B1021]/50 p-4">
-      <span className="text-3xl font-bold text-[#E6F1FF]">{stats.forks}</span>
-      <span className="font-mono text-xs text-[#88B0D6] uppercase">
+    <Card className="flex flex-col items-center justify-center border-brand/30 bg-blueprint-bg/50 p-4">
+      <span className="text-3xl font-bold text-blueprint-text">
+        {stats.forks}
+      </span>
+      <span className="font-mono text-xs text-blueprint-muted uppercase">
         {FORKS_TEXT}
       </span>
     </Card>
@@ -170,7 +174,7 @@ const ViewAllButton: FCStrict<ViewAllButtonProperties> = ({
       <div className="absolute inset-0 rounded-sm bg-brand/20 blur-md transition-all duration-300 group-hover:bg-brand/40" />
 
       {/* Button Content */}
-      <div className="group-hover:shadow-[0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] relative flex items-center gap-2 border border-brand bg-[#0B1021]/90 px-8 py-3 font-mono text-sm tracking-wider text-brand backdrop-blur-sm transition-all duration-300 group-hover:text-[#E6F1FF] hover:bg-brand/10">
+      <div className="group-hover:shadow-[0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] relative flex items-center gap-2 border border-brand bg-blueprint-bg/90 px-8 py-3 font-mono text-sm tracking-wider text-brand backdrop-blur-sm transition-all duration-300 group-hover:text-blueprint-text hover:bg-brand/10">
         <span>{label}</span>
         <span className="transition-transform duration-300 group-hover:translate-x-1">
           {VIEW_ALL_ARROW}
@@ -245,7 +249,7 @@ export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
         <ViewAllButton label={translations('viewAll')} />
 
         {/* Contribution Graph - Scaled to fit container without scroll */}
-        <div className="mt-16 w-full rounded-lg border border-brand/30 bg-[#0F1629]/90 p-2 shadow-sm backdrop-blur-md md:p-6">
+        <div className="mt-16 w-full rounded-lg border border-brand/30 bg-blueprint-card-bg/90 p-2 shadow-sm backdrop-blur-md md:p-6">
           <div className="w-full overflow-hidden">
             {/* 
               Scale container to fit 1100px content width into smaller viewports:

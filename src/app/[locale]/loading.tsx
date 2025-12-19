@@ -14,7 +14,7 @@ const Loading: PageFC = (): JSX.Element => {
   const translations: Translations<'loading'> = useTranslations('loading')
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#0B1021] text-[#E6F1FF]">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-blueprint-bg text-blueprint-text">
       {/* Blueprint Grid Background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
@@ -35,7 +35,7 @@ const Loading: PageFC = (): JSX.Element => {
         </div>
 
         <div className="flex flex-col items-center gap-2">
-          <h1 className="animate-pulse font-mono text-xl font-bold tracking-widest text-[#E6F1FF]">
+          <h1 className="animate-pulse font-mono text-xl font-bold tracking-widest text-blueprint-text">
             {translations('title').toUpperCase()}
             {LOADING_ELLIPSIS}
           </h1>

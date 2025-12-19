@@ -32,18 +32,18 @@ const NotFoundContent: FCStrict<NotFoundContentProperties> = ({
       <h1 className="font-mono text-4xl font-bold tracking-wider text-amber-500">
         {ERROR_CODE_404}
       </h1>
-      <h2 className="font-mono text-xl font-bold tracking-widest text-[#E6F1FF] uppercase">
+      <h2 className="font-mono text-xl font-bold tracking-widest text-blueprint-text uppercase">
         {translations('title').toUpperCase()}
       </h2>
       <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
-      <p className="font-mono text-sm text-[#88B0D6]">
+      <p className="font-mono text-sm text-blueprint-muted">
         {translations('description')}
       </p>
     </div>
 
     <div className="mt-6 flex gap-4">
       <button
-        className="flex items-center gap-2 border border-brand bg-brand/10 px-6 py-3 font-mono text-xs tracking-wider text-brand uppercase transition-all hover:bg-brand/20 hover:text-[#E6F1FF]"
+        className="flex items-center gap-2 border border-brand bg-brand/10 px-6 py-3 font-mono text-xs tracking-wider text-brand uppercase transition-all hover:bg-brand/20 hover:text-blueprint-text"
         onClick={(): void => {
           window.location.reload()
         }}
@@ -53,7 +53,7 @@ const NotFoundContent: FCStrict<NotFoundContentProperties> = ({
       </button>
 
       <Link
-        className="flex items-center gap-2 border border-brand/30 bg-transparent px-6 py-3 font-mono text-xs tracking-wider text-brand/70 uppercase transition-all hover:border-brand hover:bg-brand/5 hover:text-[#E6F1FF]"
+        className="flex items-center gap-2 border border-brand/30 bg-transparent px-6 py-3 font-mono text-xs tracking-wider text-brand/70 uppercase transition-all hover:border-brand hover:bg-brand/5 hover:text-blueprint-text"
         href="/"
       >
         <Home className="h-4 w-4" />
@@ -67,7 +67,7 @@ const NotFound: PageFC = (): JSX.Element => {
   const translations: Translations<'notFound'> = useTranslations('notFound')
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#0B1021] p-4 font-sans text-[#E6F1FF]">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-blueprint-bg p-4 font-sans text-blueprint-text">
       {/* Blueprint Grid Background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"

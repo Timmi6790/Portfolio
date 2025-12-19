@@ -31,7 +31,7 @@ export const BlueprintLegalLayout: FCWithRequiredChildren<
       overlay={
         <Button
           asChild={true}
-          className="clip-path-polygon group fixed top-[var(--app-padding)] left-[var(--app-padding)] z-50 rounded-none border border-brand/30 bg-[#0B1021]/80 px-4 py-2 font-mono text-xs font-bold tracking-widest text-brand uppercase backdrop-blur-sm transition-all hover:border-brand hover:bg-brand/10 hover:text-[#E6F1FF]"
+          className="clip-path-polygon group fixed top-[var(--app-padding)] left-[var(--app-padding)] z-50 rounded-none border border-brand/30 bg-blueprint-bg/80 px-4 py-2 font-mono text-xs font-bold tracking-widest text-brand uppercase backdrop-blur-sm transition-all hover:border-brand hover:bg-brand/10 hover:text-blueprint-text"
           size="sm"
           variant="ghost"
         >
@@ -48,7 +48,7 @@ export const BlueprintLegalLayout: FCWithRequiredChildren<
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center pt-20 pb-12">
         <BlueprintSectionTitle sectionLabel="// COMPLIANCE_DOC" title={title} />
 
-        <div className="shadow-[0_0_50px_color-mix(in srgb, var(--brand), transparent 95%)] relative mt-12 w-full border border-brand/30 bg-[#0B1021]/90 p-8 backdrop-blur-sm md:p-12">
+        <div className="shadow-[0_0_50px_color-mix(in srgb, var(--brand), transparent 95%)] relative mt-12 w-full border border-brand/30 bg-blueprint-bg/90 p-8 backdrop-blur-sm md:p-12">
           {/* Decorative Corner Markers */}
           <div className="absolute top-0 left-0 h-2 w-2 border-t border-l border-brand" />
           <div className="absolute top-0 right-0 h-2 w-2 border-t border-r border-brand" />
@@ -56,7 +56,7 @@ export const BlueprintLegalLayout: FCWithRequiredChildren<
           <div className="absolute right-0 bottom-0 h-2 w-2 border-r border-b border-brand" />
 
           {/* Content Area - Enforcing Sans-Serif for Readability */}
-          <div className="prose prose-invert prose-sm md:prose-base max-w-none space-y-4 font-sans text-[#E6F1FF]/90 marker:text-brand">
+          <div className="prose prose-invert prose-sm md:prose-base max-w-none space-y-4 font-sans text-blueprint-text/90 marker:text-brand">
             {children}
           </div>
         </div>

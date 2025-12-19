@@ -61,7 +61,7 @@ const MeasurementLine: FCStrict<MeasurementLineProperties> = ({
       <div className={`${currentStyle.line} bg-brand`} />
       {Boolean(label) && (
         <span
-          className={`absolute bg-[#0B1021] px-1 font-mono text-[9px] tracking-wider text-brand uppercase ${currentStyle.labelRotation}`}
+          className={`absolute bg-blueprint-bg px-1 font-mono text-[9px] tracking-wider text-brand uppercase ${currentStyle.labelRotation}`}
         >
           {label}
         </span>

@@ -46,6 +46,10 @@
   --shadow-opacity: 0.05;
   --shadow-color: #000000;
   --brand: #60a5fa;
+  --blueprint-bg: #0b1021;
+  --blueprint-card-bg: #0f1629;
+  --blueprint-text: #e6f1ff;
+  --blueprint-muted: #88b0d6;
   /* App Layout Variables */
   --app-padding: 1rem;
 }
@@ -97,6 +101,10 @@
   --shadow-opacity: 0.05;
   --shadow-color: #000000;
   --brand: #60a5fa;
+  --blueprint-bg: #0b1021;
+  --blueprint-card-bg: #0f1629;
+  --blueprint-text: #e6f1ff;
+  --blueprint-muted: #88b0d6;
 }
 
 @theme inline {
@@ -144,6 +152,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-brand: var(--brand);
+  --color-blueprint-bg: var(--blueprint-bg);
+  --color-blueprint-card-bg: var(--blueprint-card-bg);
+  --color-blueprint-text: var(--blueprint-text);
+  --color-blueprint-muted: var(--blueprint-muted);
   /* computed shadow variables below - do not modify */
   --shadow-2xs: var(--shadow-x) var(--shadow-y)
     color-mix(

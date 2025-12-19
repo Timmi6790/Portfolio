@@ -40,7 +40,7 @@ const AchievementsList: FCStrict<AchievementsListProperties> = ({
     {achievements.map(
       (achievement: string, index: number): JSX.Element => (
         <li
-          className="flex gap-4 font-mono text-sm leading-relaxed text-[#88B0D6]"
+          className="flex gap-4 font-mono text-sm leading-relaxed text-blueprint-muted"
           key={`${company.replaceAll(' ', '_')}-${index.toString()}`}
         >
           <span className="mt-1 text-brand select-none">{ARROW_MARKER}</span>
@@ -70,13 +70,13 @@ const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
       </div>
 
       <BlueprintCard
-        className="relative bg-[#0F1629]/90 backdrop-blur-md"
+        className="relative bg-blueprint-card-bg/90 backdrop-blur-md"
         label={nodeLabel}
       >
         {/* Card Header */}
         <div className="mb-6 flex flex-col gap-4 border-b border-brand/20 pb-4 md:flex-row md:items-start md:justify-between">
           <div>
-            <h3 className="font-mono text-lg font-bold tracking-tight text-[#E6F1FF]">
+            <h3 className="font-mono text-lg font-bold tracking-tight text-blueprint-text">
               {role}
             </h3>
             <div className="font-mono text-sm text-brand">{company}</div>
@@ -121,14 +121,14 @@ const ExperienceList: FCStrict<ExperienceListProperties> = ({
             key={`${experience.company.replaceAll(' ', '_')}-${index.toString()}`}
           >
             {/* Node Marker (Sleek Orb) */}
-            <div className="absolute top-[3.25rem] -left-[5px] z-10 hidden h-2.5 w-2.5 rounded-full border border-brand bg-[#0B1021] shadow-[0_0_8px_#60A5FA] md:-left-[5px] md:block">
+            <div className="absolute top-[3.25rem] -left-[5px] z-10 hidden h-2.5 w-2.5 rounded-full border border-brand bg-blueprint-bg shadow-[0_0_8px_#60A5FA] md:-left-[5px] md:block">
               {/* Inner Pulse */}
               <div className="absolute inset-0 animate-pulse rounded-full bg-brand/30" />
             </div>
 
             {/* Mobile Timeline (Simplified) */}
             <div className="absolute top-0 bottom-0 left-0 w-px bg-brand/30 md:hidden" />
-            <div className="absolute top-8 -left-[4px] z-10 h-2.5 w-2.5 rounded-full border border-brand bg-[#0B1021] md:hidden" />
+            <div className="absolute top-8 -left-[4px] z-10 h-2.5 w-2.5 rounded-full border border-brand bg-blueprint-bg md:hidden" />
 
             {/* Card with Horizontal Connector */}
             <ExperienceCard {...experience} />

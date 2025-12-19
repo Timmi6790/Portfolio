@@ -27,7 +27,7 @@ export const BlueprintContainer: FCWithRequiredChildren<
   overlay,
 }: BlueprintContainerProperties): JSX.Element => (
   <section
-    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-[#0B1021] py-24 text-[#E6F1FF] ${className ?? ''}`}
+    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${className ?? ''}`}
     id={componentId}
   >
     <BlueprintGrid />

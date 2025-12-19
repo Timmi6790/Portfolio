@@ -25,7 +25,7 @@ export const BlueprintSectionTitle: FCStrict<
     <div className="absolute inset-0 scale-[1.02] border border-brand/10" />
 
     {/* Section Identifier */}
-    <div className="absolute -top-3 left-4 bg-[#0B1021] px-2 font-mono text-[10px] tracking-[0.2em] text-brand uppercase">
+    <div className="absolute -top-3 left-4 bg-blueprint-bg px-2 font-mono text-[10px] tracking-[0.2em] text-brand uppercase">
       {sectionLabel}
     </div>
 
@@ -36,12 +36,12 @@ export const BlueprintSectionTitle: FCStrict<
           {greeting}
         </span>
       )}
-      <h2 className="[text-shadow:0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] font-mono text-4xl font-bold tracking-tighter text-[#E6F1FF] sm:text-6xl">
+      <h2 className="[text-shadow:0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] font-mono text-4xl font-bold tracking-tighter text-blueprint-text sm:text-6xl">
         {title.toUpperCase()}
       </h2>
       <div className="my-4 h-px w-32 bg-gradient-to-r from-transparent via-brand to-transparent" />
       {Boolean(subtitle) && (
-        <p className="font-mono text-lg tracking-widest text-[#88B0D6] uppercase sm:text-2xl">
+        <p className="font-mono text-lg tracking-widest text-blueprint-muted uppercase sm:text-2xl">
           {subtitle}
         </p>
       )}

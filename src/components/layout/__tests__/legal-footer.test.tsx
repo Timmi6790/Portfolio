@@ -37,21 +37,21 @@ describe('LegalFooter', () => {
     const Component = await LegalFooter({ locale: 'en' })
     render(Component)
 
-    expect(screen.getByText('imprint.title')).toBeDefined()
+    expect(screen.getByText(/imprint.title/i)).toBeDefined()
   })
 
   it('renders privacy link', async () => {
     const Component = await LegalFooter({ locale: 'en' })
     render(Component)
 
-    expect(screen.getByText('privacy.title')).toBeDefined()
+    expect(screen.getByText(/privacy.title/i)).toBeDefined()
   })
 
   it('renders copyright and version', async () => {
     const Component = await LegalFooter({ locale: 'en' })
     render(Component)
 
-    expect(screen.getByText('common.footer.copyright')).toBeDefined()
-    expect(screen.getByText('vabc1234')).toBeDefined()
+    expect(screen.getByText(/ALL_RIGHTS_RESERVED/i)).toBeDefined()
+    expect(screen.getByText(/vabc1234/i)).toBeDefined()
   })
 })

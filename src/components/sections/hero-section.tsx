@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+/* eslint-disable sonarjs/deprecation */
 import { type JSX } from 'react'
 
 import { ArrowDown, Github, Mail } from 'lucide-react'
@@ -8,7 +10,7 @@ import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-
 import { ScrollSnapPairController } from '@/components/features/scroll-snap/scroll-snap-pair-controller'
 import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProperties } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* ── props ─────────────────────────────────────────────────────────────── */
 
@@ -16,15 +18,24 @@ type HeroSectionProperties = LocalePageProperties
 
 /* ── subcomponents ─────────────────────────────────────────────────────── */
 
+const LOCATION_LABEL: string = 'LOCATION_VECTOR'
+const MISSION_LABEL: string = 'CURRENT_MISSION'
+
 const BlueprintStatus: FCStrict<{
   readonly location: string
   readonly tagline: string
-}> = ({ location, tagline }) => (
+}> = ({
+  location,
+  tagline,
+}: {
+  readonly location: string
+  readonly tagline: string
+}): JSX.Element => (
   <div className="mt-16 grid w-full max-w-5xl grid-cols-1 items-center gap-6 font-mono text-xs tracking-widest text-[#4A90E2]/80 uppercase sm:grid-cols-[1fr_auto_1fr] sm:gap-8">
     {/* Detail Block A - Aligned to End (Right) of Left Column */}
     <div className="flex w-full flex-col gap-2 justify-self-center border-l-2 border-[#4A90E2] bg-[#4A90E2]/5 py-2 pl-4 text-left shadow-[0_0_10px_rgba(74,144,226,0.1)] sm:max-w-[280px] sm:justify-self-end">
       <span className="text-[10px] font-bold text-[#4A90E2]">
-        LOCATION_VECTOR
+        {LOCATION_LABEL}
       </span>
       <span className="text-sm font-bold text-[#E6F1FF]">{location}</span>
     </div>
@@ -37,7 +48,7 @@ const BlueprintStatus: FCStrict<{
     {/* Detail Block B - Aligned to Start (Left) of Right Column */}
     <div className="flex w-full flex-col gap-2 justify-self-center border-r-2 border-[#4A90E2] bg-[#4A90E2]/5 py-2 pr-4 text-right shadow-[0_0_10px_rgba(74,144,226,0.1)] sm:max-w-[280px] sm:justify-self-start">
       <span className="text-[10px] font-bold text-[#4A90E2]">
-        CURRENT_MISSION
+        {MISSION_LABEL}
       </span>
       <span className="flex items-center justify-end gap-3 text-sm font-bold text-[#E6F1FF]">
         {tagline}
@@ -46,13 +57,60 @@ const BlueprintStatus: FCStrict<{
   </div>
 )
 
+const HeroActionButtons: FCStrict<{
+  readonly contactText: string
+  readonly githubLabel: string
+}> = ({
+  contactText,
+  githubLabel,
+}: {
+  readonly contactText: string
+  readonly githubLabel: string
+}): JSX.Element => (
+  <div className="mt-16 flex flex-wrap gap-8">
+    {/* Custom Technical Button */}
+    <a
+      className="group relative px-8 py-3 font-mono text-sm tracking-widest text-[#4A90E2] uppercase transition-colors hover:text-[#E6F1FF]"
+      href={siteConfig.socials.github}
+      rel="noreferrer"
+      target="_blank"
+    >
+      <span className="relative z-10 flex items-center gap-2">
+        <Github className="h-4 w-4" />
+        {githubLabel}
+      </span>
+      {/* Button Frame */}
+      <div className="absolute inset-0 skew-x-[-12deg] border border-[#4A90E2] bg-[#4A90E2]/5 transition-all group-hover:bg-[#4A90E2]/20 group-hover:shadow-[0_0_15px_rgba(74,144,226,0.3)]" />
+      <div className="absolute right-0 bottom-0 h-1 w-1 bg-[#4A90E2]" />
+      <div className="absolute top-0 left-0 h-1 w-1 bg-[#4A90E2]" />
+    </a>
+
+    <a
+      className="group relative px-8 py-3 font-mono text-sm tracking-widest text-[#0B1021] uppercase transition-colors hover:text-[#E6F1FF]"
+      href={`mailto:${siteConfig.email}`}
+    >
+      <span className="relative z-10 flex items-center gap-2 font-bold">
+        <Mail className="h-4 w-4" />
+        {contactText}
+      </span>
+      {/* Button Frame Filled */}
+      <div className="absolute inset-0 skew-x-[-12deg] border border-[#4A90E2] bg-[#4A90E2] shadow-[0_0_15px_rgba(74,144,226,0.4)] transition-all group-hover:bg-transparent group-hover:text-[#4A90E2]" />
+    </a>
+  </div>
+)
+
 /* ── main ──────────────────────────────────────────────────── */
+
+const GRID_REF: string = 'GRID_REF_X-99'
 
 export const HeroSection: AsyncPageFC<HeroSectionProperties> = async ({
   locale,
 }: HeroSectionProperties): Promise<JSX.Element> => {
-  const t = await getTranslations({ locale })
-  const heroT = await getTranslations({ locale, namespace: 'hero' })
+  const translations: Translations<string> = await getTranslations({ locale })
+  const heroTranslations: Translations<'hero'> = await getTranslations({
+    locale,
+    namespace: 'hero',
+  })
 
   return (
     <BlueprintContainer
@@ -68,51 +126,27 @@ export const HeroSection: AsyncPageFC<HeroSectionProperties> = async ({
       <div className="relative z-10 container flex min-h-[60vh] flex-col items-center justify-center">
         {/* Floating tech markings */}
         <div className="writing-vertical-rl absolute top-20 left-20 font-mono text-[10px] text-[#4A90E2]/40 select-none">
-          GRID_REF_X-99
+          {GRID_REF}
         </div>
 
         <BlueprintSectionTitle
-          greeting={heroT('greeting')}
+          greeting={heroTranslations('greeting')}
           sectionLabel="// MAIN_ENTRY_POINT"
-          subtitle={t('personalInfo.jobTitle')}
+          subtitle={translations('personalInfo.jobTitle')}
           title={siteConfig.fullName}
         />
 
         <BlueprintStatus
-          location={heroT('location', { country: t('personalInfo.country') })}
-          tagline={heroT('tagline')}
+          location={heroTranslations('location', {
+            country: translations('personalInfo.country'),
+          })}
+          tagline={heroTranslations('tagline')}
         />
 
-        <div className="mt-16 flex flex-wrap gap-8">
-          {/* Custom Technical Button */}
-          <a
-            className="group relative px-8 py-3 font-mono text-sm tracking-widest text-[#4A90E2] uppercase transition-colors hover:text-[#E6F1FF]"
-            href={siteConfig.socials.github}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              <Github className="h-4 w-4" />
-              {t('common.socials.github')}
-            </span>
-            {/* Button Frame */}
-            <div className="absolute inset-0 skew-x-[-12deg] border border-[#4A90E2] bg-[#4A90E2]/5 transition-all group-hover:bg-[#4A90E2]/20 group-hover:shadow-[0_0_15px_rgba(74,144,226,0.3)]" />
-            <div className="absolute right-0 bottom-0 h-1 w-1 bg-[#4A90E2]" />
-            <div className="absolute top-0 left-0 h-1 w-1 bg-[#4A90E2]" />
-          </a>
-
-          <a
-            className="group relative px-8 py-3 font-mono text-sm tracking-widest text-[#0B1021] uppercase transition-colors hover:text-[#E6F1FF]"
-            href={`mailto:${siteConfig.email}`}
-          >
-            <span className="relative z-10 flex items-center gap-2 font-bold">
-              <Mail className="h-4 w-4" />
-              {heroT('contact')}
-            </span>
-            {/* Button Frame Filled */}
-            <div className="absolute inset-0 skew-x-[-12deg] border border-[#4A90E2] bg-[#4A90E2] shadow-[0_0_15px_rgba(74,144,226,0.4)] transition-all group-hover:bg-transparent group-hover:text-[#4A90E2]" />
-          </a>
-        </div>
+        <HeroActionButtons
+          contactText={heroTranslations('contact')}
+          githubLabel={translations('common.socials.github')}
+        />
       </div>
 
       <ScrollSnapPairController bottomSectionId="about" topSectionId="hero" />

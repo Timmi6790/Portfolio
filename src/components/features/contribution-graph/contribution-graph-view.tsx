@@ -46,8 +46,8 @@ export const ContributionGraphView: FCStrict<
     'projects.contributions'
   )
 
-  const Wrapper = variant === 'blueprint' ? 'div' : Card
-  const wrapperClassName =
+  const Wrapper: JSX.ElementType = variant === 'blueprint' ? 'div' : Card
+  const wrapperClassName: string =
     variant === 'blueprint'
       ? 'w-full overflow-hidden p-6 transition-all duration-300'
       : 'w-full overflow-hidden border-2 p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-lg dark:bg-card/50'

@@ -12,7 +12,7 @@ import { TechRadar } from '@/components/sections/tech-radar/tech-radar'
 import { siteConfig, type Skill, SKILL_RENDER_AREAS } from '@/lib/config'
 import { shouldShowSkill } from '@/lib/tech-radar-utilities'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProperties } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* ── types ─────────────────────────────────────────────────────────────── */
 
@@ -67,12 +67,81 @@ const SkillList: FCStrict<SkillListProperties> = ({
   )
 }
 
+const TechRadarContainer: FCStrict<{
+  readonly buildTools: readonly Skill[]
+  readonly frameworks: readonly Skill[]
+  readonly infrastructure: readonly Skill[]
+  readonly languages: readonly Skill[]
+  readonly locale: string
+}> = ({
+  buildTools,
+  frameworks,
+  infrastructure,
+  languages,
+  locale,
+}: {
+  readonly buildTools: readonly Skill[]
+  readonly frameworks: readonly Skill[]
+  readonly infrastructure: readonly Skill[]
+  readonly languages: readonly Skill[]
+  readonly locale: string
+}): JSX.Element => (
+  <BlueprintCard
+    className="relative hidden h-full items-center justify-center lg:flex"
+    label="RADAR_SCAN"
+    noPadding={true}
+  >
+    {/* Tech Radar (Hidden on small mobile if needed, but keeping logic similar) */}
+    <div className="h-full w-full">
+      <TechRadar
+        buildTools={buildTools}
+        frameworks={frameworks}
+        infrastructure={infrastructure}
+        languages={languages}
+        locale={locale}
+      />
+    </div>
+  </BlueprintCard>
+)
+
+const SkillMatrix: FCStrict<{
+  readonly buildTools: readonly Skill[]
+  readonly frameworks: readonly Skill[]
+  readonly infrastructure: readonly Skill[]
+  readonly languages: readonly Skill[]
+  readonly translations: Translations<'skills'>
+}> = ({
+  buildTools,
+  frameworks,
+  infrastructure,
+  languages,
+  translations,
+}: {
+  readonly buildTools: readonly Skill[]
+  readonly frameworks: readonly Skill[]
+  readonly infrastructure: readonly Skill[]
+  readonly languages: readonly Skill[]
+  readonly translations: Translations<'skills'>
+}): JSX.Element => (
+  <BlueprintCard className="h-full" label="SKILL_MATRIX">
+    <div className="space-y-8">
+      <SkillList items={languages} title={translations('languages')} />
+      <SkillList items={frameworks} title={translations('frameworks')} />
+      <SkillList items={buildTools} title={translations('buildTools')} />
+      <SkillList
+        items={infrastructure}
+        title={translations('infrastructure')}
+      />
+    </div>
+  </BlueprintCard>
+)
+
 /* ── main ──────────────────────────────────────────────────── */
 
 export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
   locale,
 }: SkillsSectionProperties): Promise<JSX.Element> => {
-  const translations = await getTranslations({
+  const translations: Translations<'skills'> = await getTranslations({
     locale,
     namespace: 'skills',
   })
@@ -92,41 +161,22 @@ export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
 
         <div className="mt-8 grid w-full gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-start">
           {/* Left Column: Tech Radar */}
-          <BlueprintCard
-            className="relative hidden h-full items-center justify-center lg:flex"
-            label="RADAR_SCAN"
-            noPadding={true}
-          >
-            {/* Tech Radar (Hidden on small mobile if needed, but keeping logic similar) */}
-            <div className="h-full w-full">
-              <TechRadar
-                buildTools={buildTools}
-                frameworks={frameworks}
-                infrastructure={infrastructure}
-                languages={languages}
-                locale={locale}
-              />
-            </div>
-          </BlueprintCard>
+          <TechRadarContainer
+            buildTools={buildTools}
+            frameworks={frameworks}
+            infrastructure={infrastructure}
+            languages={languages}
+            locale={locale}
+          />
 
           {/* Right Column: Skill Lists */}
-          <BlueprintCard className="h-full" label="SKILL_MATRIX">
-            <div className="space-y-8">
-              <SkillList items={languages} title={translations('languages')} />
-              <SkillList
-                items={frameworks}
-                title={translations('frameworks')}
-              />
-              <SkillList
-                items={buildTools}
-                title={translations('buildTools')}
-              />
-              <SkillList
-                items={infrastructure}
-                title={translations('infrastructure')}
-              />
-            </div>
-          </BlueprintCard>
+          <SkillMatrix
+            buildTools={buildTools}
+            frameworks={frameworks}
+            infrastructure={infrastructure}
+            languages={languages}
+            translations={translations}
+          />
         </div>
 
         <BlueprintSectionDivider label="SYSTEM_ANALYSIS_COMPLETE" />

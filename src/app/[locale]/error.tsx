@@ -10,6 +10,8 @@ import { BlueprintCard } from '@/components/blueprint/blueprint-card'
 import type { FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
 
+const ERROR_SEPARATOR: string = '::'
+
 // Hoisted utility to satisfy unicorn/consistent-function-scoping
 function goHome(): void {
   window.location.assign('/')
@@ -96,9 +98,9 @@ const ErrorPage: FCStrict<ErrorPageProperties> = ({
               </p>
             </div>
 
-            {error.digest && (
+            {Boolean(error.digest) && (
               <div className="w-full rounded border border-red-500/20 bg-red-950/20 p-3 font-mono text-[10px] tracking-wider text-red-300/70 uppercase">
-                {translations('errorIdLabel')} :: {error.digest}
+                {translations('errorIdLabel')} {ERROR_SEPARATOR} {error.digest}
               </div>
             )}
 

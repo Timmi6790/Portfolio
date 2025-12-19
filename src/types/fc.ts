@@ -64,6 +64,10 @@ export type FCAsyncWithChildren<P = NoProperties> = (
   properties: Readonly<P & WithChildren>
 ) => Promise<JSX.Element>
 
+export type FCAsyncWithRequiredChildren<P = NoProperties> = (
+  properties: Readonly<P & WithRequiredChildren>
+) => Promise<JSX.Element>
+
 /** ------------------------------------------------------------------------
  *  forwardRef variants
  *  --------------------------------------------------------------------- */

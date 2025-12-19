@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { LanguageSwitcher } from '../language-switcher'
+import { useLocale } from 'next-intl'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -26,7 +27,7 @@ describe('LanguageSwitcher', () => {
 
   it('renders with current locale', () => {
     render(<LanguageSwitcher />)
-    expect(screen.getByText('DE')).toBeDefined()
+    expect(screen.getByText(/DE/)).toBeDefined()
   })
 
   it('renders globe icon', () => {
@@ -41,5 +42,15 @@ describe('LanguageSwitcher', () => {
     fireEvent.click(button)
 
     expect(mockReplace).toHaveBeenCalledWith('/test', { locale: 'de' })
+  })
+
+  it('switches from de to en', () => {
+    vi.mocked(useLocale).mockReturnValue('de')
+    render(<LanguageSwitcher />)
+
+    const button = screen.getByRole('button')
+    fireEvent.click(button)
+
+    expect(mockReplace).toHaveBeenCalledWith('/test', { locale: 'en' })
   })
 })

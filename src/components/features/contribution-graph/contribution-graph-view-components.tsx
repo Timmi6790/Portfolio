@@ -37,7 +37,7 @@ export const HeaderSection: FCStrict<HeaderSectionProperties> = ({
   variant = 'default',
   years,
 }: HeaderSectionProperties): JSX.Element => {
-  const selectClassName =
+  const selectClassName: string =
     variant === 'blueprint'
       ? 'h-9 w-24 rounded-md border border-[#4A90E2]/30 bg-[#0B1021] px-3 py-1 text-sm text-[#4A90E2] shadow-sm focus-visible:ring-1 focus-visible:ring-[#4A90E2] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
       : 'h-9 w-24 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'

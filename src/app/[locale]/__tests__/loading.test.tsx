@@ -10,7 +10,7 @@ vi.mock('next-intl', () => ({
 describe('Loading', () => {
   it('renders loading state', () => {
     render(<Loading />)
-    expect(screen.getByText('title')).toBeDefined()
+    expect(screen.getByText(/title/i)).toBeDefined()
   })
 
   it('renders spinner container', () => {

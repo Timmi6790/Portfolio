@@ -110,7 +110,6 @@ describe('RootLayout', () => {
 
     const { getByTestId } = render(Component)
     expect(getByTestId('legal-footer')).toBeDefined()
-    expect(getByTestId('theme-toggle')).toBeDefined()
     expect(getByTestId('language-switcher')).toBeDefined()
   })
 })

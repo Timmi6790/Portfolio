@@ -10,10 +10,10 @@ import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-
 import { ContributionGraph } from '@/components/features/contribution-graph/contribution-graph'
 import { Card } from '@/components/ui/card'
 import { siteConfig } from '@/lib/config'
-import { getGithubUser } from '@/lib/github/client'
+import { getGithubUser, type GitHubData } from '@/lib/github/client'
 import type { GitHubProject } from '@/models/github'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProperties } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* ── types ─────────────────────────────────────────────────────────────── */
 
@@ -40,7 +40,7 @@ const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
   stats,
   url,
   viewProject,
-}) => (
+}: ProjectCardProperties): JSX.Element => (
   <BlueprintCard
     className="flex h-full flex-col"
     label="REPO_DATA"
@@ -85,11 +85,113 @@ const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
           rel="noreferrer"
           target="_blank"
         >
-          {viewProject} -&gt;
+          {viewProject} {'->'}
         </a>
       </div>
     </div>
   </BlueprintCard>
+)
+
+interface ProjectStatsProperties {
+  readonly stats: {
+    readonly forks: number
+    readonly repositories: number
+    readonly stars: number
+  }
+}
+
+const REPO_TEXT: string = 'Repositories'
+const STARS_TEXT: string = 'Total Stars'
+const FORKS_TEXT: string = 'Total Forks'
+
+const ProjectStats: FCStrict<ProjectStatsProperties> = ({
+  stats,
+}: ProjectStatsProperties): JSX.Element => (
+  <div className="mt-8 grid w-full grid-cols-3 gap-4 md:w-2/3 lg:w-1/2">
+    <Card className="flex flex-col items-center justify-center border-[#4A90E2]/30 bg-[#0B1021]/50 p-4">
+      <span className="text-3xl font-bold text-[#E6F1FF]">
+        {stats.repositories}
+      </span>
+      <span className="font-mono text-xs text-[#88B0D6] uppercase">
+        {REPO_TEXT}
+      </span>
+    </Card>
+    <Card className="flex flex-col items-center justify-center border-[#4A90E2]/30 bg-[#0B1021]/50 p-4">
+      <span className="text-3xl font-bold text-[#E6F1FF]">{stats.stars}</span>
+      <span className="font-mono text-xs text-[#88B0D6] uppercase">
+        {STARS_TEXT}
+      </span>
+    </Card>
+    <Card className="flex flex-col items-center justify-center border-[#4A90E2]/30 bg-[#0B1021]/50 p-4">
+      <span className="text-3xl font-bold text-[#E6F1FF]">{stats.forks}</span>
+      <span className="font-mono text-xs text-[#88B0D6] uppercase">
+        {FORKS_TEXT}
+      </span>
+    </Card>
+  </div>
+)
+
+interface ViewAllButtonProperties {
+  readonly label: string
+}
+
+const VIEW_ALL_ARROW: string = '->'
+
+const ViewAllButton: FCStrict<ViewAllButtonProperties> = ({
+  label,
+}: ViewAllButtonProperties): JSX.Element => (
+  <div className="mt-12 flex justify-center">
+    <a
+      className="group relative inline-flex items-center justify-center"
+      href={siteConfig.socials.github}
+      rel="noreferrer"
+      target="_blank"
+    >
+      {/* Glow Effect */}
+      <div className="absolute inset-0 rounded-sm bg-[#4A90E2]/20 blur-md transition-all duration-300 group-hover:bg-[#4A90E2]/40" />
+
+      {/* Button Content */}
+      <div className="relative flex items-center gap-2 border border-[#4A90E2] bg-[#0B1021]/90 px-8 py-3 font-mono text-sm tracking-wider text-[#4A90E2] backdrop-blur-sm transition-all duration-300 group-hover:text-[#E6F1FF] group-hover:shadow-[0_0_15px_rgba(74,144,226,0.3)] hover:bg-[#4A90E2]/10">
+        <span>{label}</span>
+        <span className="transition-transform duration-300 group-hover:translate-x-1">
+          {VIEW_ALL_ARROW}
+        </span>
+      </div>
+
+      {/* Corner Accents */}
+      <div className="absolute -top-[1px] -left-[1px] h-2 w-2 border-t border-l border-[#4A90E2]" />
+      <div className="absolute -right-[1px] -bottom-[1px] h-2 w-2 border-r border-b border-[#4A90E2]" />
+    </a>
+  </div>
+)
+
+interface FeaturedProjectsProperties {
+  readonly projects: readonly GitHubProject[]
+  readonly translations: Translations<'projects'>
+}
+
+const FeaturedProjects: FCStrict<FeaturedProjectsProperties> = ({
+  projects,
+  translations,
+}: FeaturedProjectsProperties): JSX.Element => (
+  <div className="mt-12 grid w-full gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {projects.map(
+      (project: GitHubProject): JSX.Element => (
+        <BlueprintProjectCard
+          description={project.description ?? ''}
+          key={project.name}
+          language={project.language ?? 'Unknown'}
+          name={project.name}
+          stats={{
+            forks: project.forks_count,
+            stars: project.stargazers_count,
+          }}
+          url={project.html_url}
+          viewProject={translations('view')}
+        />
+      )
+    )}
+  </div>
 )
 
 /* ── main ──────────────────────────────────────────────────── */
@@ -97,13 +199,14 @@ const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
 export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
   locale,
 }: ProjectsSectionProperties): Promise<JSX.Element> => {
-  const translations = await getTranslations({
+  const translations: Translations<'projects'> = await getTranslations({
     locale,
     namespace: 'projects',
   })
 
   // Fetch all user data including featured projects, stats, and contributions
-  const { contributionData, projects, stats } = await getGithubUser()
+  const { contributionData, projects, stats }: GitHubData =
+    await getGithubUser()
 
   return (
     <BlueprintContainer id="projects">
@@ -113,76 +216,11 @@ export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
           title={translations('title')}
         />
 
-        {/* User Stats */}
-        <div className="mt-8 grid w-full grid-cols-3 gap-4 md:w-2/3 lg:w-1/2">
-          <Card className="flex flex-col items-center justify-center border-[#4A90E2]/30 bg-[#0B1021]/50 p-4">
-            <span className="text-3xl font-bold text-[#E6F1FF]">
-              {stats.repositories}
-            </span>
-            <span className="font-mono text-xs text-[#88B0D6] uppercase">
-              Repositories
-            </span>
-          </Card>
-          <Card className="flex flex-col items-center justify-center border-[#4A90E2]/30 bg-[#0B1021]/50 p-4">
-            <span className="text-3xl font-bold text-[#E6F1FF]">
-              {stats.stars}
-            </span>
-            <span className="font-mono text-xs text-[#88B0D6] uppercase">
-              Total Stars
-            </span>
-          </Card>
-          <Card className="flex flex-col items-center justify-center border-[#4A90E2]/30 bg-[#0B1021]/50 p-4">
-            <span className="text-3xl font-bold text-[#E6F1FF]">
-              {stats.forks}
-            </span>
-            <span className="font-mono text-xs text-[#88B0D6] uppercase">
-              Total Forks
-            </span>
-          </Card>
-        </div>
+        <ProjectStats stats={stats} />
 
-        {/* Featured Projects Grid */}
-        <div className="mt-12 grid w-full gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project: GitHubProject) => (
-            <BlueprintProjectCard
-              key={project.name}
-              description={project.description ?? ''}
-              language={project.language ?? 'Unknown'}
-              name={project.name}
-              stats={{
-                forks: project.forks_count,
-                stars: project.stargazers_count,
-              }}
-              url={project.html_url}
-              viewProject={translations('view')}
-            />
-          ))}
-        </div>
+        <FeaturedProjects projects={projects} translations={translations} />
 
-        {/* View All Button */}
-        <div className="mt-12 flex justify-center">
-          <a
-            className="group relative inline-flex items-center justify-center"
-            href={siteConfig.socials.github}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {/* Glow Effect */}
-            <div className="absolute inset-0 rounded-sm bg-[#4A90E2]/20 blur-md transition-all duration-300 group-hover:bg-[#4A90E2]/40" />
-
-            {/* Button Content */}
-            <div className="relative flex items-center gap-2 border border-[#4A90E2] bg-[#0B1021]/90 px-8 py-3 font-mono text-sm tracking-wider text-[#4A90E2] backdrop-blur-sm transition-all duration-300 group-hover:text-[#E6F1FF] group-hover:shadow-[0_0_15px_rgba(74,144,226,0.3)] hover:bg-[#4A90E2]/10">
-              <span>{translations('viewAll')}</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                -&gt;
-              </span>
-            </div>
-
-            {/* Corner Accents */}
-            <div className="absolute -top-[1px] -left-[1px] h-2 w-2 border-t border-l border-[#4A90E2]" />
-            <div className="absolute -right-[1px] -bottom-[1px] h-2 w-2 border-r border-b border-[#4A90E2]" />
-          </a>
-        </div>
+        <ViewAllButton label={translations('viewAll')} />
 
         {/* Contribution Graph - Scaled to fit container without scroll */}
         <div className="mt-16 w-full rounded-lg border border-[#4A90E2]/30 bg-[#0F1629]/90 p-2 shadow-sm backdrop-blur-md md:p-6">

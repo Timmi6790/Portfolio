@@ -12,7 +12,7 @@ export const BlueprintGrid: FCStrict<BlueprintDecorationProperties> = ({
 }: BlueprintDecorationProperties): JSX.Element => (
   <div
     aria-hidden="true"
-    className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ? className : ''}`}
+    className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? ''}`}
   >
     {/* Deep Background Base */}
     <div className="absolute inset-0 bg-[#0B1021] dark:bg-[#0B1021]" />

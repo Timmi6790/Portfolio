@@ -5,7 +5,15 @@ import { render, screen } from '@testing-library/react'
 import { HeroSection } from '../hero-section'
 
 // Mock overrides if necessary
-// (None needed for basic structure, but we might check values)
+vi.mock('@/lib/config', () => ({
+  siteConfig: {
+    email: 'test@example.com',
+    fullName: 'Test Name',
+    socials: {
+      github: 'https://github.com/test',
+    },
+  },
+}))
 
 describe('HeroSection', () => {
   it('renders hero content', async () => {

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+/* eslint-disable sonarjs/deprecation */
 import { type JSX } from 'react'
 
 import { Download, Github, Linkedin, Mail } from 'lucide-react'
@@ -8,9 +10,11 @@ import { BlueprintContainer } from '@/components/blueprint/blueprint-container'
 import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-title'
 import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProperties } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* ── types ─────────────────────────────────────────────────────────────── */
+
+const TRANSMISSION_END: string = ':: END_OF_TRANSMISSION ::'
 
 interface ContactItemProperties {
   readonly href: string
@@ -19,8 +23,6 @@ interface ContactItemProperties {
   readonly subLabel?: string
 }
 
-type ContactSectionProperties = LocalePageProperties
-
 /* ── subcomponents ─────────────────────────────────────────────────────── */
 
 const ContactItem: FCStrict<ContactItemProperties> = ({
@@ -28,7 +30,7 @@ const ContactItem: FCStrict<ContactItemProperties> = ({
   icon,
   label,
   subLabel,
-}) => (
+}: ContactItemProperties): JSX.Element => (
   <a
     className="group relative flex items-center gap-4 border border-[#4A90E2]/30 bg-[#4A90E2]/5 p-4 transition-all hover:bg-[#4A90E2]/10 hover:shadow-[0_0_10px_rgba(74,144,226,0.1)]"
     href={href}
@@ -42,7 +44,7 @@ const ContactItem: FCStrict<ContactItemProperties> = ({
       <span className="font-mono text-sm font-bold tracking-wide text-[#E6F1FF] transition-colors group-hover:text-[#4A90E2]">
         {label}
       </span>
-      {subLabel && (
+      {Boolean(subLabel) && (
         <span className="font-mono text-xs tracking-wider text-[#88B0D6] uppercase">
           {subLabel}
         </span>
@@ -55,12 +57,66 @@ const ContactItem: FCStrict<ContactItemProperties> = ({
   </a>
 )
 
+interface ContactColumnsProperties {
+  readonly locale: string
+  readonly translations: Translations<'contact'>
+}
+
+const ContactColumns: FCStrict<ContactColumnsProperties> = ({
+  locale,
+  translations,
+}: ContactColumnsProperties): JSX.Element => (
+  <div className="mt-12 grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+    {/* Direct Comms Column */}
+    <BlueprintCard label="DIRECT_UPLINK" noPadding={true}>
+      <div className="flex flex-col gap-4 p-6">
+        <ContactItem
+          href={`mailto:${siteConfig.email}`}
+          icon={<Mail className="h-5 w-5" />}
+          label={translations('email')}
+          subLabel={siteConfig.email}
+        />
+        <ContactItem
+          href={`/resume-${locale}.pdf`}
+          icon={<Download className="h-5 w-5" />}
+          label={translations('downloadResume')}
+          subLabel={translations('pdfVersion', {
+            language: locale === 'en' ? 'ENGLISH' : 'GERMAN',
+          })}
+        />
+      </div>
+    </BlueprintCard>
+
+    {/* Network Column */}
+    <BlueprintCard label="NETWORK_NODES" noPadding={true}>
+      <div className="flex flex-col gap-4 p-6">
+        <ContactItem
+          href={siteConfig.socials.github}
+          icon={<Github className="h-5 w-5" />}
+          label={translations('github')}
+          subLabel="SOURCE_CONTROL"
+        />
+        {Boolean(siteConfig.socials.linkedin) && (
+          <ContactItem
+            href={siteConfig.socials.linkedin ?? ''}
+            icon={<Linkedin className="h-5 w-5" />}
+            label={translations('linkedin')}
+            subLabel="PROFESSIONAL_NET"
+          />
+        )}
+      </div>
+    </BlueprintCard>
+  </div>
+)
+
 /* ── main ──────────────────────────────────────────────────── */
+
+type ContactSectionProperties = LocalePageProperties
 
 export const ContactSection: AsyncPageFC<ContactSectionProperties> = async ({
   locale,
 }: ContactSectionProperties): Promise<JSX.Element> => {
-  const translations = await getTranslations({
+  const translations: Translations<'contact'> = await getTranslations({
     locale,
     namespace: 'contact',
   })
@@ -73,51 +129,11 @@ export const ContactSection: AsyncPageFC<ContactSectionProperties> = async ({
           title={translations('title')}
         />
 
-        <div className="mt-12 grid w-full grid-cols-1 gap-8 md:grid-cols-2">
-          {/* Direct Comms Column */}
-          <BlueprintCard label="DIRECT_UPLINK" noPadding={true}>
-            <div className="flex flex-col gap-4 p-6">
-              <ContactItem
-                href={`mailto:${siteConfig.email}`}
-                icon={<Mail className="h-5 w-5" />}
-                label={translations('email')}
-                subLabel={siteConfig.email}
-              />
-              <ContactItem
-                href={`/resume-${locale}.pdf`}
-                icon={<Download className="h-5 w-5" />}
-                label={translations('downloadResume')}
-                subLabel={translations('pdfVersion', {
-                  language: locale === 'en' ? 'ENGLISH' : 'GERMAN',
-                })}
-              />
-            </div>
-          </BlueprintCard>
-
-          {/* Network Column */}
-          <BlueprintCard label="NETWORK_NODES" noPadding={true}>
-            <div className="flex flex-col gap-4 p-6">
-              <ContactItem
-                href={siteConfig.socials.github}
-                icon={<Github className="h-5 w-5" />}
-                label={translations('github')}
-                subLabel="SOURCE_CONTROL"
-              />
-              {siteConfig.socials.linkedin && (
-                <ContactItem
-                  href={siteConfig.socials.linkedin}
-                  icon={<Linkedin className="h-5 w-5" />}
-                  label={translations('linkedin')}
-                  subLabel="PROFESSIONAL_NET"
-                />
-              )}
-            </div>
-          </BlueprintCard>
-        </div>
+        <ContactColumns locale={locale} translations={translations} />
 
         <div className="mt-16 text-center">
           <div className="inline-block border border-[#4A90E2]/20 bg-[#0B1021] px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#4A90E2]/60 uppercase">
-            :: END_OF_TRANSMISSION ::
+            {TRANSMISSION_END}
           </div>
         </div>
       </div>

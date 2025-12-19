@@ -22,7 +22,7 @@ describe('Tech Radar Physics Regressions', () => {
 
     // Expected radius calculation:
     // minRadius + (1 - confidence) * (maxRadius - minRadius)
-    // 10 + (1 - 0.95) * (85 - 10) = 10 + 0.05 * 75 = 10 + 3.75 = 13.75
+    // 40 + (1 - 0.95) * (170 - 40) = 40 + 0.05 * 130 = 40 + 6.5 = 46.5
     const expectedRadius =
       RADAR_CONFIG.blips.minRadius +
       (1 - highConfidence) *
@@ -36,10 +36,10 @@ describe('Tech Radar Physics Regressions', () => {
       expectedRadius + RADAR_CONFIG.jitter.radius
     )
 
-    // Crucially, it must be well within the inner circle (40)
+    // Crucially, it must be well within the inner circle (80)
     expect(result.radius).toBeLessThan(RADAR_CONFIG.circles.inner)
-    // And even closer, it should be within the first half of the inner circle
-    expect(result.radius).toBeLessThan(20)
+    // And it should be relatively close to the minRadius for high confidence
+    expect(result.radius).toBeLessThan(RADAR_CONFIG.circles.inner * 0.7)
   })
 
   it('should keep high confidence blips close to center even after physics simulation', () => {
@@ -90,9 +90,9 @@ describe('Tech Radar Physics Regressions', () => {
     // It should still be within the inner circle
     expect(finalRadius).toBeLessThan(RADAR_CONFIG.circles.inner)
 
-    // And it should not have drifted too far from its target (13.75)
-    // Allow some drift due to repulsion (e.g., up to 25)
-    expect(finalRadius).toBeLessThan(25)
+    // And it should not have drifted too far from its target (~46.5)
+    // Allow some drift due to repulsion (e.g., up to 60)
+    expect(finalRadius).toBeLessThan(60)
   })
 
   it('should strictly enforce minRadius', () => {

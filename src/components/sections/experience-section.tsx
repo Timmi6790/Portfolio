@@ -8,7 +8,7 @@ import { BlueprintContainer } from '@/components/blueprint/blueprint-container'
 import { BlueprintSectionDivider } from '@/components/blueprint/blueprint-section-divider'
 import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-title'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
-import type { LocalePageProperties } from '@/types/i18n'
+import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 /* ── types ─────────────────────────────────────────────────────────────── */
 
@@ -25,6 +25,34 @@ type ExperienceSectionProperties = LocalePageProperties
 
 /* ── subcomponents ─────────────────────────────────────────────────────── */
 
+const ARROW_MARKER: string = '>'
+
+interface AchievementsListProperties {
+  readonly achievements: readonly string[]
+  readonly company: string
+}
+
+const AchievementsList: FCStrict<AchievementsListProperties> = ({
+  achievements,
+  company,
+}: AchievementsListProperties): JSX.Element => (
+  <ul className="space-y-3">
+    {achievements.map(
+      (achievement: string, index: number): JSX.Element => (
+        <li
+          className="flex gap-4 font-mono text-sm leading-relaxed text-[#88B0D6]"
+          key={`${company.replaceAll(' ', '_')}-${index.toString()}`}
+        >
+          <span className="mt-1 text-[#4A90E2] select-none">
+            {ARROW_MARKER}
+          </span>
+          <span>{achievement}</span>
+        </li>
+      )
+    )}
+  </ul>
+)
+
 const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
   achievements,
   company,
@@ -32,8 +60,8 @@ const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
   index,
   location,
   role,
-}) => {
-  const nodeLabel = `EXPERIENCE_NODE_${String(index + 1).padStart(2, '0')}`
+}: ExperienceItemProperties): JSX.Element => {
+  const nodeLabel: string = `EXPERIENCE_NODE_${String(index + 1).padStart(2, '0')}`
 
   return (
     <div className="relative pl-8 md:pl-16">
@@ -67,56 +95,133 @@ const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
           </div>
         </div>
 
-        {/* Achievements List */}
-        <ul className="space-y-3">
-          {achievements.map((achievement, idx) => (
-            <li
-              className="flex gap-4 font-mono text-sm leading-relaxed text-[#88B0D6]"
-              key={idx}
-            >
-              <span className="mt-1 text-[#4A90E2] select-none">&gt;</span>
-              <span>{achievement}</span>
-            </li>
-          ))}
-        </ul>
+        <AchievementsList achievements={achievements} company={company} />
       </BlueprintCard>
     </div>
   )
 }
 
+interface ExperienceListProperties {
+  readonly experienceData: readonly ExperienceItemProperties[]
+}
+
+const ExperienceList: FCStrict<ExperienceListProperties> = ({
+  experienceData,
+}: ExperienceListProperties): JSX.Element => (
+  <div className="relative mt-12 w-full">
+    {/* Main Vertical Trace Line (Sleek Gradient) */}
+    <div className="absolute top-0 bottom-0 left-[2px] hidden w-px bg-gradient-to-b from-transparent via-[#4A90E2]/50 to-transparent md:left-[0px] md:block">
+      {/* Subtle Glow */}
+      <div className="absolute inset-0 w-full bg-[#4A90E2]/20 blur-[1px]" />
+    </div>
+
+    <div className="space-y-12">
+      {experienceData.map(
+        (experience: ExperienceItemProperties, index: number): JSX.Element => (
+          <div
+            className="relative"
+            key={`${experience.company.replaceAll(' ', '_')}-${index.toString()}`}
+          >
+            {/* Node Marker (Sleek Orb) */}
+            <div className="absolute top-[3.25rem] -left-[5px] z-10 hidden h-2.5 w-2.5 rounded-full border border-[#4A90E2] bg-[#0B1021] shadow-[0_0_8px_#4A90E2] md:-left-[5px] md:block">
+              {/* Inner Pulse */}
+              <div className="absolute inset-0 animate-pulse rounded-full bg-[#4A90E2]/30" />
+            </div>
+
+            {/* Mobile Timeline (Simplified) */}
+            <div className="absolute top-0 bottom-0 left-0 w-px bg-[#4A90E2]/30 md:hidden" />
+            <div className="absolute top-8 -left-[4px] z-10 h-2.5 w-2.5 rounded-full border border-[#4A90E2] bg-[#0B1021] md:hidden" />
+
+            {/* Card with Horizontal Connector */}
+            <ExperienceCard {...experience} />
+          </div>
+        )
+      )}
+    </div>
+  </div>
+)
+
 /* ── main ──────────────────────────────────────────────────── */
+
+const mapExperienceData: (
+  raw: readonly {
+    readonly achievements: string[]
+    readonly company: string
+    readonly endDate: string
+    readonly location: string
+    readonly startDate: string
+    readonly title: string
+  }[]
+) => ExperienceItemProperties[] = (
+  raw: readonly {
+    readonly achievements: string[]
+    readonly company: string
+    readonly endDate: string
+    readonly location: string
+    readonly startDate: string
+    readonly title: string
+  }[]
+): ExperienceItemProperties[] => {
+  if (!Array.isArray(raw)) {
+    return []
+  }
+
+  return raw.map(
+    (
+      item: {
+        readonly achievements: string[]
+        readonly company: string
+        readonly endDate: string
+        readonly location: string
+        readonly startDate: string
+        readonly title: string
+      },
+      index: number
+    ): ExperienceItemProperties => ({
+      achievements: item.achievements,
+      company: item.company,
+      duration: `${item.startDate} - ${item.endDate}`,
+      index,
+      location: item.location,
+      role: item.title,
+    })
+  )
+}
 
 export const ExperienceSection: AsyncPageFC<
   ExperienceSectionProperties
 > = async ({ locale }: ExperienceSectionProperties): Promise<JSX.Element> => {
-  const resumeTranslations = await getTranslations({
+  const resumeTranslations: Translations<'resume'> = await getTranslations({
     locale,
     namespace: 'resume',
   })
 
   // Fetch experience array directly from translations
-  const rawExperience = resumeTranslations.raw('experience') as Array<{
-    achievements: string[]
-    company: string
-    endDate: string
-    location: string
-    startDate: string
-    title: string
-  }>
+  const rawExperience: {
+    readonly achievements: string[]
+    readonly company: string
+    readonly endDate: string
+    readonly location: string
+    readonly startDate: string
+    readonly title: string
+  }[] = resumeTranslations.raw('experience') as {
+    readonly achievements: string[]
+    readonly company: string
+    readonly endDate: string
+    readonly location: string
+    readonly startDate: string
+    readonly title: string
+  }[]
 
-  const experienceData = rawExperience.map((item, index) => ({
-    achievements: item.achievements,
-    company: item.company,
-    duration: `${item.startDate} - ${item.endDate}`,
-    index,
-    location: item.location,
-    role: item.title,
-  }))
+  const experienceData: ExperienceItemProperties[] =
+    mapExperienceData(rawExperience)
 
-  const sectionTranslations = await getTranslations({
-    locale,
-    namespace: 'experience',
-  })
+  const sectionTranslations: Translations<'experience'> = await getTranslations(
+    {
+      locale,
+      namespace: 'experience',
+    }
+  )
 
   return (
     <BlueprintContainer id="experience">
@@ -126,32 +231,7 @@ export const ExperienceSection: AsyncPageFC<
           title={sectionTranslations('title')}
         />
 
-        <div className="relative mt-12 w-full">
-          {/* Main Vertical Trace Line (Sleek Gradient) */}
-          <div className="absolute top-0 bottom-0 left-[2px] hidden w-px bg-gradient-to-b from-transparent via-[#4A90E2]/50 to-transparent md:left-[0px] md:block">
-            {/* Subtle Glow */}
-            <div className="absolute inset-0 w-full bg-[#4A90E2]/20 blur-[1px]" />
-          </div>
-
-          <div className="space-y-12">
-            {experienceData.map((experience, index) => (
-              <div className="relative" key={index}>
-                {/* Node Marker (Sleek Orb) */}
-                <div className="absolute top-[3.25rem] -left-[5px] z-10 hidden h-2.5 w-2.5 rounded-full border border-[#4A90E2] bg-[#0B1021] shadow-[0_0_8px_#4A90E2] md:-left-[5px] md:block">
-                  {/* Inner Pulse */}
-                  <div className="absolute inset-0 animate-pulse rounded-full bg-[#4A90E2]/30" />
-                </div>
-
-                {/* Mobile Timeline (Simplified) */}
-                <div className="absolute top-0 bottom-0 left-0 w-px bg-[#4A90E2]/30 md:hidden" />
-                <div className="absolute top-8 -left-[4px] z-10 h-2.5 w-2.5 rounded-full border border-[#4A90E2] bg-[#0B1021] md:hidden" />
-
-                {/* Card with Horizontal Connector */}
-                <ExperienceCard {...experience} />
-              </div>
-            ))}
-          </div>
-        </div>
+        <ExperienceList experienceData={experienceData} />
 
         <BlueprintSectionDivider label="HISTORY_LOG_END" />
       </div>

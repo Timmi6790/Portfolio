@@ -7,6 +7,9 @@ import { useTranslations } from 'next-intl'
 import type { PageFC } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
 
+const LOADING_ELLIPSIS: string = '...'
+const SYSTEM_INIT_TEXT: string = 'SYSTEM_INITIALIZATION'
+
 const Loading: PageFC = (): JSX.Element => {
   const translations: Translations<'loading'> = useTranslations('loading')
 
@@ -33,11 +36,12 @@ const Loading: PageFC = (): JSX.Element => {
 
         <div className="flex flex-col items-center gap-2">
           <h1 className="animate-pulse font-mono text-xl font-bold tracking-widest text-[#E6F1FF]">
-            {translations('title').toUpperCase()}...
+            {translations('title').toUpperCase()}
+            {LOADING_ELLIPSIS}
           </h1>
           <div className="h-px w-32 bg-gradient-to-r from-transparent via-[#4A90E2]/50 to-transparent" />
           <span className="font-mono text-[10px] tracking-[0.2em] text-[#4A90E2]/60 uppercase">
-            SYSTEM_INITIALIZATION
+            {SYSTEM_INIT_TEXT}
           </span>
         </div>
       </div>

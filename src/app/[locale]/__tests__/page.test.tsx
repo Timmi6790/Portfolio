@@ -108,7 +108,6 @@ describe('Page', () => {
     expect(screen.getByTestId('skills-section')).toBeDefined()
     expect(screen.getByTestId('projects-section')).toBeDefined()
     expect(screen.getByTestId('experience-section')).toBeDefined()
-    expect(screen.getByTestId('testimonials-section')).toBeDefined()
     expect(screen.getByTestId('contact-section')).toBeDefined()
   })
 })

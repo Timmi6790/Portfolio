@@ -40,6 +40,18 @@ describe('Experience_section', () => {
         return key
       }
       t.raw = (key: string) => {
+        if (key === 'experience') {
+          return [
+            {
+              achievements: ['Working on cool stuff'],
+              company: 'Test Company',
+              endDate: 'Present',
+              location: 'Remote',
+              startDate: '2020',
+              title: 'Senior Developer',
+            },
+          ]
+        }
         if (key.endsWith('achievements')) {
           return ['Working on cool stuff']
         }
@@ -77,6 +89,15 @@ describe('Experience_section', () => {
     vi.mocked(await import('@/lib/config')).siteConfig = {
       experience: [],
     } as any
+
+    // Override getTranslations for this test to return empty raw experience
+    vi.mocked(getTranslations).mockImplementationOnce(async () => {
+      const t: any = (key: string) => key
+      t.raw = (key: string) => (key === 'experience' ? [] : key)
+      t.rich = (key: string) => key
+      t.has = () => true
+      return t
+    })
 
     const Component = await ExperienceSection({ locale: 'en' })
     const { container } = render(Component)

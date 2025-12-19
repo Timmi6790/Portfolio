@@ -11,17 +11,24 @@ interface BlueprintContainerProperties {
   readonly overlay?: ReactNode
 }
 
+const RULER_TICKS: readonly { id: string }[] = Array.from(
+  { length: 20 },
+  (_item: unknown, index: number): { id: string } => ({
+    id: `tick-${index.toString()}`,
+  })
+)
+
 export const BlueprintContainer: FCWithRequiredChildren<
   BlueprintContainerProperties
 > = ({
   children,
   className,
-  id,
+  id: componentId,
   overlay,
 }: BlueprintContainerProperties): JSX.Element => (
   <section
     className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-[#0B1021] py-24 text-[#E6F1FF] ${className ?? ''}`}
-    id={id}
+    id={componentId}
   >
     <BlueprintGrid />
 
@@ -35,20 +42,24 @@ export const BlueprintContainer: FCWithRequiredChildren<
 
       {/* Scale/Ruler markings on edges */}
       <div className="absolute top-0 left-10 flex gap-1">
-        {Array.from({ length: 20 }).map((_, index) => (
-          <div
-            className={`h-${index % 5 === 0 ? '2' : '1'} w-px bg-[#4A90E2]/40`}
-            key={index}
-          />
-        ))}
+        {RULER_TICKS.map(
+          (tick: { id: string }, index: number): JSX.Element => (
+            <div
+              className={`h-${index % 5 === 0 ? '2' : '1'} w-px bg-[#4A90E2]/40`}
+              key={tick.id}
+            />
+          )
+        )}
       </div>
       <div className="absolute right-10 bottom-0 flex gap-1">
-        {Array.from({ length: 20 }).map((_, index) => (
-          <div
-            className={`h-${index % 5 === 0 ? '2' : '1'} w-px bg-[#4A90E2]/40`}
-            key={index}
-          />
-        ))}
+        {RULER_TICKS.map(
+          (tick: { id: string }, index: number): JSX.Element => (
+            <div
+              className={`h-${index % 5 === 0 ? '2' : '1'} w-px bg-[#4A90E2]/40`}
+              key={tick.id}
+            />
+          )
+        )}
       </div>
     </div>
 

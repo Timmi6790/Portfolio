@@ -37,11 +37,12 @@ const {
   getUserStats,
   getContributionData,
   getGithubUser,
+  getGithubRepo,
 } = await import('../client')
 
 describe('github', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.resetAllMocks()
   })
 
   describe('getFeaturedProjects', () => {
@@ -50,7 +51,7 @@ describe('github', () => {
         data: {
           name: 'repo-1',
           description: 'desc',
-          html_url: 'url',
+          html_url: 'https://github.com/user/repo-1',
           stargazers_count: 10,
           forks_count: 5,
           language: 'TypeScript',
@@ -69,7 +70,12 @@ describe('github', () => {
       // Mock one success and one failure
       mockOctokitGet
         .mockResolvedValueOnce({
-          data: { name: 'repo-1', stargazers_count: 10 },
+          data: {
+            name: 'repo-1',
+            stargazers_count: 10,
+            forks_count: 5,
+            html_url: 'https://github.com/user/repo-1',
+          },
         })
         .mockRejectedValueOnce(new Error('Failed'))
 
@@ -83,6 +89,30 @@ describe('github', () => {
       mockOctokitGet.mockRejectedValue(new Error('API Error'))
       const projects = await getFeaturedProjects()
       expect(projects).toEqual([])
+    })
+  })
+
+  describe('getGithubRepo', () => {
+    it('returns a single repo', async () => {
+      mockOctokitGet.mockResolvedValue({
+        data: {
+          name: 'repo-1',
+          description: 'desc',
+          html_url: 'https://github.com/user/repo-1',
+          stargazers_count: 10,
+          forks_count: 5,
+          language: 'TypeScript',
+          topics: [],
+        },
+      })
+
+      const repo = await getGithubRepo('repo-1')
+      expect(repo.name).toBe('repo-1')
+    })
+
+    it('throws error on failure', async () => {
+      mockOctokitGet.mockRejectedValue(new Error('API Error'))
+      await expect(getGithubRepo('repo-1')).rejects.toThrow('API Error')
     })
   })
 

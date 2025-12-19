@@ -31,7 +31,8 @@ export const LanguageSwitcher: FCStrict = (): JSX.Element => {
       {/* Technical Corner Accents */}
       <span className="absolute top-0 left-0 h-1 w-1 border-t border-l border-[#4A90E2]" />
       <span className="absolute right-0 bottom-0 h-1 w-1 border-r border-b border-[#4A90E2]" />
-      <Globe className="mr-2 h-3 w-3" />[{locale === 'en' ? 'DE' : 'EN'}]
+      <Globe className="mr-2 h-3 w-3" />
+      {locale === 'en' ? '[DE]' : '[EN]'}
     </Button>
   )
 }

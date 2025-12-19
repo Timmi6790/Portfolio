@@ -21,14 +21,17 @@ interface AboutTranslations {
   readonly translations: Translations<'about'>
 }
 
+const OPEN_BRACKET: string = '['
+const CLOSE_BRACKET: string = ']'
+
 const CompetencyBadge: FCStrict<CompetencyBadgeProperties> = ({
   label,
 }: CompetencyBadgeProperties): JSX.Element => (
   <div className="group relative overflow-hidden px-4 py-2 font-mono text-xs tracking-widest text-[#4A90E2] uppercase transition-all hover:text-[#E6F1FF]">
     <span className="relative z-10 flex items-center gap-2">
-      <span className="text-[#4A90E2]/50">[</span>
+      <span className="text-[#4A90E2]/50">{OPEN_BRACKET}</span>
       {label}
-      <span className="text-[#4A90E2]/50">]</span>
+      <span className="text-[#4A90E2]/50">{CLOSE_BRACKET}</span>
     </span>
     {/* Hover highlight */}
     <div className="absolute inset-0 bg-[#4A90E2]/10 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -63,7 +66,7 @@ async function getAboutTranslations(
 export const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
   locale,
 }: AboutSectionProperties): Promise<JSX.Element> => {
-  const { competencies, summary, translations } =
+  const { competencies, summary, translations }: AboutTranslations =
     await getAboutTranslations(locale)
 
   return (
@@ -87,9 +90,11 @@ export const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
             </h3>
 
             <div className="flex max-w-3xl flex-wrap justify-center gap-2">
-              {competencies.map((competency) => (
-                <CompetencyBadge key={competency} label={competency} />
-              ))}
+              {competencies.map(
+                (competency: string): JSX.Element => (
+                  <CompetencyBadge key={competency} label={competency} />
+                )
+              )}
             </div>
           </div>
         </div>

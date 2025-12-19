@@ -7,8 +7,96 @@ import { getTranslations } from 'next-intl/server'
 import { environment } from '@/environment'
 import { Link } from '@/i18n/routing'
 import { siteConfig } from '@/lib/config'
-import type { AsyncPageFC } from '@/types/fc'
+import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
+
+/* ── constants ─────────────────────────────────────────────────────────── */
+
+const COMMENT_MARKER: string = '//'
+const COPYRIGHT_MARKER: string = '©'
+const RIGHTS_TEXT: string = ':: ALL_RIGHTS_RESERVED'
+const SYSTEM_PREFIX: string = 'SYS_READY :: v'
+
+/* ── subcomponents ─────────────────────────────────────────────────────── */
+
+interface SystemStatusProperties {
+  readonly revision: string
+}
+
+const SystemStatus: FCStrict<SystemStatusProperties> = ({
+  revision,
+}: SystemStatusProperties): JSX.Element => (
+  <div className="inline-flex items-center gap-2">
+    <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
+    <span className="font-mono text-[10px] text-[#4A90E2]/60">
+      {SYSTEM_PREFIX}
+      {revision}
+    </span>
+  </div>
+)
+
+interface FooterContentProperties {
+  readonly currentYear: number
+  readonly revision: string
+}
+
+const FooterContent: FCStrict<FooterContentProperties> = ({
+  currentYear,
+  revision,
+}: FooterContentProperties): JSX.Element => (
+  <div className="order-2 mt-8 flex flex-col gap-4 text-center md:absolute md:left-[var(--app-padding)] md:order-1 md:mt-0 md:items-start md:text-left">
+    <div className="flex flex-col gap-1">
+      <div className="text-[10px] font-bold tracking-widest text-[#4A90E2] uppercase">
+        {COMMENT_MARKER} {siteConfig.fullName}
+      </div>
+      <div className="text-[10px] text-[#4A90E2]/80">
+        {COPYRIGHT_MARKER} {currentYear} {RIGHTS_TEXT}
+      </div>
+    </div>
+    <SystemStatus revision={revision} />
+  </div>
+)
+
+interface FooterNavigationProperties {
+  readonly translations: Translations<''>
+}
+
+const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
+  translations,
+}: FooterNavigationProperties): JSX.Element => (
+  <nav
+    aria-label="Legal navigation"
+    className="order-1 flex items-center gap-px border border-[#4A90E2]/20 bg-[#0B1021]/50 backdrop-blur-md md:order-2"
+  >
+    <Link
+      className="group relative px-8 py-3 transition-all hover:bg-[#4A90E2]/10"
+      href="/imprint"
+      prefetch={false}
+    >
+      <span className="font-mono text-xs tracking-wider text-[#4A90E2]/70 transition-colors group-hover:text-[#4A90E2]">
+        {translations('imprint.title').toUpperCase()}
+      </span>
+      {/* Corner Accent */}
+      <span className="absolute top-0 left-0 h-1 w-1 border-t border-l border-[#4A90E2] opacity-0 transition-opacity group-hover:opacity-100" />
+    </Link>
+
+    <div className="h-4 w-px bg-[#4A90E2]/20" />
+
+    <Link
+      className="group relative px-8 py-3 transition-all hover:bg-[#4A90E2]/10"
+      href="/privacy"
+      prefetch={false}
+    >
+      <span className="font-mono text-xs tracking-wider text-[#4A90E2]/70 transition-colors group-hover:text-[#4A90E2]">
+        {translations('privacy.title').toUpperCase()}
+      </span>
+      {/* Corner Accent */}
+      <span className="absolute right-0 bottom-0 h-1 w-1 border-r border-b border-[#4A90E2] opacity-0 transition-opacity group-hover:opacity-100" />
+    </Link>
+  </nav>
+)
+
+/* ── main ──────────────────────────────────────────────────────────────── */
 
 type LegalFooterProperties = LocalePageProperties
 
@@ -17,7 +105,7 @@ export const LegalFooter: AsyncPageFC<LegalFooterProperties> = async ({
 }: LegalFooterProperties): Promise<JSX.Element> => {
   const translations: Translations<''> = await getTranslations({ locale })
   const currentYear: number = new Date().getFullYear()
-  const revision: string | undefined = environment.NEXT_PUBLIC_REVISION
+  const revision: string = environment.NEXT_PUBLIC_REVISION ?? '1.0.0'
 
   return (
     <footer className="relative w-full overflow-hidden border-t border-[#4A90E2]/30 bg-[#0B1021] text-[#E6F1FF]">
@@ -40,55 +128,8 @@ export const LegalFooter: AsyncPageFC<LegalFooterProperties> = async ({
       </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center py-12 md:h-32 md:py-0">
-        {/* Left Block: Copyright & System Status (Absolute Left on Desktop) */}
-        <div className="order-2 mt-8 flex flex-col gap-4 text-center md:absolute md:left-[var(--app-padding)] md:order-1 md:mt-0 md:items-start md:text-left">
-          <div className="flex flex-col gap-1">
-            <div className="text-[10px] font-bold tracking-widest text-[#4A90E2] uppercase">
-              // {siteConfig.fullName}
-            </div>
-            <div className="text-[10px] text-[#4A90E2]/80">
-              © {currentYear} :: ALL_RIGHTS_RESERVED
-            </div>
-          </div>
-          <div className="inline-flex items-center gap-2">
-            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
-            <span className="font-mono text-[10px] text-[#4A90E2]/60">
-              SYS_READY :: v{revision ?? '1.0.0'}
-            </span>
-          </div>
-        </div>
-
-        {/* Center Block: Navigation (Strictly Centered) */}
-        <nav
-          aria-label="Legal navigation"
-          className="order-1 flex items-center gap-px border border-[#4A90E2]/20 bg-[#0B1021]/50 backdrop-blur-md md:order-2"
-        >
-          <Link
-            className="group relative px-8 py-3 transition-all hover:bg-[#4A90E2]/10"
-            href="/imprint"
-            prefetch={false}
-          >
-            <span className="font-mono text-xs tracking-wider text-[#4A90E2]/70 transition-colors group-hover:text-[#4A90E2]">
-              {translations('imprint.title').toUpperCase()}
-            </span>
-            {/* Corner Accent */}
-            <span className="absolute top-0 left-0 h-1 w-1 border-t border-l border-[#4A90E2] opacity-0 transition-opacity group-hover:opacity-100" />
-          </Link>
-
-          <div className="h-4 w-px bg-[#4A90E2]/20" />
-
-          <Link
-            className="group relative px-8 py-3 transition-all hover:bg-[#4A90E2]/10"
-            href="/privacy"
-            prefetch={false}
-          >
-            <span className="font-mono text-xs tracking-wider text-[#4A90E2]/70 transition-colors group-hover:text-[#4A90E2]">
-              {translations('privacy.title').toUpperCase()}
-            </span>
-            {/* Corner Accent */}
-            <span className="absolute right-0 bottom-0 h-1 w-1 border-r border-b border-[#4A90E2] opacity-0 transition-opacity group-hover:opacity-100" />
-          </Link>
-        </nav>
+        <FooterContent currentYear={currentYear} revision={revision} />
+        <FooterNavigation translations={translations} />
       </div>
 
       {/* Decorative Bottom Line */}

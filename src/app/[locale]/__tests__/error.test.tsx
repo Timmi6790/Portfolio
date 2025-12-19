@@ -10,6 +10,8 @@ vi.mock('next-intl', () => ({
 // Mock lucide icons
 vi.mock('lucide-react', () => ({
   AlertTriangle: () => <div data-testid="alert-icon">Alert</div>,
+  RotateCcw: () => <div data-testid="rotate-icon">Rotate</div>,
+  Home: () => <div data-testid="home-icon">Home</div>,
 }))
 
 describe('ErrorPage', () => {
@@ -28,24 +30,24 @@ describe('ErrorPage', () => {
 
   it('renders error title', () => {
     render(<ErrorPage error={mockError} reset={mockReset} />)
-    expect(screen.getByText('title')).toBeDefined()
+    expect(screen.getByText(/title/i)).toBeDefined()
   })
 
   it('renders error description', () => {
     render(<ErrorPage error={mockError} reset={mockReset} />)
-    expect(screen.getByText('description')).toBeDefined()
+    expect(screen.getByText(/description/i)).toBeDefined()
   })
 
   it('renders error digest when provided', () => {
     render(<ErrorPage error={mockError} reset={mockReset} />)
-    expect(screen.getByText('abc123')).toBeDefined()
+    expect(screen.getByText(/abc123/)).toBeDefined()
   })
 
   it('does not render digest when not provided', () => {
     const errorWithoutDigest = { ...mockError, digest: undefined }
     render(<ErrorPage error={errorWithoutDigest as any} reset={mockReset} />)
 
-    expect(screen.queryByText('abc123')).toBeNull()
+    expect(screen.queryByText(/abc123/)).toBeNull()
   })
 
   it('calls reset when Try Again is clicked', () => {

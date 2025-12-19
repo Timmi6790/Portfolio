@@ -33,7 +33,7 @@ export const BlueprintCard: FCWithRequiredChildren<BlueprintCardProperties> = ({
     <div className="absolute top-12 left-0 h-16 w-1 bg-[#4A90E2]/40" />
     <div className="absolute right-0 bottom-12 h-16 w-1 bg-[#4A90E2]/40" />
 
-    {label && (
+    {Boolean(label) && (
       <div className="absolute -top-3 left-[var(--app-padding)] border border-[#4A90E2]/30 bg-[#0B1021] px-2 font-mono text-xs tracking-widest text-[#4A90E2] uppercase">
         {label}
       </div>

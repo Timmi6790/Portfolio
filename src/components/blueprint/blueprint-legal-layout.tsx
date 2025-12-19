@@ -6,16 +6,24 @@ import { BlueprintContainer } from '@/components/blueprint/blueprint-container'
 import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-title'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/routing'
+import type { FCWithRequiredChildren } from '@/types/fc'
+
+const END_MARKER: string = '// END_OF_FILE'
 
 interface BlueprintLegalLayoutProperties {
-  readonly children: ReactNode
   readonly title: string
 }
 
-export const BlueprintLegalLayout = async ({
+const RETURN_TEXT: string = 'RETURN_TO_BASE'
+
+export const BlueprintLegalLayout: FCWithRequiredChildren<
+  BlueprintLegalLayoutProperties
+> = ({
   children,
   title,
-}: BlueprintLegalLayoutProperties): Promise<JSX.Element> => {
+}: BlueprintLegalLayoutProperties & {
+  readonly children: ReactNode
+}): JSX.Element => {
   return (
     <BlueprintContainer
       className="min-h-screen"
@@ -32,7 +40,7 @@ export const BlueprintLegalLayout = async ({
             <span className="absolute top-0 left-0 h-1 w-1 border-t border-l border-[#4A90E2]" />
             <span className="absolute right-0 bottom-0 h-1 w-1 border-r border-b border-[#4A90E2]" />
             <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
-            RETURN_TO_BASE
+            {RETURN_TEXT}
           </Link>
         </Button>
       }
@@ -54,7 +62,7 @@ export const BlueprintLegalLayout = async ({
         </div>
 
         <div className="mt-8 font-mono text-[10px] tracking-widest text-[#4A90E2]/40 uppercase">
-          // END_OF_FILE
+          {END_MARKER}
         </div>
       </div>
     </BlueprintContainer>

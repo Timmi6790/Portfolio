@@ -2,6 +2,21 @@ import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import PrivacyPage from '../page'
 
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
+  usePathname: vi.fn(),
+  redirect: vi.fn(),
+}))
+
+// Mock routing
+vi.mock('@/i18n/routing', () => ({
+  Link: ({ children, href }: any) => <a href={href}>{children}</a>,
+  usePathname: vi.fn(),
+  useRouter: vi.fn(),
+  getPathname: vi.fn(),
+}))
+
 // Mock i18n-legal-components
 vi.mock('@/lib/i18n-legal-components', () => ({
   legalPageComponentMappings: {

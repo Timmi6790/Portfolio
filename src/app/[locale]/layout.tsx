@@ -157,10 +157,7 @@ export const generateMetadata: GenerateMetadataFC<
 export const viewport: Viewport = {
   initialScale: 1,
   interactiveWidget: 'resizes-content',
-  themeColor: [
-    { color: '#000000', media: '(prefers-color-scheme: dark)' },
-    { color: '#ffffff', media: '(prefers-color-scheme: light)' },
-  ],
+  themeColor: '#0b1021',
   viewportFit: 'cover',
   width: 'device-width',
 }

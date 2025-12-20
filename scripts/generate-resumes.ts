@@ -49,7 +49,7 @@ void (async (): Promise<void> => {
     // @ts-expect-error - React PDF type mismatch
     const buffer: Buffer = await renderToBuffer(element)
 
-    const filename: string = `resume-${locale}.pdf`
+    const filename: string = `${locale}.pdf`
     await writeFile(path.join(publicDirectory, filename), buffer)
 
     console.log(`✓ Generated ${filename}`)

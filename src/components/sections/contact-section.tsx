@@ -2,7 +2,7 @@
 /* eslint-disable sonarjs/deprecation */
 import { type JSX } from 'react'
 
-import { Download, Github, Linkedin, Mail } from 'lucide-react'
+import { Eye, Github, Linkedin, Mail } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { BlueprintCard } from '@/components/blueprint/blueprint-card'
@@ -77,8 +77,8 @@ const ContactColumns: FCStrict<ContactColumnsProperties> = ({
           subLabel={siteConfig.email}
         />
         <ContactItem
-          href={`/resume-${locale}.pdf`}
-          icon={<Download className="h-5 w-5" />}
+          href={`/resume/${locale}.pdf`}
+          icon={<Eye className="h-5 w-5" />}
           label={translations('downloadResume')}
           subLabel={translations('pdfVersion', {
             language: locale === 'en' ? 'ENGLISH' : 'GERMAN',

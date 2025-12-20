@@ -133,7 +133,7 @@ export const LegalFooter: AsyncPageFC<LegalFooterProperties> = async ({
         <FooterNavigation translations={translations} />
 
         {/* Performance Monitor (Bottom Right) */}
-        <div className="hidden md:absolute md:right-[var(--app-padding)] md:bottom-8 md:block lg:bottom-auto">
+        <div className="hidden md:absolute md:right-[var(--app-padding)] md:bottom-4 md:block lg:bottom-auto">
           <PerformanceMonitor />
         </div>
       </div>

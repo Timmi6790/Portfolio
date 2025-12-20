@@ -32,7 +32,6 @@ const ContactItem: FCStrict<ContactItemProperties> = ({
   subLabel,
 }: ContactItemProperties): JSX.Element => (
   <a
-    aria-label={`${label} - ${subLabel ?? ''}`}
     className="group hover:shadow-[0_0_10px_color-mix(in srgb, var(--brand), transparent 90%)] relative flex items-center gap-4 border border-brand/30 bg-brand/5 p-4 transition-all hover:bg-brand/10"
     href={href}
     rel="noreferrer"

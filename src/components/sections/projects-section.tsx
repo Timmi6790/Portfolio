@@ -249,15 +249,17 @@ export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
         <ViewAllButton label={translations('viewAll')} />
 
         {/* Contribution Graph - Scaled to fit container without scroll */}
-        <div className="mt-16 w-full rounded-lg border border-brand/30 bg-blueprint-card-bg/90 p-2 shadow-sm backdrop-blur-md md:p-6">
-          <div className="w-full">
-            <ContributionGraph
-              data={contributionData}
-              locale={locale}
-              variant="blueprint"
-            />
+        {Object.keys(contributionData).length > 0 && (
+          <div className="mt-16 w-full rounded-lg border border-brand/30 bg-blueprint-card-bg/90 p-2 shadow-sm backdrop-blur-md md:p-6">
+            <div className="w-full">
+              <ContributionGraph
+                data={contributionData}
+                locale={locale}
+                variant="blueprint"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <BlueprintSectionDivider label="MODULES_LOADED" />
       </div>

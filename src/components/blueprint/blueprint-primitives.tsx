@@ -15,9 +15,12 @@ export const BlueprintSectionWrapper: FCWithRequiredChildren<
   children,
   className,
   componentId,
+  isLazy,
 }: BlueprintSectionWrapperProperties): JSX.Element => (
   <section
-    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${className ?? ''}`}
+    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${
+      isLazy === true ? 'cv-section' : ''
+    } ${className ?? ''}`}
     id={componentId}
   >
     {children}

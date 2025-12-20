@@ -10,6 +10,7 @@ import {
 import { MeasurementLine } from './measurement-line'
 
 interface BlueprintSectionTitleProperties {
+  readonly as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined
   readonly greeting?: string
   readonly sectionLabel?: string
   readonly subtitle?: string
@@ -19,6 +20,7 @@ interface BlueprintSectionTitleProperties {
 export const BlueprintSectionTitle: FCStrict<
   BlueprintSectionTitleProperties
 > = ({
+  as: headingAs,
   greeting,
   sectionLabel = '// SECTION_HEADER',
   subtitle,
@@ -39,7 +41,7 @@ export const BlueprintSectionTitle: FCStrict<
       {Boolean(greeting) && (
         <BlueprintSubheading>{greeting}</BlueprintSubheading>
       )}
-      <BlueprintHeading>{title.toUpperCase()}</BlueprintHeading>
+      <BlueprintHeading as={headingAs}>{title.toUpperCase()}</BlueprintHeading>
       <div className="my-4 h-px w-32 bg-gradient-to-r from-transparent via-brand to-transparent" />
       {Boolean(subtitle) && (
         <p className="font-mono text-lg tracking-widest text-blueprint-muted uppercase sm:text-2xl">

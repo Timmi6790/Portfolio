@@ -200,8 +200,10 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
             {/* Non-critical client UI mounts after idle inside this wrapper */}
             <DeferredClientUi />
 
-            <div id="content">{children}</div>
-            <LegalFooter locale={locale} />
+            <article>
+              <div id="content">{children}</div>
+              <LegalFooter locale={locale} />
+            </article>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

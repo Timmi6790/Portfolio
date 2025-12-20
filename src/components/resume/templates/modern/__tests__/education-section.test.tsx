@@ -11,7 +11,7 @@ describe('EducationSection', () => {
       year: '2019',
     },
     {
-      degree: 'M.S. Software Engineering',
+      degree: 'M.S. Software Developering',
       institution: 'Stanford University',
       year: '2021',
     },
@@ -62,7 +62,7 @@ describe('EducationSection', () => {
 
     const resultString = JSON.stringify(result)
     expect(resultString.includes('B.S. Computer Science')).toBe(true)
-    expect(resultString.includes('M.S. Software Engineering')).toBe(true)
+    expect(resultString.includes('M.S. Software Developering')).toBe(true)
   })
 
   it('handles empty education array', () => {

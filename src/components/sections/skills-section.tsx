@@ -47,10 +47,7 @@ const SkillList: FCStrict<SkillListProperties> = ({
         </h3>
       </div>
 
-      <ul
-        aria-hidden="true"
-        className="flex flex-wrap justify-center gap-2 lg:justify-start"
-      >
+      <ul className="flex flex-wrap justify-center gap-2 lg:justify-start">
         {filteredItems.map((skill: Skill): JSX.Element => {
           const Icon: LucideIcon = getSkillIcon(skill.name)
           return (

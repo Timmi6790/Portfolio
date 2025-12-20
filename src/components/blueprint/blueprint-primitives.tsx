@@ -15,10 +15,9 @@ export const BlueprintSectionWrapper: FCWithRequiredChildren<
   children,
   className,
   componentId,
-  isLazy,
 }: BlueprintSectionWrapperProperties): JSX.Element => (
   <section
-    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${(isLazy ?? false) ? 'content-auto' : ''} ${className ?? ''}`}
+    className={`relative flex min-h-screen w-full snap-start flex-col items-center justify-center overflow-hidden bg-blueprint-bg py-24 text-blueprint-text ${className ?? ''}`}
     id={componentId}
   >
     {children}
@@ -38,18 +37,24 @@ export const BlueprintCardBackground: FCStrict<
 )
 
 interface BlueprintHeadingProperties {
+  readonly as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined
   readonly children: ReactNode
   readonly className?: string
 }
 
 export const BlueprintHeading: FCWithRequiredChildren<
   BlueprintHeadingProperties
-> = ({ children, className }: BlueprintHeadingProperties): JSX.Element => (
-  <h2
+> = ({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  as: Component = 'h2',
+  children,
+  className,
+}: BlueprintHeadingProperties): JSX.Element => (
+  <Component
     className={`[text-shadow:0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] font-mono text-4xl font-bold tracking-tighter text-blueprint-text sm:text-6xl ${className ?? ''}`}
   >
     {children}
-  </h2>
+  </Component>
 )
 
 interface BlueprintSubheadingProperties {

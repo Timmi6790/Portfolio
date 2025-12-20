@@ -131,6 +131,7 @@ export const HeroSection: AsyncPageFC<HeroSectionProperties> = async ({
         </BlueprintLabel>
 
         <BlueprintSectionTitle
+          as="h1"
           greeting={heroTranslations('greeting')}
           sectionLabel="// MAIN_ENTRY_POINT"
           subtitle={translations('personalInfo.jobTitle')}

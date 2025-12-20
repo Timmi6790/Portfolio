@@ -36,14 +36,16 @@ const AchievementsList: FCStrict<AchievementsListProperties> = ({
   achievements,
   company,
 }: AchievementsListProperties): JSX.Element => (
-  <ul className="space-y-3">
+  <ul className="list-none space-y-3">
     {achievements.map(
       (achievement: string, index: number): JSX.Element => (
         <li
           className="flex gap-4 font-mono text-sm leading-relaxed text-blueprint-muted"
           key={`${company.replaceAll(' ', '_')}-${index.toString()}`}
         >
-          <span className="mt-1 text-brand select-none">{ARROW_MARKER}</span>
+          <span aria-hidden="true" className="mt-1 text-brand select-none">
+            {ARROW_MARKER}
+          </span>
           <span>{achievement}</span>
         </li>
       )
@@ -82,14 +84,14 @@ const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
             <div className="font-mono text-sm text-brand">{company}</div>
           </div>
           <div className="flex flex-col gap-1 font-mono text-xs tracking-widest text-brand/70 uppercase md:items-end">
-            <span className="flex items-center gap-2">
-              <Calendar className="h-3 w-3" />
-              {duration}
-            </span>
-            <span className="flex items-center gap-2">
-              <MapPin className="h-3 w-3" />
-              {location}
-            </span>
+            <div className="flex items-center gap-2">
+              <Calendar className="h-3 w-3" /> {duration}
+            </div>
+            {/* eslint-disable-next-line react/jsx-no-literals */}
+            <span className="sr-only"> - </span>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-3 w-3" /> {location}
+            </div>
           </div>
         </div>
 

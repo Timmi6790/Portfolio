@@ -26,7 +26,7 @@ describe('ModernTemplate', () => {
   const mockTranslations: ResumeTranslations = Object.assign(
     vi.fn((key: string) => {
       const translations: Record<string, string> = {
-        'personalInfo.jobTitle': 'Senior Software Engineer',
+        'personalInfo.jobTitle': 'Senior Software Developer',
         'personalInfo.country': 'Germany',
         'resume.summary': 'Experienced developer with 5+ years',
         'resume.sectionTitles.experience': 'Experience',
@@ -112,7 +112,7 @@ describe('ModernTemplate', () => {
     })
 
     const resultString = JSON.stringify(result)
-    expect(resultString.includes('Senior Software Engineer')).toBe(true)
+    expect(resultString.includes('Senior Software Developer')).toBe(true)
   })
 
   it('displays summary from translations', () => {

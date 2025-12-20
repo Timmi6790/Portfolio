@@ -15,7 +15,7 @@ describe('ExperienceSection', () => {
       endDate: 'Present',
       location: 'San Francisco, CA',
       startDate: '2021',
-      title: 'Senior Software Engineer',
+      title: 'Senior Software Developer',
     },
     {
       achievements: ['Built real-time messaging system', 'Implemented CI/CD'],
@@ -74,7 +74,7 @@ describe('ExperienceSection', () => {
     const resultString = JSON.stringify(result)
 
     // Check that experience data is present
-    expect(resultString.includes('Senior Software Engineer')).toBe(true)
+    expect(resultString.includes('Senior Software Developer')).toBe(true)
     expect(resultString.includes('Tech Company Inc.')).toBe(true)
   })
 
@@ -90,7 +90,7 @@ describe('ExperienceSection', () => {
     })
 
     const resultString = JSON.stringify(result)
-    expect(resultString.includes('Senior Software Engineer')).toBe(true)
+    expect(resultString.includes('Senior Software Developer')).toBe(true)
     expect(resultString.includes('Tech Company Inc.')).toBe(true)
     expect(resultString.includes('2021')).toBe(true)
   })

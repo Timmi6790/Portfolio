@@ -1,35 +1,39 @@
 # syntax=docker/dockerfile:1.20@sha256:26147acbda4f14c5add9946e2fd2ed543fc402884fd75146bd342a7f6271dc1d
 
-FROM node:24-bookworm-slim@sha256:04d9cbb7297edb843581b9bb9bbed6d7efb459447d5b6ade8d8ef988e6737804 AS build_base
+FROM dhi.io/node:25-debian13-sfw-dev AS build_base
 WORKDIR /app
-ENV PNPM_HOME=/root/.local/share/pnpm
-ENV PATH="${PNPM_HOME}:${PATH}"
 
 FROM build_base AS deps
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
-  && rm -rf /var/lib/apt/lists/*
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable
+RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --prefer-offline --prod
+
+FROM build_base AS dev_deps
+COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --prefer-offline
 
 FROM build_base AS builder
 
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 ARG GIT_SHA=unknown
-ENV GIT_SHA=$GIT_SHA
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    GIT_SHA=$GIT_SHA
 
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=dev_deps /app/node_modules ./node_modules
 COPY . .
 
-RUN corepack enable
-RUN --mount=type=cache,target=/app/.next/cache pnpm run build
-RUN find .next/static -type f -name '*.map' -delete
+RUN --mount=type=cache,target=/app/.next/cache \
+    pnpm run build && \
+    find .next/static -type f -name '*.map' -delete
 
-FROM gcr.io/distroless/nodejs24-debian12:nonroot@sha256:77eb1d627c076bc481706c68ac118fef75ebb35d8ce4d9e711ecd0f675fa9d20 AS runner
+FROM dhi.io/node:25 AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOSTNAME=0.0.0.0 \
+    PORT=3000
 
 COPY --from=builder --chown=nonroot:nonroot /app/public ./public
 COPY --from=builder --chown=nonroot:nonroot /app/.next/standalone ./
@@ -39,8 +43,7 @@ EXPOSE 3000
 
 # Healthcheck hits /api/health and fails on non-200 or error
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD ["/nodejs/bin/node","-e","require('http').get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/api/health'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+  CMD ["node","-e","require('http').get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/api/health'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
 
-# Distroless node entry is /nodejs/bin/node; no shell, no package manager
-ENTRYPOINT ["/nodejs/bin/node"]
+ENTRYPOINT ["node"]
 CMD ["server.js"]

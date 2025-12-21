@@ -76,6 +76,12 @@ describe('ModernTemplate', () => {
         }
         return data[key] ?? null
       }),
+      rich: vi.fn((_key, values) => {
+        if (typeof values?.highlight === 'function') {
+          return values.highlight('Expected Summary Content')
+        }
+        return 'Experienced developer with 5+ years'
+      }),
     }
   ) as unknown as ResumeTranslations
 
@@ -140,8 +146,6 @@ describe('ModernTemplate', () => {
     })
 
     const resultString = JSON.stringify(result)
-    expect(resultString.includes('Experienced developer with 5+ years')).toBe(
-      true
-    )
+    expect(resultString.includes('Expected Summary Content')).toBe(true)
   })
 })

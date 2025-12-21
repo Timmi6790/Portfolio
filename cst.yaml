@@ -136,7 +136,10 @@ commandTests:
           const items = fs.readdirSync(dir, { withFileTypes: true });
           // Check current directory
           const mode = (fs.statSync(dir).mode & parseInt('777', 8)).toString(8);
-          if (mode !== '555') process.exit(1);
+          if (mode !== '555') {
+            console.error(`ERROR: Directory ${dir} has mode ${mode}, expected 555`);
+            process.exit(1);
+          }
 
           for (const item of items) {
             const res = path.resolve(dir, item.name);
@@ -144,11 +147,19 @@ commandTests:
               check(res);
             } else {
               const fileMode = (fs.statSync(res).mode & parseInt('777', 8)).toString(8);
-              if (fileMode !== '444') process.exit(1);
+              if (fileMode !== '444') {
+                console.error(`ERROR: File ${res} has mode ${fileMode}, expected 444`);
+                process.exit(1);
+              }
             }
           }
         }
-        check('/app/public');
+        try {
+          check('/app/public');
+        } catch (e) {
+          console.error(e);
+          process.exit(1);
+        }
     exitCode: 0
 
   - name: public directory is not writable

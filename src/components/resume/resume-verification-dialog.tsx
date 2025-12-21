@@ -1,6 +1,6 @@
 'use client'
 
-import { type JSX, useState } from 'react'
+import React, { type JSX, useState } from 'react'
 
 import { useTranslations } from 'next-intl'
 
@@ -24,17 +24,62 @@ interface ResumeVerificationDialogProperties {
   readonly fingerprint: string
 }
 
-// eslint-disable-next-line max-lines-per-function
+interface FingerprintInputProperties {
+  readonly copied: boolean
+  readonly fingerprint: string
+  readonly onCopy: () => void
+}
+
+const FingerprintInput: React.FC<FingerprintInputProperties> = ({
+  copied,
+  fingerprint,
+  onCopy,
+}: FingerprintInputProperties): JSX.Element => {
+  const translate: (key: string) => string = useTranslations(
+    'contact.verification'
+  )
+
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="fingerprint">{translate('fingerprintLabel')}</Label>
+      <div className="flex gap-2">
+        <Input
+          className="font-mono text-xs"
+          id="fingerprint"
+          readOnly={true}
+          value={fingerprint}
+        />
+        <Button
+          aria-label={translate('copyFingerprint')}
+          className="shrink-0"
+          size="icon"
+          variant="outline"
+          onClick={onCopy}
+        >
+          {copied ? (
+            <Check className="h-4 w-4 text-green-500" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 export const ResumeVerificationDialog: FCWithRequiredChildren<
   ResumeVerificationDialogProperties
 > = ({
   children,
   fingerprint,
 }: ResumeVerificationDialogProperties): JSX.Element => {
-  // eslint-disable-next-line @typescript-eslint/typedef
-  const translate = useTranslations('contact.verification')
-  // eslint-disable-next-line @typescript-eslint/typedef
-  const [copied, setCopied] = useState<boolean>(false)
+  const translate: (key: string) => string = useTranslations(
+    'contact.verification'
+  )
+  const [copied, setCopied]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>,
+  ] = useState<boolean>(false)
 
   const handleCopy: () => void = (): void => {
     void navigator.clipboard.writeText(fingerprint).then((): void => {
@@ -58,29 +103,11 @@ export const ResumeVerificationDialog: FCWithRequiredChildren<
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="fingerprint">{translate('fingerprintLabel')}</Label>
-            <div className="flex gap-2">
-              <Input
-                className="font-mono text-xs"
-                id="fingerprint"
-                readOnly={true}
-                value={fingerprint}
-              />
-              <Button
-                className="shrink-0"
-                size="icon"
-                variant="outline"
-                onClick={handleCopy}
-              >
-                {copied ? (
-                  <Check className="h-4 w-4 text-green-500" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          </div>
+          <FingerprintInput
+            copied={copied}
+            fingerprint={fingerprint}
+            onCopy={handleCopy}
+          />
 
           <div className="rounded-md border border-yellow-500/20 bg-yellow-500/10 p-4 text-sm text-yellow-500">
             {translate('selfSignedWarning')}

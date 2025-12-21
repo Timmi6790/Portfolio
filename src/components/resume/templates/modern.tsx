@@ -1,5 +1,7 @@
 import { type FC, type ReactElement } from 'react'
 
+import { type createFormatter } from 'next-intl'
+
 import { Page, Text, View } from '@react-pdf/renderer'
 
 import { SkillsSection } from '@/components/resume/templates/modern/skills-section'
@@ -13,10 +15,12 @@ import { ExperienceSection } from './modern/experience-section'
 import { styles } from './modern/modern.styles'
 
 interface ModernTemplateProperties {
+  readonly formatDate: ReturnType<typeof createFormatter>
   readonly translations: ResumeTranslations
 }
 
 export const ModernTemplate: FC<ModernTemplateProperties> = ({
+  formatDate,
   translations,
 }: ModernTemplateProperties): ReactElement => {
   return (
@@ -41,7 +45,10 @@ export const ModernTemplate: FC<ModernTemplateProperties> = ({
 
         {/* Main content */}
         <View style={styles.rightColumn}>
-          <ExperienceSection translations={translations} />
+          <ExperienceSection
+            formatDate={formatDate}
+            translations={translations}
+          />
         </View>
       </View>
     </Page>

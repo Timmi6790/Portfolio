@@ -8,12 +8,17 @@ export interface ResumeEducation {
   readonly year: string
 }
 
+export interface ResumeDate {
+  readonly month: number
+  readonly year: number
+}
+
 export interface ResumeExperience {
   readonly achievements: readonly string[]
   readonly company: string
-  readonly endDate: string
+  readonly end: ResumeDate | null
   readonly location: string
-  readonly startDate: string
+  readonly start: ResumeDate
   readonly title: string
 }
 

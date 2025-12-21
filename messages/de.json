@@ -140,9 +140,15 @@
           "Eng mit Entwickler- und Community-Team zusammengearbeitet, um kritische Produktionsfehler zu reproduzieren, zu priorisieren und deren Behebung zu verifizieren."
         ],
         "company": "Mineplex LLC",
-        "endDate": "2023-01",
+        "end": {
+          "month": 1,
+          "year": 2023
+        },
         "location": "Remote",
-        "startDate": "2018-11",
+        "start": {
+          "month": 11,
+          "year": 2018
+        },
         "title": "Qualitätssicherung"
       },
       {
@@ -152,9 +158,12 @@
           "Backend-Infrastruktur (Datenbanken, Message-Broker, Caches und Reverse Proxies) bereitgestellt und betrieben und mithilfe von Infrastructure-as-Code und Monitoring zuverlässig, beobachtbar und gut debugbar gehalten."
         ],
         "company": "Selbstständig",
-        "endDate": "present",
+        "end": null,
         "location": "Remote",
-        "startDate": "2021-10",
+        "start": {
+          "month": 10,
+          "year": 2021
+        },
         "title": "Selbstständiger Softwareentwickler"
       },
       {
@@ -164,9 +173,15 @@
           "Eng mit Product-, Community- und Operations-Teams zusammengearbeitet, um Gameplay-Features zu planen und umzusetzen und Spielerfeedback in die Entwicklungsroadmap einfließen zu lassen."
         ],
         "company": "Mineplex LLC",
-        "endDate": "2023-01",
+        "end": {
+          "month": 1,
+          "year": 2023
+        },
         "location": "Remote",
-        "startDate": "2021-10",
+        "start": {
+          "month": 10,
+          "year": 2021
+        },
         "title": "Softwareentwickler"
       },
       {
@@ -176,12 +191,16 @@
           "Partnerspezifische Funktionen und Integrationen als White-Label-Lösungen auf Basis der Plattform implementiert, sodass Partner individuelle Produkte bereitstellen konnten, während sie auf die gemeinsame Kerninfrastruktur und das gemeinsame Tooling zurückgreifen."
         ],
         "company": "Mineplex Studios LLC",
-        "endDate": "present",
+        "end": null,
         "location": "Remote",
-        "startDate": "2023-08",
+        "start": {
+          "month": 8,
+          "year": 2023
+        },
         "title": "Senior Softwareentwickler"
       }
-    ]
+    ],
+    "present": "Heute"
   },
   "imprint": {
     "title": "Impressum",

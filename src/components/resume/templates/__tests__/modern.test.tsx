@@ -41,6 +41,7 @@ describe('ModernTemplate', () => {
         'contact.location': 'Location',
         'common.socials.github': 'GitHub',
         'common.socials.linkedin': 'LinkedIn',
+        'resume.present': 'Present',
       }
       return translations[key] ?? key
     }),
@@ -84,12 +85,20 @@ describe('ModernTemplate', () => {
 
   it('renders without errors', () => {
     expect(() => {
-      ModernTemplate({ translations: mockTranslations })
+      ModernTemplate({
+        formatDate: {
+          dateTime: (date: Date | number) => date.toString(),
+        } as any,
+        translations: mockTranslations,
+      })
     }).not.toThrow()
   })
 
   it('returns a Page component', () => {
     const result = ModernTemplate({
+      formatDate: {
+        dateTime: (date: Date | number) => date.toString(),
+      } as any,
       translations: mockTranslations,
     })
 
@@ -99,6 +108,9 @@ describe('ModernTemplate', () => {
 
   it('displays name from siteConfig', () => {
     const result = ModernTemplate({
+      formatDate: {
+        dateTime: (date: Date | number) => date.toString(),
+      } as any,
       translations: mockTranslations,
     })
 
@@ -108,6 +120,9 @@ describe('ModernTemplate', () => {
 
   it('displays job title from translations', () => {
     const result = ModernTemplate({
+      formatDate: {
+        dateTime: (date: Date | number) => date.toString(),
+      } as any,
       translations: mockTranslations,
     })
 
@@ -117,6 +132,9 @@ describe('ModernTemplate', () => {
 
   it('displays summary from translations', () => {
     const result = ModernTemplate({
+      formatDate: {
+        dateTime: (date: Date | number) => date.toString(),
+      } as any,
       translations: mockTranslations,
     })
 

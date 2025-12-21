@@ -47,6 +47,9 @@ fileExistenceTests:
   - name: pnpm absent
     path: /usr/bin/pnpm
     shouldExist: false
+  - name: scripts directory absent
+    path: /app/scripts
+    shouldExist: false
 
 commandTests:
   - name: uid is non-root

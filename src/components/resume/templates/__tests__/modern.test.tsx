@@ -51,8 +51,9 @@ describe('ModernTemplate', () => {
           'resume.education': [
             {
               degree: 'B.S. Computer Science',
+              end: { month: 5, year: 2019 },
               institution: 'University',
-              year: '2019',
+              start: { month: 9, year: 2015 },
             },
           ],
           'resume.experience': [

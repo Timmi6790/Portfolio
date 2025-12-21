@@ -40,7 +40,10 @@ export const ModernTemplate: FC<ModernTemplateProperties> = ({
         <View style={styles.leftColumn}>
           <ContactSection translations={translations} />
           <SkillsSection translations={translations} />
-          <EducationSection translations={translations} />
+          <EducationSection
+            formatDate={formatDate}
+            translations={translations}
+          />
         </View>
 
         {/* Main content */}

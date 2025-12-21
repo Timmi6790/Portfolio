@@ -4,8 +4,9 @@ import type en from '../../messages/en.json'
 
 export interface ResumeEducation {
   readonly degree: string
+  readonly end: ResumeDate | null
   readonly institution: string
-  readonly year: string
+  readonly start: ResumeDate
 }
 
 export interface ResumeDate {

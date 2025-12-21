@@ -47,8 +47,8 @@ ENV NODE_ENV=production \
 
 COPY --from=builder --chown=node:node /app/public ./public
 # Fix permissions using compiled dedicated script
-COPY --from=builder --chown=node:node /app/scripts/docker/fix-public-permissions.js ./scripts/fix-public-permissions.js
-RUN ["node", "scripts/fix-public-permissions.js"]
+COPY --from=builder --chown=node:node /app/scripts/docker/fix-public-permissions.js /tmp/fix-public-permissions.js
+RUN ["node", "/tmp/fix-public-permissions.js"]
 
 # Those directories need to be readble for ISR to work
 COPY --from=builder --chown=node:node /app/.next/standalone ./

@@ -4,7 +4,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const PUBLIC_DIRECTORY: string = path.join(__dirname, '../../public')
+// Use explicit octal literals for permissions
 const DIRECTORY_PERMISSION_MODE: number = 0o555
 const FILE_PERMISSION_MODE: number = 0o444
 
@@ -17,9 +17,6 @@ function setPermissionsRecursive(
     return
   }
 
-  // Set directory permissions
-  fs.chmodSync(directory, directoryMode)
-
   const items: fs.Dirent[] = fs.readdirSync(directory, { withFileTypes: true })
 
   for (const item of items) {
@@ -31,36 +28,41 @@ function setPermissionsRecursive(
       fs.chmodSync(fullPath, fileMode)
     }
   }
+
+  // Set directory permissions AFTER processing children (post-order)
+  fs.chmodSync(directory, directoryMode)
 }
 
 function cleanupSelf(): void {
-  // Cleanup: Delete self and the scripts directory
+  // Cleanup: Delete self
   // We use __filename because correct compilation for Docker is CJS
   if (typeof __filename !== 'undefined' && fs.existsSync(__filename)) {
-    const scriptDirectory: string = path.dirname(__filename)
-    fs.unlinkSync(__filename)
-
-    // Attempt to remove the directory if empty (it should be)
     try {
-      if (fs.readdirSync(scriptDirectory).length === 0) {
-        fs.rmdirSync(scriptDirectory)
-      }
-    } catch (directoryError) {
-      console.warn('⚠ Could not remove scripts directory:', directoryError)
+      fs.unlinkSync(__filename)
+    } catch (cleanupError) {
+      console.warn('⚠ Could not delete permission script:', cleanupError)
     }
   }
 }
 
 console.log('Setting strict permissions for public directory...')
 try {
-  setPermissionsRecursive(
-    PUBLIC_DIRECTORY,
-    DIRECTORY_PERMISSION_MODE,
-    FILE_PERMISSION_MODE
-  )
-  console.log(
-    `✓ Public directory permissions set (Files: ${FILE_PERMISSION_MODE.toString(8)}, Dirs: ${DIRECTORY_PERMISSION_MODE.toString(8)})`
-  )
+  // If running from /tmp, path is ../app/public
+  // Dockerfile copies to /tmp/fix-public-permissions.js
+  const targetDirection: string = path.resolve('/app/public')
+
+  if (fs.existsSync(targetDirection)) {
+    setPermissionsRecursive(
+      targetDirection,
+      DIRECTORY_PERMISSION_MODE,
+      FILE_PERMISSION_MODE
+    )
+    console.log(
+      `✓ Public directory permissions set (Files: ${FILE_PERMISSION_MODE.toString(8)}, Dirs: ${DIRECTORY_PERMISSION_MODE.toString(8)})`
+    )
+  } else {
+    console.warn(`⚠ Target directory does not exist: ${targetDirection}`)
+  }
 
   cleanupSelf()
 } catch (error) {

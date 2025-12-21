@@ -46,16 +46,16 @@ ENV NODE_ENV=production \
     PORT=3000
 
 COPY --from=builder --chown=node:node /app/public ./public
-# Fix permissions using compiled dedicated script
-COPY --from=builder --chown=node:node /app/scripts/docker/fix-public-permissions.js /tmp/fix-public-permissions.js
-RUN ["node", "/tmp/fix-public-permissions.js"]
 
 # Those directories need to be readble for ISR to work
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-
 # server.js executable only
 COPY --from=builder --chown=node:node --chmod=500 /app/.next/standalone/server.js ./server.js
+
+# Fix permissions using compiled dedicated script
+COPY --from=builder --chown=node:node /app/scripts/docker/fix-public-permissions.js /tmp/fix-public-permissions.js
+RUN ["node", "/tmp/fix-public-permissions.js"]
 
 EXPOSE 3000
 

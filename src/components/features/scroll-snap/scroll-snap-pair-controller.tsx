@@ -174,6 +174,14 @@ function createWheelHandler(
       return
     }
 
+    // Check if body is scroll-locked (e.g. by a Dialog)
+    const isLocked: boolean =
+      document.body.style.overflow === 'hidden' ||
+      document.body.dataset['scrollLocked'] !== undefined
+    if (isLocked) {
+      return
+    }
+
     const deltaY: number = event.deltaY
     const minDelta: number = state.options.minDelta
 

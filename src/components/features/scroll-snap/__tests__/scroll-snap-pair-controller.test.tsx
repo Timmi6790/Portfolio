@@ -161,6 +161,35 @@ describe('ScrollSnapPairController', () => {
     expect(scrollToMock).not.toHaveBeenCalled()
   })
 
+  it('does not snap if document body is scroll locked (dialog open)', () => {
+    render(
+      <ScrollSnapPairController
+        topSectionId="hero"
+        bottomSectionId="main"
+        options={{ topZone: 50 }}
+      />
+    )
+
+    // Setup geometry: Top element is at 0 (in view), Bottom is below
+    mockRect(topElement, { top: 0, bottom: 800 })
+    mockRect(bottomElement, { top: 800, bottom: 1600 })
+
+    // Simulate locked body
+    document.body.style.overflow = 'hidden'
+
+    // Simulate scroll down
+    const event = new WheelEvent('wheel', {
+      deltaY: 20,
+      bubbles: true,
+      cancelable: true,
+    })
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+    window.dispatchEvent(event)
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled()
+    expect(scrollToMock).not.toHaveBeenCalled()
+  })
+
   it('removes event listener on unmount', () => {
     const { unmount } = render(
       <ScrollSnapPairController topSectionId="hero" bottomSectionId="main" />

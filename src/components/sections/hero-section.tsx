@@ -13,6 +13,8 @@ import { siteConfig } from '@/lib/config'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
 
+import { CommandPaletteHint } from './command-palette-hint'
+
 /* ── props ─────────────────────────────────────────────────────────────── */
 
 type HeroSectionProperties = LocalePageProperties
@@ -129,6 +131,7 @@ export const HeroSection: AsyncPageFC<HeroSectionProperties> = async ({
         <BlueprintLabel className="writing-vertical-rl absolute top-20 left-20 font-mono text-[10px] text-brand/40 select-none">
           {GRID_REF}
         </BlueprintLabel>
+        <CommandPaletteHint />
 
         <BlueprintSectionTitle
           as="h1"

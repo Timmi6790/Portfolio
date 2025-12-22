@@ -35,6 +35,11 @@ import {
 } from '@/components/ui/command'
 import { usePathname, useRouter } from '@/i18n/routing'
 import { siteConfig } from '@/lib/config'
+import {
+  COMMAND_PALETTE_SHORTCUT,
+  getOSModifier,
+  isModifierPressed,
+} from '@/lib/constants/keyboard'
 import type { FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
 
@@ -313,11 +318,18 @@ export const CommandPalette: FCStrict = (): JSX.Element => {
   )
 
   useEffect((): (() => void) => {
-    const down: (error: KeyboardEvent) => void = (
-      error: KeyboardEvent
+    const down: (event: KeyboardEvent) => void = (
+      event: KeyboardEvent
     ): void => {
-      if (error.key === 'k' && (error.metaKey || error.ctrlKey)) {
-        error.preventDefault()
+      // Check if OS-appropriate modifier is pressed
+      const modifierPressed: boolean = isModifierPressed(event, getOSModifier())
+
+      if (
+        event.key.toLowerCase() ===
+          COMMAND_PALETTE_SHORTCUT.key.toLowerCase() &&
+        modifierPressed
+      ) {
+        event.preventDefault()
         setOpen((previous: boolean): boolean => !previous)
       }
     }

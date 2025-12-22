@@ -73,11 +73,11 @@ describe('CommandPalette', () => {
     const { CommandPalette } = await import('../command-palette')
     render(<CommandPalette />)
 
-    // Simulate Cmd+K
-    fireEvent.keyDown(document, { key: 'k', metaKey: true })
+    // Simulate Cmd+K (provide both meta and ctrl to be environment agnostic)
+    fireEvent.keyDown(document, { key: 'k', metaKey: true, ctrlKey: true })
 
     await waitFor(() => {
-      expect(screen.queryByTestId('command-dialog')).toBeDefined()
+      expect(screen.queryByTestId('command-dialog')).not.toBeNull()
     })
   })
 
@@ -86,7 +86,7 @@ describe('CommandPalette', () => {
     const { container } = render(<CommandPalette />)
 
     // Open the dialog
-    fireEvent.keyDown(document, { key: 'k', ctrlKey: true })
+    fireEvent.keyDown(document, { key: 'k', metaKey: true, ctrlKey: true })
 
     await waitFor(() => {
       expect(container.textContent).toContain('navigation')
@@ -98,7 +98,7 @@ describe('CommandPalette', () => {
     const { container } = render(<CommandPalette />)
 
     // Open dialog
-    fireEvent.keyDown(document, { key: 'k', metaKey: true })
+    fireEvent.keyDown(document, { key: 'k', metaKey: true, ctrlKey: true })
 
     await waitFor(() => {
       expect(container.textContent).toContain('actions')
@@ -110,7 +110,7 @@ describe('CommandPalette', () => {
     render(<CommandPalette />)
 
     // Open dialog
-    fireEvent.keyDown(document, { key: 'k', metaKey: true })
+    fireEvent.keyDown(document, { key: 'k', metaKey: true, ctrlKey: true })
 
     await waitFor(() => {
       expect(screen.queryByTestId('command-input')).toBeDefined()
@@ -122,7 +122,7 @@ describe('CommandPalette', () => {
     const { container } = render(<CommandPalette />)
 
     // Open dialog
-    fireEvent.keyDown(document, { key: 'k', metaKey: true })
+    fireEvent.keyDown(document, { key: 'k', metaKey: true, ctrlKey: true })
 
     await waitFor(() => {
       // "linkedin" is the key returned by the mock translation for tPalette('linkedin')

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.20@sha256:26147acbda4f14c5add9946e2fd2ed543fc402884fd75146bd342a7f6271dc1d
 
-FROM dhi.io/node:25-debian13-sfw-dev AS build_base
+FROM dhi.io/node:25-debian13-sfw-dev@sha256:004e9445831a3aecd011b9374437307586ee2f2ed10af53c243df27163a8e400 AS build_base
 WORKDIR /app
 
 FROM build_base AS deps
@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/app/.next/cache \
 COPY scripts/docker/fix-public-permissions.ts ./scripts/docker/
 RUN pnpm exec tsc scripts/docker/fix-public-permissions.ts --target esnext --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck
 
-FROM dhi.io/node:25 AS runner
+FROM dhi.io/node:25@sha256:1e29f3bb4642388403ed6ff24a580b5e9a9b50807150f85a30d3dabf63804e4c AS runner
 WORKDIR /app
 USER node
 

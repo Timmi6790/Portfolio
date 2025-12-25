@@ -19,7 +19,7 @@ export const RADAR_CONFIG: RadarConfigType = {
   blips: {
     hoverScale: 1.5,
     maxRadius: 170,
-    minRadius: 40,
+    minRadius: 10,
     size: 5,
     strokeWidth: 0.5,
   },

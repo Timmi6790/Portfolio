@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.1](https://github.com/TimSchoenle/Portfolio/compare/v1.9.0...v1.9.1) (2025-12-25)
+
+
+### Bug Fixes
+
+* **deps:** lock file maintenance ([#291](https://github.com/TimSchoenle/Portfolio/issues/291)) ([869cc4a](https://github.com/TimSchoenle/Portfolio/commit/869cc4a53b04f218a074df42426259f6e38433ed))
+* **Skills:** skill blimp confidence representation ([#289](https://github.com/TimSchoenle/Portfolio/issues/289)) ([6ad670a](https://github.com/TimSchoenle/Portfolio/commit/6ad670ada754a93afc04131561738489c2852a6c))
+
 ## [1.9.0](https://github.com/TimSchoenle/Portfolio/compare/v1.8.0...v1.9.0) (2025-12-24)
 
 

@@ -7,6 +7,7 @@ const environmentSchema = z.object({
   LOG_LEVEL: z
     .enum(['debug', 'error', 'fatal', 'info', 'silent', 'trace', 'warn'])
     .default('info'),
+  NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN: z.string().optional(),
   NEXT_PUBLIC_REVISION: z.string().default('unknown'),
   NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.string().optional(),
@@ -19,6 +20,9 @@ function validateEnvironment(): Environment {
     GITHUB_TOKEN: process.env['GITHUB_TOKEN'],
     HOSTNAME: process.env['HOSTNAME'],
     LOG_LEVEL: process.env['LOG_LEVEL'],
+    NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN:
+      // eslint-disable-next-line no-secrets/no-secrets
+      process.env['NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN'],
     NEXT_PUBLIC_REVISION: process.env['NEXT_PUBLIC_REVISION'],
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env['PORT'],

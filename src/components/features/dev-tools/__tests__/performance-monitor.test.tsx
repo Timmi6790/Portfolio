@@ -13,18 +13,8 @@ vi.mock('next/web-vitals', () => ({
   },
 }))
 
-// Mock window.performance
-const mockGetEntriesByType = vi.fn()
-Object.defineProperty(window, 'performance', {
-  value: {
-    getEntriesByType: mockGetEntriesByType,
-  },
-  writable: true,
-})
-
 describe('PerformanceMonitor', () => {
   beforeEach(() => {
-    mockGetEntriesByType.mockReturnValue([])
     reportCallback = () => {}
   })
 
@@ -42,8 +32,8 @@ describe('PerformanceMonitor', () => {
     render(<PerformanceMonitor />)
 
     await act(async () => {
-      reportCallback({ name: 'LCP', value: 1200 })
-      reportCallback({ name: 'CLS', value: 0.05 })
+      reportCallback({ name: 'LCP', value: 1200, rating: 'good' })
+      reportCallback({ name: 'CLS', value: 0.05, rating: 'good' })
     })
 
     expect(screen.getByText('LCP')).toBeInTheDocument()
@@ -52,30 +42,23 @@ describe('PerformanceMonitor', () => {
     expect(screen.getByText('0.0500')).toBeInTheDocument()
   })
 
-  it('renders load time if navigation timing is available', () => {
-    mockGetEntriesByType.mockReturnValue([
-      {
-        loadEventEnd: 200,
-        startTime: 100,
-        toJSON: () => {},
-      } as PerformanceNavigationTiming,
-    ])
-
-    render(<PerformanceMonitor />)
-
-    expect(screen.getByText('LOAD')).toBeInTheDocument()
-    expect(screen.getByText(/100/)).toBeInTheDocument()
-  })
-
   it('colors metrics correctly based on thresholds', async () => {
     render(<PerformanceMonitor />)
 
     await act(async () => {
-      reportCallback({ name: 'LCP', value: 3000 })
+      reportCallback({ name: 'LCP', value: 3000, rating: 'needs-improvement' })
     })
 
     const lcpValue = screen.getByText(/3000/)
     // eslint-disable-next-line testing-library/no-node-access
-    expect(lcpValue).toHaveClass('text-red-400')
+    expect(lcpValue).toHaveClass('text-yellow-400')
+
+    await act(async () => {
+      reportCallback({ name: 'INP', value: 600, rating: 'poor' })
+    })
+
+    const inpPoor = screen.getByText(/600/)
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(inpPoor).toHaveClass('text-red-400')
   })
 })

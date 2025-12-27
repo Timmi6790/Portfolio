@@ -1,0 +1,40 @@
+'use client'
+
+import type { FC, JSX } from 'react'
+
+import Script from 'next/script'
+
+import { environment } from '@/environment'
+
+/**
+ * Cloudflare Web Analytics Integration
+ *
+ * Privacy-first analytics that tracks Core Web Vitals without cookies or user tracking.
+ * Only loads in production environments.
+ *
+ * @see https://www.cloudflare.com/web-analytics/
+ */
+export const CloudflareWebAnalytics: FC = (): JSX.Element | null => {
+  // Only load in production
+  if (environment.NODE_ENV !== 'production') {
+    return null
+  }
+
+  const token: string | undefined =
+    environment.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN
+
+  // Don't load if token is not configured
+  if (token === undefined || token.length === 0) {
+    return null
+  }
+
+  return (
+    <Script
+      data-cf-beacon={JSON.stringify({ token })}
+      defer={true}
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      // Use afterInteractive to avoid blocking the page load
+      strategy="afterInteractive"
+    />
+  )
+}

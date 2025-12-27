@@ -64,6 +64,7 @@ This repository is my personal portfolio website, designed to showcase my projec
 
     ```env
     GITHUB_TOKEN=your_github_token_here # Required for fetching latest repo data
+    NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN=your_token_here # Optional: Production analytics (public)
     ```
 
 ### Development

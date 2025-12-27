@@ -11,6 +11,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import DeferredClientUi from '@/app/[locale]/deferred-client-ui'
 import { LanguageSwitcher } from '@/components/common/language-switcher'
 import { ThemeProvider } from '@/components/common/theme-provider'
+import { CloudflareWebAnalytics } from '@/components/features/cloudflare-web-analytics'
 import { DevelopmentServiceWorkerGuard } from '@/components/features/dev-tools/sw-cleanup'
 import { LegalFooter } from '@/components/layout/legal-footer'
 import { siteConfig } from '@/data/config'
@@ -193,6 +194,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
     <html className={`dark ${inter.variable}`} lang={locale}>
       <body className="font-sans antialiased">
         <DevelopmentServiceWorkerGuard />
+        <CloudflareWebAnalytics />
 
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark">

@@ -74,7 +74,7 @@ const nextConfig: NextConfig = {
     sri: {
       algorithm: 'sha512',
     },
-    webVitalsAttribution: ['CLS', 'LCP'],
+    webVitalsAttribution: ['CLS', 'FCP', 'INP', 'LCP', 'TTFB'],
   },
 
   headers(): Header[] {

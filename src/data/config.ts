@@ -82,7 +82,7 @@ export const siteConfig: SiteConfig = {
     },
     imprintLastChange: new Date('2025-12-15'),
     logRetentionDays: 7,
-    privacyPolicyLastChange: new Date('2025-12-24'),
+    privacyPolicyLastChange: new Date('2025-12-27'),
     secondContact:
       'https://mein.online-impressum.de/tim-schoenle-de/#Zweiter_Kontaktweg',
     vatId: 'DE347101415',

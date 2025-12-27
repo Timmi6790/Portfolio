@@ -10,108 +10,88 @@ import {
 
 import { useReportWebVitals } from 'next/web-vitals'
 
+import {
+  formatMetricValue,
+  getMetricColorClass,
+  METRIC_THRESHOLDS,
+  type MetricName,
+  type MetricRating,
+  reportToConsole,
+  type WebVitalsMetric,
+} from '@/lib/web-vitals'
 import { type FCNullable } from '@/types/fc'
 
-interface Metric {
+interface DisplayMetric {
+  readonly colorClass: string
+  readonly formattedValue: string
   readonly name: string
-  readonly unit: string
-  readonly value: number
 }
 
-const COLOR_POOR: string = 'text-red-400'
-const COLOR_GOOD: string = 'text-emerald-400'
-const COLOR_NEUTRAL: string = 'text-brand/60'
-const LOADING_TEXT: string = 'GATHERING_DATA...'
 const HEADER_TEXT: string = 'SYS_METRICS :: LIVE'
+const LOADING_TEXT: string = 'GATHERING_DATA...'
 
-const METRIC_THRESHOLDS: Map<string, number> = new Map<string, number>([
-  ['CLS', 0.1],
-  ['FID', 100],
-  ['INP', 200],
-  ['LCP', 2500],
-  ['TTFB', 800],
-])
+/**
+ * Hook to collect and manage web vitals metrics
+ */
 
-const getMetricColor: (name: string, value: number) => string = (
-  name: string,
-  value: number
-): string => {
-  const threshold: number | undefined = METRIC_THRESHOLDS.get(name)
-
-  if (threshold === undefined) {
-    return COLOR_NEUTRAL
-  }
-
-  return value > threshold ? COLOR_POOR : COLOR_GOOD
-}
-
-const usePerformanceMetrics: () => Record<string, Metric> = (): Record<
-  string,
-  Metric
-> => {
+const usePerformanceMetrics: () => DisplayMetric[] = (): DisplayMetric[] => {
   const [metrics, setMetrics]: [
-    Record<string, Metric>,
-    Dispatch<SetStateAction<Record<string, Metric>>>,
-  ] = useState<Record<string, Metric>>({})
+    Record<string, WebVitalsMetric>,
+    Dispatch<SetStateAction<Record<string, WebVitalsMetric>>>,
+  ] = useState<Record<string, WebVitalsMetric>>({})
 
-  useEffect((): void => {
-    // Add generic load time if available
-    if (typeof window !== 'undefined') {
-      const navigationEntries: PerformanceEntryList =
-        window.performance.getEntriesByType('navigation')
+  // Track web vitals using Next.js hook
+  useReportWebVitals((metric: object): void => {
+    // Cast to WebVitalsMetric (which matches web-vitals Metric type)
+    const webVitalsMetric: WebVitalsMetric = metric as WebVitalsMetric
 
-      if (navigationEntries.length > 0) {
-        const navEntry: PerformanceEntry | undefined = navigationEntries[0]
-        const timingDetails: PerformanceNavigationTiming =
-          navEntry as PerformanceNavigationTiming
+    // Only track core vitals we care about
+    const validMetrics: readonly MetricName[] = [
+      'CLS',
+      'FCP',
+      'INP',
+      'LCP',
+      'TTFB',
+    ] as const
 
-        setMetrics(
-          (
-            previousMetrics: Record<string, Metric>
-          ): Record<string, Metric> => ({
-            ...previousMetrics,
-            load: {
-              name: 'LOAD',
-              unit: 'ms',
-              value: Math.round(
-                timingDetails.loadEventEnd - timingDetails.startTime
-              ),
-            },
-          })
-        )
-      }
+    if (!validMetrics.includes(webVitalsMetric.name)) {
+      return
     }
-  }, [])
 
-  useReportWebVitals((metric: { name: string; value: number }): void => {
-    // Only track core vitals we care about to reduce noise
-    if (['CLS', 'FCP', 'FID', 'INP', 'LCP', 'TTFB'].includes(metric.name)) {
-      setMetrics(
-        (previousMetrics: Record<string, Metric>): Record<string, Metric> => ({
-          ...previousMetrics,
-          [metric.name]: {
-            name: metric.name,
-            unit: metric.name === 'CLS' ? '' : 'ms',
-            value:
-              metric.name === 'CLS' ? metric.value : Math.round(metric.value), // CLS is small float
-          },
-        })
-      )
-    }
+    // Report to console in development
+    reportToConsole(webVitalsMetric)
+
+    setMetrics(
+      (
+        previousMetrics: Record<string, WebVitalsMetric>
+      ): Record<string, WebVitalsMetric> => ({
+        ...previousMetrics,
+        [webVitalsMetric.name]: webVitalsMetric,
+      })
+    )
   })
 
-  return metrics
-}
+  // Convert metrics to display format
+  return Object.entries(metrics).map(
+    ([, metric]: [string, WebVitalsMetric]): DisplayMetric => {
+      const displayName: string = metric.name
+      const metricName: MetricName = metric.name
+      const metricRating: MetricRating = metric.rating
 
-const formatValue: (name: string, value: number) => string = (
-  name: string,
-  value: number
-): string => {
-  return name === 'CLS' ? value.toFixed(4) : String(value)
+      const colorClass: string = getMetricColorClass(metricRating)
+      const formattedValue: string = formatMetricValue(metricName, metric.value)
+
+      return {
+        colorClass,
+        formattedValue,
+        name: displayName,
+      }
+    }
+  )
 }
 
 export const PerformanceMonitor: FCNullable = (): JSX.Element | null => {
-  const metrics: Record<string, Metric> = usePerformanceMetrics()
+  const metrics: DisplayMetric[] = usePerformanceMetrics()
   const [mounted, setMounted]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false)
 
@@ -123,8 +103,8 @@ export const PerformanceMonitor: FCNullable = (): JSX.Element | null => {
     return null
   }
 
-  const sortedMetrics: Metric[] = Object.values(metrics).toSorted(
-    (metricA: Metric, metricB: Metric): number =>
+  const sortedMetrics: DisplayMetric[] = metrics.toSorted(
+    (metricA: DisplayMetric, metricB: DisplayMetric): number =>
       metricA.name.localeCompare(metricB.name)
   )
 
@@ -134,17 +114,18 @@ export const PerformanceMonitor: FCNullable = (): JSX.Element | null => {
 
       <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
         {sortedMetrics.map(
-          (metric: Metric): JSX.Element => (
-            <div className="flex justify-between gap-4" key={metric.name}>
+          (metric: DisplayMetric): JSX.Element => (
+            <div
+              className="flex justify-between gap-4"
+              key={metric.name}
+              title={`Threshold: Good ≤ ${formatMetricValue(metric.name as MetricName, METRIC_THRESHOLDS[metric.name as MetricName].good)}`}
+            >
               <span>{metric.name}</span>
-              <span className={getMetricColor(metric.name, metric.value)}>
-                {formatValue(metric.name, metric.value)}
-                {metric.unit}
-              </span>
+              <span className={metric.colorClass}>{metric.formattedValue}</span>
             </div>
           )
         )}
-        {Object.keys(metrics).length === 0 && (
+        {metrics.length === 0 && (
           <div className="animate-pulse">{LOADING_TEXT}</div>
         )}
       </div>

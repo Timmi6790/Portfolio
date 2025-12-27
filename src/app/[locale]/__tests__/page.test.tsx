@@ -47,6 +47,26 @@ vi.mock('@/lib/config', () => ({
   },
 }))
 
+// Mock createLazySection to return a synchronous component
+vi.mock('@/lib/create-lazy-section', () => ({
+  createLazySection: vi.fn((loader: () => Promise<any>) => {
+    // Extract the module path and return a mock component
+    return (_props: any) => {
+      const testId = loader.toString().match(/skills-section/)
+        ? 'skills-section'
+        : loader.toString().match(/projects-section/)
+          ? 'projects-section'
+          : loader.toString().match(/experience-section/)
+            ? 'experience-section'
+            : loader.toString().match(/contact-section/)
+              ? 'contact-section'
+              : 'unknown-section'
+
+      return <div data-testid={testId}>{testId.replace('-', ' ')}</div>
+    }
+  }),
+}))
+
 // Mock components to avoid deep rendering complexity in integration test
 vi.mock('@/components/sections/hero/hero-section', () => ({
   HeroSection: () => <div data-testid="hero-section">Hero</div>,
@@ -66,21 +86,19 @@ vi.mock('@/components/sections/about/about-section', () => ({
 }))
 
 vi.mock('@/components/sections/skills/skills-section', () => ({
-  SkillsSection: () => <div data-testid="skills-section">Skills</div>,
+  default: () => <div data-testid="skills-section">Skills</div>,
 }))
 
 vi.mock('@/components/sections/projects/projects-section', () => ({
-  ProjectsSection: () => <div data-testid="projects-section">Projects</div>,
+  default: () => <div data-testid="projects-section">Projects</div>,
 }))
 
 vi.mock('@/components/sections/experience/experience-section', () => ({
-  ExperienceSection: () => (
-    <div data-testid="experience-section">Experience</div>
-  ),
+  default: () => <div data-testid="experience-section">Experience</div>,
 }))
 
 vi.mock('@/components/sections/contact/contact-section', () => ({
-  ContactSection: () => <div data-testid="contact-section">Contact</div>,
+  default: () => <div data-testid="contact-section">Contact</div>,
 }))
 
 describe('Page', () => {

@@ -14,7 +14,7 @@ import { getGithubUser, type GitHubData } from '@/lib/github/client'
 import type { AsyncPageFC, FCStrict } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
 
-type ProjectsSectionProperties = LocalePageProperties
+export type ProjectsSectionProperties = LocalePageProperties
 
 const ContributionGraph: ComponentType<ContributionGraphModule.ContributionGraphClientProperties> =
   dynamic(

@@ -12,7 +12,7 @@ import type { AsyncPageFC } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
 import { type Skill } from '@/types/skill'
 
-type SkillsSectionProperties = LocalePageProperties
+export type SkillsSectionProperties = LocalePageProperties
 
 export const SkillsSection: AsyncPageFC<SkillsSectionProperties> = async ({
   locale,

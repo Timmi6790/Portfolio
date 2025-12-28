@@ -344,7 +344,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run build:ci
 
       - name: Upload build artifact
         if: success()

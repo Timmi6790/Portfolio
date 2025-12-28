@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.1](https://github.com/TimSchoenle/Portfolio/compare/v1.10.0...v1.10.1) (2025-12-28)
+
+
+### Bug Fixes
+
+* **Cloudflare:** fix RUM setup ([#301](https://github.com/TimSchoenle/Portfolio/issues/301)) ([42ea483](https://github.com/TimSchoenle/Portfolio/commit/42ea4836ba4fc9868a1e022c6fbd2be2359d9d00))
+* **deps:** lock file maintenance ([#303](https://github.com/TimSchoenle/Portfolio/issues/303)) ([1c35619](https://github.com/TimSchoenle/Portfolio/commit/1c356198bb60dd6dc3005e3df0d412ef94fae4d9))
+
 ## [1.10.0](https://github.com/TimSchoenle/Portfolio/compare/v1.9.1...v1.10.0) (2025-12-27)
 
 

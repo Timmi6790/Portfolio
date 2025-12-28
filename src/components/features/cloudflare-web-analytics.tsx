@@ -1,5 +1,3 @@
-'use client'
-
 import type { FC, JSX } from 'react'
 
 import Script from 'next/script'
@@ -30,9 +28,9 @@ export const CloudflareWebAnalytics: FC = (): JSX.Element | null => {
 
   return (
     <Script
-      data-cf-beacon={JSON.stringify({ token })}
+      data-cf-beacon={JSON.stringify({ send: '/cf/rum/beacon', token })}
       defer={true}
-      src="https://static.cloudflareinsights.com/beacon.min.js"
+      src="/cf/rum/script.js"
       // Use afterInteractive to avoid blocking the page load
       strategy="afterInteractive"
     />

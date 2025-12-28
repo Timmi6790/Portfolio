@@ -30,11 +30,11 @@ describe('CloudflareWebAnalytics', () => {
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     const script = container.querySelector('script')
     expect(script).toBeInTheDocument()
+    expect(script).toHaveAttribute('src', '/cf/rum/script.js')
     expect(script).toHaveAttribute(
-      'src',
-      'https://static.cloudflareinsights.com/beacon.min.js'
+      'data-cf-beacon',
+      '{"send":"/cf/rum/beacon","token":"test-token"}'
     )
-    expect(script).toHaveAttribute('data-cf-beacon', '{"token":"test-token"}')
   })
 
   it('does not render if not in production', () => {

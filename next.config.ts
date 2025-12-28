@@ -4,7 +4,7 @@ import type { NextConfig } from 'next'
 
 import { PHASE_PRODUCTION_SERVER } from 'next/constants'
 
-import type { Header } from 'next/dist/lib/load-custom-routes'
+import type { Header, Rewrite } from 'next/dist/lib/load-custom-routes'
 
 // Use git commit hash as cache version
 const revision: string = (
@@ -34,7 +34,7 @@ function createStandaloneOutputExclusion(dependency: string): string {
 function getCspHeader(): string {
   return `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
     font-src 'self' data: https:;
@@ -42,7 +42,9 @@ function getCspHeader(): string {
     base-uri 'self';
     form-action 'self';
     frame-ancestors 'none';
-    connect-src 'self' ${process.env.NODE_ENV === 'development' ? 'ws:' : ''};
+    connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com ${
+      process.env.NODE_ENV === 'development' ? 'ws:' : ''
+    };
     worker-src 'self' blob:;
     upgrade-insecure-requests;
   `
@@ -205,6 +207,21 @@ const nextConfig: NextConfig = {
 
   // Enable strict mode for better development experience
   reactStrictMode: true,
+
+  rewrites(): Rewrite[] {
+    return [
+      // Cloudflare RUM get proxy
+      {
+        destination: 'https://static.cloudflareinsights.com/beacon.min.js',
+        source: '/cf/rum/script.js',
+      },
+      // Cloudflare RUM send proxy
+      {
+        destination: 'https://cloudflareinsights.com/cdn-cgi/rum',
+        source: '/cf/rum/beacon',
+      },
+    ]
+  },
 
   serverExternalPackages: ['@tailwindcss/oxide'],
 

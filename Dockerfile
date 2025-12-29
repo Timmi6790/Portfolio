@@ -34,9 +34,18 @@ RUN --mount=type=cache,target=/app/.next/cache \
     --mount=type=secret,id=SENTRY_AUTH_TOKEN \
     --mount=type=secret,id=SENTRY_ORG \
     --mount=type=secret,id=SENTRY_PROJECT \
-    SENTRY_AUTH_TOKEN="$(cat /run/secrets/SENTRY_AUTH_TOKEN)" && export SENTRY_AUTH_TOKEN && \
-    SENTRY_ORG="$(cat /run/secrets/SENTRY_ORG)" && export SENTRY_ORG && \
-    SENTRY_PROJECT="$(cat /run/secrets/SENTRY_PROJECT)" && export SENTRY_PROJECT && \
+    if [ -f /run/secrets/SENTRY_AUTH_TOKEN ]; then \
+      SENTRY_AUTH_TOKEN="$(cat /run/secrets/SENTRY_AUTH_TOKEN)"; \
+      export SENTRY_AUTH_TOKEN; \
+    fi && \
+    if [ -f /run/secrets/SENTRY_ORG ]; then \
+      SENTRY_ORG="$(cat /run/secrets/SENTRY_ORG)"; \
+      export SENTRY_ORG; \
+    fi && \
+    if [ -f /run/secrets/SENTRY_PROJECT ]; then \
+      SENTRY_PROJECT="$(cat /run/secrets/SENTRY_PROJECT)"; \
+      export SENTRY_PROJECT; \
+    fi && \
     pnpm run build && \
     find .next/static -type f -name '*.map' -delete
 

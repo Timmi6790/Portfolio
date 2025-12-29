@@ -57,6 +57,8 @@ vi.mock('next-intl/server', () => ({
             <p>Log retention: {values?.logRetentionDays} days</p>
             <p>Cloudflare: {values?.cloudflareProvider}</p>
             <a href={values?.cloudflarePolicyUrl}>Cloudflare Policy</a>
+            <p>Sentry: {values?.sentryAddress}</p>
+            <a href={values?.sentryPolicyUrl}>Sentry Policy</a>
           </div>
         )
       }
@@ -106,6 +108,10 @@ vi.mock('@/data/config', () => ({
         name: 'Test Hosting',
         address: 'Test Address',
         policyUrl: 'https://hosting.test/privacy',
+      },
+      sentry: {
+        address: 'Sentry Inc.',
+        policyUrl: 'https://sentry.io/privacy',
       },
       address: '123 Main St',
       logRetentionDays: 30,

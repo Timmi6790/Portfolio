@@ -42,7 +42,7 @@ function getCspHeader(): string {
     base-uri 'self';
     form-action 'self';
     frame-ancestors 'none';
-    connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com ${
+    connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://*.ingest.sentry.io https://*.sentry.io ${
       process.env.NODE_ENV === 'development' ? 'ws:' : ''
     };
     worker-src 'self' blob:;
@@ -264,6 +264,41 @@ async function applyNextIntl(config: NextConfig): Promise<NextConfig> {
   return withNextIntl(config)
 }
 
+async function applySentry(config: NextConfig): Promise<NextConfig> {
+  // eslint-disable-next-line @typescript-eslint/typedef
+  const sentryModule = await import('@sentry/nextjs')
+
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const sentryOptions: import('@sentry/nextjs').SentryBuildOptions = {
+    ...(process.env['SENTRY_AUTH_TOKEN'] !== undefined && {
+      authToken: process.env['SENTRY_AUTH_TOKEN'],
+    }),
+    ...(process.env['SENTRY_ORG'] !== undefined && {
+      org: process.env['SENTRY_ORG'],
+    }),
+    ...(process.env['SENTRY_PROJECT'] !== undefined && {
+      project: process.env['SENTRY_PROJECT'],
+    }),
+    // Only print logs for uploading source maps in CI
+    silent: process.env['CI'] === undefined,
+    tunnelRoute: '/monitoring',
+    webpack: {
+      automaticVercelMonitors: false,
+      treeshake: {
+        removeDebugLogging: true,
+      },
+    },
+
+    widenClientFileUpload: true,
+  }
+
+  if (process.env['NEXT_PUBLIC_SENTRY_DSN'] === undefined) {
+    return config
+  }
+
+  return sentryModule.withSentryConfig(config, sentryOptions)
+}
+
 function applyBundleAnalyzer(config: NextConfig): NextConfig {
   if (process.env['ANALYZE'] !== 'true') {
     return config
@@ -294,6 +329,7 @@ async function buildConfig(phase: string): Promise<NextConfig> {
 
   config = await applySerwist(config)
   config = await applyNextIntl(config)
+  config = await applySentry(config)
   config = applyBundleAnalyzer(config)
 
   return config

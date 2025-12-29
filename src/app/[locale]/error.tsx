@@ -1,9 +1,10 @@
 'use client'
 
-import type { JSX } from 'react'
+import { type JSX, useEffect } from 'react'
 
 import { useTranslations } from 'next-intl'
 
+import * as Sentry from '@sentry/nextjs'
 import { AlertTriangle, Home, RotateCcw } from 'lucide-react'
 
 import { BlueprintCard } from '@/components/blueprint/blueprint-card'
@@ -57,11 +58,16 @@ interface ErrorPageProperties {
   readonly reset: () => void
 }
 
+// eslint-disable-next-line max-lines-per-function
 const ErrorPage: FCStrict<ErrorPageProperties> = ({
   error,
   reset,
 }: ErrorPageProperties): JSX.Element => {
   const translations: Translations<'error'> = useTranslations('error')
+
+  useEffect((): void => {
+    Sentry.captureException(error)
+  }, [error])
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-blueprint-bg p-4 text-blueprint-text">

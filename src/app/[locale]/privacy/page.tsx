@@ -75,6 +75,9 @@ const PrivacyPolicyPage: RoutePageFC<PrivacyPageProperties> = async ({
     hostingPolicyUrl: siteConfig.legals.hosting.policyUrl,
     logRetentionDays: siteConfig.legals.logRetentionDays,
     secondContact: siteConfig.legals.secondContact,
+    sentryAddress: siteConfig.legals.sentry.address,
+    sentryPolicyUrl: siteConfig.legals.sentry.policyUrl,
+    sentryRetentionDays: siteConfig.legals.sentryRetentionDays,
     serverLocation: translations('serverLocation'),
 
     // Use shared component mappings
@@ -90,6 +93,7 @@ const PrivacyPolicyPage: RoutePageFC<PrivacyPageProperties> = async ({
         <div>{translations.rich('encryption', variables)}</div>
         <div>{translations.rich('logs', variables)}</div>
         <div>{translations.rich('cloudflare', variables)}</div>
+        <div>{translations.rich('sentry', variables)}</div>
         <div>{translations.rich('contact', variables)}</div>
         <div>{translations.rich('rights', variables)}</div>
         <div>{translations.rich('cookies', variables)}</div>

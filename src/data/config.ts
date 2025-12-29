@@ -11,12 +11,7 @@ export interface SiteConfig {
   readonly fullName: string
   readonly jobTitle: string
   readonly legals: {
-    readonly vatId: string
     readonly address: string
-    readonly logRetentionDays: number
-    readonly imprintLastChange: Date
-    readonly privacyPolicyLastChange: Date
-    readonly secondContact: string
     readonly cloudflare: {
       readonly address: string
       readonly policyUrl: string
@@ -26,6 +21,16 @@ export interface SiteConfig {
       readonly address: string
       readonly policyUrl: string
     }
+    readonly imprintLastChange: Date
+    readonly logRetentionDays: number
+    readonly sentryRetentionDays: number
+    readonly privacyPolicyLastChange: Date
+    readonly secondContact: string
+    readonly sentry: {
+      readonly address: string
+      readonly policyUrl: string
+    }
+    readonly vatId: string
   }
   readonly location: string
   readonly name: string
@@ -82,9 +87,14 @@ export const siteConfig: SiteConfig = {
     },
     imprintLastChange: new Date('2025-12-15'),
     logRetentionDays: 7,
-    privacyPolicyLastChange: new Date('2025-12-27'),
+    privacyPolicyLastChange: new Date('2025-12-29'),
     secondContact:
       'https://mein.online-impressum.de/tim-schoenle-de/#Zweiter_Kontaktweg',
+    sentry: {
+      address: '45 Fremont Street, 8th Floor, San Francisco, CA 94105, USA',
+      policyUrl: 'https://sentry.io/privacy/',
+    },
+    sentryRetentionDays: 90,
     vatId: 'DE347101415',
   },
   location: 'Germany',

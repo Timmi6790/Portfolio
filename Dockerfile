@@ -16,9 +16,11 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
 FROM build_base AS builder
 
 ARG GIT_SHA=unknown
+ARG SENTRY_RELEASE
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
-    GIT_SHA=$GIT_SHA
+    GIT_SHA=$GIT_SHA \
+    SENTRY_RELEASE=${SENTRY_RELEASE:-$GIT_SHA}
 
 COPY --from=dev_deps /app/node_modules ./node_modules
 COPY . .
@@ -29,6 +31,12 @@ COPY . .
 RUN --mount=type=cache,target=/app/.next/cache \
     --mount=type=secret,id=resume_signing_cert_base64 \
     --mount=type=secret,id=resume_signing_cert_password \
+    --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    --mount=type=secret,id=SENTRY_ORG \
+    --mount=type=secret,id=SENTRY_PROJECT \
+    export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
+    export SENTRY_ORG=$(cat /run/secrets/SENTRY_ORG) && \
+    export SENTRY_PROJECT=$(cat /run/secrets/SENTRY_PROJECT) && \
     pnpm run build && \
     find .next/static -type f -name '*.map' -delete
 

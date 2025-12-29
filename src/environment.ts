@@ -9,6 +9,7 @@ const environmentSchema = z.object({
     .default('info'),
   NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN: z.string().optional(),
   NEXT_PUBLIC_REVISION: z.string().default('unknown'),
+  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
   NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.string().optional(),
 })
@@ -24,6 +25,7 @@ function validateEnvironment(): Environment {
       // eslint-disable-next-line no-secrets/no-secrets
       process.env['NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN'],
     NEXT_PUBLIC_REVISION: process.env['NEXT_PUBLIC_REVISION'],
+    NEXT_PUBLIC_SENTRY_DSN: process.env['NEXT_PUBLIC_SENTRY_DSN'],
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env['PORT'],
   })

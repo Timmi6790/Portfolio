@@ -214,8 +214,8 @@ importers:
         specifier: 0.7.2
         version: 0.7.2(prettier@3.7.4)
       serwist:
-        specifier: 9.3.0
-        version: 9.3.0(typescript@5.9.3)
+        specifier: 9.4.0
+        version: 9.4.0(typescript@5.9.3)
       tailwindcss:
         specifier: 4.1.18
         version: 4.1.18
@@ -5724,6 +5724,14 @@ packages:
 
   serwist@9.3.0:
     resolution: {integrity: sha512-ASuGP9U5LgZ5hB/iSwbtc1avstHBxWuhsJ9nbok38cnMMeFkyACB0L1nsVhKPck9yga23pie4yKWvRFsE/mn1w==}
+    peerDependencies:
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
+  serwist@9.4.0:
+    resolution: {integrity: sha512-+zP1ARFQ0EIxz5htsjKH7V0B1qqL8gE/+kWTl2ifIGh7YiNl4gMYb+yXixlIxC5kN2+mj/fBYGqGcQDI5tUqcQ==}
     peerDependencies:
       typescript: '>=5.0.0'
     peerDependenciesMeta:
@@ -12562,6 +12570,12 @@ snapshots:
   server-only@0.0.1: {}
 
   serwist@9.3.0(typescript@5.9.3):
+    dependencies:
+      idb: 8.0.3
+    optionalDependencies:
+      typescript: 5.9.3
+
+  serwist@9.4.0(typescript@5.9.3):
     dependencies:
       idb: 8.0.3
     optionalDependencies:

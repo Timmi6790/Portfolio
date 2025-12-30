@@ -1,11 +1,11 @@
 schemaVersion: 2.0.0
 
 metadataTest:
-  entrypoint: ['node']
+  entrypoint: ['bun']
   cmd: ['server.js']
   workdir: '/app'
   exposedPorts: ['3000']
-  user: 'node'
+  user: 'bun'
   envVars:
     - key: NODE_ENV
       value: production
@@ -42,8 +42,10 @@ fileExistenceTests:
     path: /sbin/apk
     shouldExist: false
   - name: npm absent
-    path: /usr/bin/npm
     shouldExist: false
+  - name: bun present
+    path: /usr/local/bin/bun
+    shouldExist: true
   - name: pnpm absent
     path: /usr/bin/pnpm
     shouldExist: false
@@ -53,37 +55,37 @@ fileExistenceTests:
 
 commandTests:
   - name: uid is non-root
-    command: 'node'
-    args: ['-p', 'process.getuid()']
+    command: 'bun'
+    args: ['-e', 'console.log(process.getuid())']
     exitCode: 0
-    expectedOutput: ['1000']
+    expectedOutput: ['65532']
 
   - name: gid is non-root
-    command: 'node'
-    args: ['-p', 'process.getgid()']
+    command: 'bun'
+    args: ['-e', 'console.log(process.getgid())']
     exitCode: 0
-    expectedOutput: ['1000']
+    expectedOutput: ['65532']
 
   - name: NODE_ENV is production
-    command: 'node'
-    args: ['-p', 'process.env.NODE_ENV']
+    command: 'bun'
+    args: ['-e', 'console.log(process.env.NODE_ENV)']
     exitCode: 0
     expectedOutput: ['production']
 
   - name: telemetry disabled
-    command: 'node'
-    args: ['-p', 'process.env.NEXT_TELEMETRY_DISABLED']
+    command: 'bun'
+    args: ['-e', 'console.log(process.env.NEXT_TELEMETRY_DISABLED)']
     exitCode: 0
     expectedOutput: ['1']
 
   - name: rootfs not writable by app user
-    command: 'node'
+    command: 'bun'
     args:
       ['-e', "require('fs').writeFile('/.cst_wr','x',e=>process.exit(e?0:1))"]
     exitCode: 0
 
   - name: CAP_SYS_ADMIN absent
-    command: 'node'
+    command: 'bun'
     args:
       - '-e'
       - |
@@ -96,7 +98,7 @@ commandTests:
     exitCode: 0
 
   - name: server.js readable
-    command: 'node'
+    command: 'bun'
     args:
       [
         '-e',
@@ -106,7 +108,7 @@ commandTests:
 
   # File Permission Tests
   - name: server.js is executable
-    command: 'node'
+    command: 'bun'
     args:
       [
         '-e',
@@ -115,7 +117,7 @@ commandTests:
     exitCode: 0
 
   - name: server.js has correct permissions (500)
-    command: 'node'
+    command: 'bun'
     args:
       - '-e'
       - |
@@ -126,7 +128,7 @@ commandTests:
     exitCode: 0
 
   - name: public directory folder permissions (555)
-    command: 'node'
+    command: 'bun'
     args:
       - '-e'
       - |
@@ -163,7 +165,7 @@ commandTests:
     exitCode: 0
 
   - name: public directory is not writable
-    command: 'node'
+    command: 'bun'
     args:
       [
         '-e',
@@ -172,7 +174,7 @@ commandTests:
     exitCode: 0
 
   - name: .next directory is writable for ISR
-    command: 'node'
+    command: 'bun'
     args:
       [
         '-e',
@@ -180,28 +182,28 @@ commandTests:
       ]
     exitCode: 0
 
-  - name: app files owned by node user (uid 1000)
-    command: 'node'
+  - name: app files owned by node user (uid 65532)
+    command: 'bun'
     args:
       - '-e'
       - |
         const fs=require('fs');
         const stat=fs.statSync('/app/server.js');
-        process.exit(stat.uid===1000?0:1);
+        process.exit(stat.uid===65532?0:1);
     exitCode: 0
 
-  - name: app files owned by node group (gid 1000)
-    command: 'node'
+  - name: app files owned by node group (gid 65532)
+    command: 'bun'
     args:
       - '-e'
       - |
         const fs=require('fs');
         const stat=fs.statSync('/app/server.js');
-        process.exit(stat.gid===1000?0:1);
+        process.exit(stat.gid===65532?0:1);
     exitCode: 0
 
   - name: .next/static directory exists and is readable
-    command: 'node'
+    command: 'bun'
     args:
       [
         '-e',

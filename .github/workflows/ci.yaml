@@ -12,8 +12,7 @@ concurrency:
 env:
   IMAGE_TAG: app:test-${{ github.sha }}
   STORED_IMAGE_NAME: docker-image-tar
-  PNPM_VERSION: '10'
-  NODE_VERSION: '25'
+  BUN_VERSION: 'latest'
 
 permissions:
   contents: read
@@ -51,7 +50,7 @@ jobs:
               - &config_files '*.config.*'
               - &pkg_json 'package.json'
               - &github_path '.github/**'
-              - 'pnpm-lock.yaml'
+              - 'bun.lock'
               - 'messages/**'
               - 'public/**'
 
@@ -107,43 +106,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: ${{ env.PNPM_VERSION }}
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: Check for existing node_modules cache
         id: cache-check
         uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: node_modules
-          key: &cache_key node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: &cache_key bun-modules-${{ runner.os }}-${{ hashFiles('bun.lock') }}
           lookup-only: true
-
-      - name: Restore pnpm store cache
-        if: steps.cache-check.outputs.cache-hit != 'true'
-        id: store-restore
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-store-${{ runner.os }}-
 
       - name: Install dependencies
         if: steps.cache-check.outputs.cache-hit != 'true'
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Save node_modules cache
         if: steps.cache-check.outputs.cache-hit != 'true'
@@ -151,13 +129,6 @@ jobs:
         with:
           path: node_modules
           key: *cache_key
-
-      - name: Save pnpm store cache
-        if: steps.cache-check.outputs.cache-hit != 'true' && steps.store-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
   # Quality checks - run in parallel using cached dependencies
   lint:
@@ -169,15 +140,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run ESLint
-        run: pnpm run lint --max-warnings=0
+        run: bun run lint --max-warnings=0
 
   format-check:
     name: Format Check (Prettier)
@@ -188,15 +158,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run Prettier
-        run: pnpm run format:check
+        run: bun run format:check
 
   type-check:
     name: Type Check (TypeScript)
@@ -207,15 +176,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run TypeScript
-        run: pnpm run type-check
+        run: bun run type-check
 
   i18n-check:
     name: i18n Validation
@@ -226,15 +194,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run i18n check
-        run: pnpm run i18n-check
+        run: bun run i18n-check
 
   knip-check:
     name: Dependency Check (Knip)
@@ -245,15 +212,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run Knip
-        run: pnpm run lint:deps
+        run: bun run lint:deps
 
   architecture-check:
     name: Architecture Check
@@ -264,15 +230,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run Dependency Cruiser
-        run: pnpm run dep-cruise
+        run: bun run dep-cruise
 
   # Unit and component tests
   test:
@@ -285,15 +250,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Run tests
-        run: pnpm run test:ci
+        run: bun run test:ci
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
@@ -328,10 +292,9 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
@@ -339,12 +302,12 @@ jobs:
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('bun.lock') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('bun.lock') }}-
 
       - name: Build
-        run: pnpm run build:ci
+        run: bun run build:ci
 
       - name: Upload build artifact
         if: success()
@@ -375,10 +338,9 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
@@ -390,18 +352,18 @@ jobs:
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('bun.lock') }}
           restore-keys: ${{ runner.os }}-playwright-
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm exec playwright install --with-deps
+        run: bunx playwright install --with-deps
 
       - name: Ensure Playwright is correctly installed
-        run: pnpm exec playwright install
+        run: bunx playwright install
 
       - name: Run E2E tests
-        run: pnpm exec playwright test --reporter=github,html,junit
+        run: bunx playwright test --reporter=github,html,junit
 
       - name: Upload Playwright report
         if: always()
@@ -433,10 +395,9 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
@@ -444,7 +405,7 @@ jobs:
         uses: ./.github/actions/restore-build
 
       - name: Start Next.js server
-        run: pnpm run start & npx wait-on@latest "$BASE_URL"
+        run: bun run start & npx wait-on@latest "$BASE_URL"
 
       - name: Warm up URLs
         run: |
@@ -493,15 +454,14 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup with cache
-        uses: ./.github/actions/setup-pnpm-node
+        uses: ./.github/actions/setup-bun
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          pnpm-version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           mode: 'cache'
           cache-key: *cache_key
 
       - name: Build for analysis (Webpack)
-        run: pnpm run analyze
+        run: bun run analyze
 
       - name: Analyze bundle sizes
         uses: transferwise/actions-next-bundle-analyzer@v2

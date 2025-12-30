@@ -1,0 +1,34 @@
+name: 'Setup Bun'
+description: 'Sets up Bun and installs dependencies or restores cache'
+
+inputs:
+  bun-version:
+    description: 'Bun version'
+    default: 'latest'
+    required: false
+  mode:
+    description: 'Setup mode: "install" or "cache"'
+    required: true
+  cache-key:
+    description: 'Cache key for node_modules (required when mode is "cache")'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: ${{ inputs.bun-version }}
+
+    - name: Install dependencies
+      if: ${{ inputs.mode == 'install' }}
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Restore node_modules from cache
+      if: ${{ inputs.mode == 'cache' }}
+      uses: actions/cache/restore@v4
+      with:
+        path: node_modules
+        key: ${{ inputs.cache-key }}

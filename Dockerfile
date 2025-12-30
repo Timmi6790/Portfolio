@@ -1,17 +1,17 @@
 # syntax=docker/dockerfile:1.20@sha256:26147acbda4f14c5add9946e2fd2ed543fc402884fd75146bd342a7f6271dc1d
 
-FROM dhi.io/node:25-debian13-sfw-dev@sha256:004e9445831a3aecd011b9374437307586ee2f2ed10af53c243df27163a8e400 AS build_base
+FROM dhi.io/bun:1-alpine3.22-dev@sha256:661f8231212f356b3b10a158763e1e45dc8d18f9335225c303af9e2bee76c880 AS build_base
 WORKDIR /app
 
 FROM build_base AS deps
-COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile --prefer-offline --prod
+COPY package.json bun.lock ./
+RUN --mount=type=cache,id=bun-store,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --production
 
 FROM build_base AS dev_deps
-COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile --prefer-offline
+COPY package.json bun.lock ./
+RUN --mount=type=cache,id=bun-store,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile
 
 FROM build_base AS builder
 
@@ -46,39 +46,36 @@ RUN --mount=type=cache,target=/app/.next/cache \
       SENTRY_PROJECT="$(cat /run/secrets/SENTRY_PROJECT)"; \
       export SENTRY_PROJECT; \
     fi && \
-    pnpm run build && \
+    bun run build && \
     find .next/static -type f -name '*.map' -delete
 
-# Compile the permission fix script
-COPY scripts/docker/fix-public-permissions.ts ./scripts/docker/
-RUN pnpm exec tsc scripts/docker/fix-public-permissions.ts --target esnext --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck
 
-FROM dhi.io/node:25@sha256:1e29f3bb4642388403ed6ff24a580b5e9a9b50807150f85a30d3dabf63804e4c AS runner
+
+FROM dhi.io/bun:1-alpine3.22@sha256:b069bc30faa0f26582be80117bfb19274538306d752883790f34f285527c3f23 AS runner
 WORKDIR /app
-USER node
 
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     HOSTNAME=0.0.0.0 \
     PORT=3000
 
-COPY --from=builder --chown=node:node /app/public ./public
+COPY --from=builder --chown=nonroot:nonroot /app/public ./public
 
 # Those directories need to be readble for ISR to work
-COPY --from=builder --chown=node:node /app/.next/standalone ./
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=builder --chown=nonroot:nonroot /app/.next/standalone ./
+COPY --from=builder --chown=nonroot:nonroot /app/.next/static ./.next/static
 # server.js executable only
-COPY --from=builder --chown=node:node --chmod=500 /app/.next/standalone/server.js ./server.js
+COPY --from=builder --chown=nonroot:nonroot --chmod=500 /app/.next/standalone/server.js ./server.js
 
-# Fix permissions using compiled dedicated script
-COPY --from=builder --chown=node:node /app/scripts/docker/fix-public-permissions.js /tmp/fix-public-permissions.js
-RUN ["node", "/tmp/fix-public-permissions.js"]
+# Fix permissions using dedicated script
+COPY --from=builder --chown=nonroot:nonroot /app/scripts/docker/fix-public-permissions.ts /tmp/fix-public-permissions.ts
+RUN ["bun", "/tmp/fix-public-permissions.ts"]
 
 EXPOSE 3000
 
 # Healthcheck hits /api/health and fails on non-200 or error
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD ["node","-e","require('http').get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/api/health'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+  CMD ["bun","-e","require('http').get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/api/health'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
 
-ENTRYPOINT ["node"]
+ENTRYPOINT ["bun"]
 CMD ["server.js"]

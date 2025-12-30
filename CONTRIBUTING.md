@@ -6,8 +6,7 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 ### Prerequisites
 
-- Node.js 22 or higher
-- pnpm 9 or higher
+- Bun 1.1 or higher
 - Docker (optional, for containerized development)
 
 ### Getting Started
@@ -20,12 +19,12 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 2. Install dependencies:
    \`\`\`bash
-   pnpm install
+   bun install
    \`\`\`
 
 3. Run the development server:
    \`\`\`bash
-   pnpm dev
+   bun dev
    \`\`\`
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -42,8 +41,8 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 - We use Prettier for code formatting
 - We use ESLint for code linting
-- Run `pnpm format` before committing
-- Run `pnpm lint` to check for issues
+- Run `bun format` before committing
+- Run `bun lint` to check for issues
 
 ### Commit Messages
 
@@ -64,7 +63,7 @@ Example: `feat: add dark mode toggle`
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feat/my-feature`
 3. Make your changes
-4. Run tests and linting: `pnpm lint && pnpm type-check`
+4. Run tests and linting: `bun lint && bun type-check`
 5. Commit your changes with a descriptive message
 6. Push to your fork: `git push origin feat/my-feature`
 7. Open a Pull Request
@@ -85,22 +84,22 @@ Example: `feat: add dark mode toggle`
 
 # Development
 
-pnpm docker:dev
+bun docker:dev
 
 # Production
 
-pnpm docker:build
-pnpm docker:run
+bun docker:build
+bun docker:run
 \`\`\`
 
 ## Testing
 
 Before submitting a PR, ensure:
 
-- [ ] Code builds successfully: `pnpm build`
-- [ ] No linting errors: `pnpm lint`
-- [ ] No type errors: `pnpm type-check`
-- [ ] Code is formatted: `pnpm format:check`
+- [ ] Code builds successfully: `bun run build`
+- [ ] No linting errors: `bun lint`
+- [ ] No type errors: `bun type-check`
+- [ ] Code is formatted: `bun format:check`
 
 ## Questions?
 

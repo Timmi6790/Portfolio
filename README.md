@@ -41,8 +41,7 @@ This repository is my personal portfolio website, designed to showcase my projec
 
 ### Prerequisites
 
-- **Node.js**: v20 or higher recommended
-- **pnpm**: v9 or higher
+- **Bun**: v1.1 or higher
 
 ### Installation
 
@@ -56,7 +55,7 @@ This repository is my personal portfolio website, designed to showcase my projec
 2.  **Install dependencies:**
 
     ```bash
-    pnpm install
+    bun install
     ```
 
 3.  **Setup Environment Variables:**
@@ -72,7 +71,7 @@ This repository is my personal portfolio website, designed to showcase my projec
 Start the development server:
 
 ```bash
-pnpm dev
+bun dev
 # Open http://localhost:3000
 ```
 
@@ -81,24 +80,24 @@ pnpm dev
 Build the application for production:
 
 ```bash
-pnpm build
-pnpm start
+bun run build
+bun start
 ```
 
 ## 📜 Scripts
 
-| Script              | Description                                                         |
-| ------------------- | ------------------------------------------------------------------- |
-| `pnpm dev`          | Starts the development server.                                      |
-| `pnpm build`        | Builds the application for production (includes resume generation). |
-| `pnpm start`        | Starts the production server.                                       |
-| `pnpm lint`         | Runs ESLint to catch code quality issues.                           |
-| `pnpm format`       | Formats code using Prettier.                                        |
-| `pnpm test`         | Runs unit tests with Vitest.                                        |
-| `pnpm e2e`          | Runs end-to-end tests with Playwright.                              |
-| `pnpm docker:run`   | Runs the application in a local Docker container.                   |
-| `pnpm build:resume` | Generates the PDF resumes from data.                                |
-| `pnpm analyze`      | Runs bundle analysis to visualize size and dependencies.            |
+| Script             | Description                                                         |
+| ------------------ | ------------------------------------------------------------------- |
+| `bun dev`          | Starts the development server.                                      |
+| `bun run build`    | Builds the application for production (includes resume generation). |
+| `bun start`        | Starts the production server.                                       |
+| `bun lint`         | Runs ESLint to catch code quality issues.                           |
+| `bun format`       | Formats code using Prettier.                                        |
+| `bun test`         | Runs unit tests with Vitest.                                        |
+| `bun e2e`          | Runs end-to-end tests with Playwright.                              |
+| `bun docker:run`   | Runs the application in a local Docker container.                   |
+| `bun build:resume` | Generates the PDF resumes from data.                                |
+| `bun analyze`      | Runs bundle analysis to visualize size and dependencies.            |
 
 ## 🐳 Docker
 
@@ -107,7 +106,7 @@ You can containerize the application for consistent deployment.
 **Build and Run:**
 
 ```bash
-pnpm docker:build
-pnpm docker:run
+bun docker:build
+bun docker:run
 # Access at http://localhost:3000
 ```

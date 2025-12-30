@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.11.0](https://github.com/TimSchoenle/Portfolio/compare/v1.10.1...v1.11.0) (2025-12-30)
+
+
+### Features
+
+* **Sentry:** add sentry integration ([#310](https://github.com/TimSchoenle/Portfolio/issues/310)) ([b811e88](https://github.com/TimSchoenle/Portfolio/commit/b811e886a185bc2185450602e19310fa383070eb))
+
+
+### Bug Fixes
+
+* **deps:** lock file maintenance ([#315](https://github.com/TimSchoenle/Portfolio/issues/315)) ([1815c69](https://github.com/TimSchoenle/Portfolio/commit/1815c6989bdbd27b899257e1482edf123e45a749))
+* **deps:** update dependency @serwist/next to v9.4.2 ([#305](https://github.com/TimSchoenle/Portfolio/issues/305)) ([ed8408f](https://github.com/TimSchoenle/Portfolio/commit/ed8408fec43ee854d7c01a81882005b643667455))
+
 ## [1.10.1](https://github.com/TimSchoenle/Portfolio/compare/v1.10.0...v1.10.1) (2025-12-28)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.12.0](https://github.com/TimSchoenle/Portfolio/compare/v1.11.0...v1.12.0) (2025-12-31)
+
+
+### Features
+
+* lighthouse ([#326](https://github.com/TimSchoenle/Portfolio/issues/326)) ([e116e6f](https://github.com/TimSchoenle/Portfolio/commit/e116e6f90c76f3c9b4829aa06ec15976a31dc0aa))
+* migrate to bun ([#317](https://github.com/TimSchoenle/Portfolio/issues/317)) ([5004266](https://github.com/TimSchoenle/Portfolio/commit/5004266ab0223aa99aa89040af5f89e586f79e67))
+
+
+### Bug Fixes
+
+* **deps:** lock file maintenance ([#324](https://github.com/TimSchoenle/Portfolio/issues/324)) ([db1d58f](https://github.com/TimSchoenle/Portfolio/commit/db1d58f2e135d74f02ede77e7772b10ccbeaec00))
+* **deps:** update dependency zod to v4.3.2 ([#327](https://github.com/TimSchoenle/Portfolio/issues/327)) ([da2d9e8](https://github.com/TimSchoenle/Portfolio/commit/da2d9e8e9a029fa6bb25151cfaabe4da22010b6d))
+
 ## [1.11.0](https://github.com/TimSchoenle/Portfolio/compare/v1.10.1...v1.11.0) (2025-12-30)
 
 

@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server'
 import { BlueprintContainer } from '@/components/blueprint/blueprint-container'
 import { BlueprintSectionDivider } from '@/components/blueprint/blueprint-section-divider'
 import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-title'
-import { ContributionGraphWrapper } from '@/components/features/contribution-graph/contribution-graph-wrapper'
+import { ContributionGraphClient } from '@/components/features/contribution-graph/contribution-graph-client'
 import { FeaturedProjects } from '@/components/sections/projects/featured-projects'
 import { ProjectStats } from '@/components/sections/projects/project-stats'
 import { ViewAllButton } from '@/components/sections/projects/view-all-button'
@@ -48,7 +48,7 @@ export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
         {Object.keys(contributionData).length > 0 && (
           <div className="mt-16 w-full rounded-lg border border-brand/30 bg-blueprint-card-bg/90 p-2 shadow-sm backdrop-blur-md md:p-6">
             <div className="w-full">
-              <ContributionGraphWrapper
+              <ContributionGraphClient
                 data={contributionData}
                 locale={locale}
                 variant="blueprint"

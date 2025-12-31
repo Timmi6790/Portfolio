@@ -51,7 +51,6 @@ export const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
     <BlueprintSection
       dividerLabel="BIO_DATA_END"
       id="about"
-      isLazy={true}
       sectionLabel="// PROFILE_CORE"
       title={translations('title')}
     >

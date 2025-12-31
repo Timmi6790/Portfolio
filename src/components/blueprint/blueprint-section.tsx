@@ -11,6 +11,7 @@ interface BlueprintSectionProperties extends WithRequiredChildren {
   readonly dividerLabel?: string
   readonly id: string
   readonly isLazy?: boolean
+  readonly lazyRootMargin?: string
   readonly sectionLabel: string
   readonly subtitle?: string
   readonly title: string
@@ -24,25 +25,35 @@ export const BlueprintSection: FCWithRequiredChildren<
   dividerLabel,
   id: sectionId,
   isLazy,
+  lazyRootMargin,
   sectionLabel,
   subtitle,
   title,
-}: BlueprintSectionProperties): JSX.Element => (
-  <BlueprintContainer id={sectionId} isLazy={isLazy ?? false}>
-    <div
-      className={`mx-auto flex w-full max-w-6xl flex-col items-center ${className ?? ''}`}
+}: BlueprintSectionProperties): JSX.Element => {
+  const containerProperties: { lazyRootMargin?: string } =
+    lazyRootMargin === undefined ? {} : { lazyRootMargin }
+
+  return (
+    <BlueprintContainer
+      id={sectionId}
+      isLazy={isLazy ?? false}
+      {...containerProperties}
     >
-      <BlueprintSectionTitle
-        sectionLabel={sectionLabel}
-        title={title}
-        {...(Boolean(subtitle) ? { subtitle } : {})}
-      />
+      <div
+        className={`mx-auto flex w-full max-w-6xl flex-col items-center ${className ?? ''}`}
+      >
+        <BlueprintSectionTitle
+          sectionLabel={sectionLabel}
+          title={title}
+          {...(Boolean(subtitle) ? { subtitle } : {})}
+        />
 
-      {children}
+        {children}
 
-      {Boolean(dividerLabel) && (
-        <BlueprintSectionDivider label={dividerLabel ?? ''} />
-      )}
-    </div>
-  </BlueprintContainer>
-)
+        {Boolean(dividerLabel) && (
+          <BlueprintSectionDivider label={dividerLabel ?? ''} />
+        )}
+      </div>
+    </BlueprintContainer>
+  )
+}

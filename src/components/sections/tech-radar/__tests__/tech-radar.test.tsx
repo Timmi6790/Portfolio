@@ -7,9 +7,12 @@ vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(async () => (key: string) => key),
 }))
 
-vi.mock('../loading-wrappers', () => ({
-  DynamicTechRadarInteractive: () => <div data-testid="dynamic-interactive" />,
-  DynamicTechRadarTooltip: () => <div data-testid="dynamic-tooltip" />,
+vi.mock('../tech-radar-interactive', () => ({
+  TechRadarInteractive: () => <div data-testid="interactive-components" />,
+}))
+
+vi.mock('../tech-radar-tooltip', () => ({
+  TechRadarTooltip: () => <div data-testid="radar-tooltip" />,
 }))
 
 const mockSkills = {
@@ -65,12 +68,12 @@ describe('TechRadar', () => {
     expect(svg?.getAttribute('viewBox')).toBe('-220 -220 440 440')
   })
 
-  it('renders dynamic interactive components', async () => {
+  it('renders interactive components', async () => {
     const Component = await TechRadar({ locale: 'en', ...mockSkills })
     render(Component)
 
-    expect(screen.getByTestId('dynamic-interactive')).toBeDefined()
-    expect(screen.getByTestId('dynamic-tooltip')).toBeDefined()
+    expect(screen.getByTestId('interactive-components')).toBeDefined()
+    expect(screen.getByTestId('radar-tooltip')).toBeDefined()
   })
 
   it('renders background circles', async () => {

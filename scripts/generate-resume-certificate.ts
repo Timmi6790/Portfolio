@@ -128,7 +128,7 @@ void (async (): Promise<void> => {
   }
 
   console.log(`\n2. Run the resume generation script:`)
-  console.log(`   pnpm build:resume`)
+  console.log(`   bun run build:resume`)
 
   if (passwordArgument === undefined) {
     console.log('\n⚠ NOTE: A secure random password was generated for you.')

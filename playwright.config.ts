@@ -25,7 +25,7 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
   webServer: {
-    command: 'pnpm start',
+    command: 'bun run start',
     port: 3000,
     reuseExistingServer: !isCI,
     timeout: 120_000,

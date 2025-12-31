@@ -246,6 +246,15 @@ const nextConfig: NextConfig = {
 
   serverExternalPackages: ['@tailwindcss/oxide'],
 
+  // Force transpilation of specific packages to ensure they match our modern browser targets
+  transpilePackages: [
+    'next-intl',
+    'lucide-react',
+    'date-fns',
+    'clsx',
+    'tailwind-merge',
+  ],
+
   // Enable typed routes for better TypeScript support
   typedRoutes: true,
 }

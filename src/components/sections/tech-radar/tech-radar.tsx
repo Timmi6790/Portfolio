@@ -10,13 +10,11 @@ import {
   QUADRANT_ANGLES,
   RADAR_CONFIG,
 } from '@/components/sections/tech-radar/config'
-import {
-  DynamicTechRadarInteractive,
-  DynamicTechRadarTooltip,
-} from '@/components/sections/tech-radar/loading-wrappers'
 import { RadarBackground } from '@/components/sections/tech-radar/radar-background'
 import { RadarDefs } from '@/components/sections/tech-radar/radar-defs'
 import { RadarLabels } from '@/components/sections/tech-radar/radar-labels'
+import { TechRadarInteractive } from '@/components/sections/tech-radar/tech-radar-interactive'
+import { TechRadarTooltip } from '@/components/sections/tech-radar/tech-radar-tooltip'
 import { generateBlipsForCategory } from '@/lib/tech-radar-utilities/generators'
 import type { AsyncPageFC } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
@@ -100,11 +98,11 @@ export const TechRadar: AsyncPageFC<TechRadarProperties> = async ({
           <RadarLabels labels={labels} translations={translations} />
 
           {/* Interactive blips - client component */}
-          <DynamicTechRadarInteractive blips={allBlips} />
+          <TechRadarInteractive blips={allBlips} />
         </svg>
 
         {/* Tooltip - rendered outside SVG for proper positioning */}
-        <DynamicTechRadarTooltip blips={allBlips} />
+        <TechRadarTooltip blips={allBlips} />
 
         {/* Center hub */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

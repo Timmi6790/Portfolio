@@ -184,7 +184,17 @@ function getNextBinPath(): string {
   return fs.existsSync(candidate) ? candidate : binName
 }
 
-function getNodeBin(): string {
+interface BunProcessVersions extends NodeJS.ProcessVersions {
+  bun?: string
+}
+
+function getRuntimeBin(): string {
+  const versions: BunProcessVersions = process.versions as BunProcessVersions
+
+  if (versions.bun !== undefined && versions.bun !== '') {
+    return process.execPath
+  }
+
   const binName: string = isWindows ? 'node.exe' : 'node'
   return process.execPath.includes(binName) ? process.execPath : 'node'
 }
@@ -271,7 +281,7 @@ async function startServer(): Promise<number> {
 
   log(`Starting server on ${host}:${port} (NODE_ENV=${nodeEnvironment})…`)
 
-  return runChildProcess(getNodeBin(), [PATHS.server], {
+  return runChildProcess(getRuntimeBin(), [PATHS.server], {
     env: runtimeEnvironment,
   })
 }

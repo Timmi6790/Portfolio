@@ -83,17 +83,6 @@ const useIdleFlag: () => boolean = (): boolean => {
 const DeferredClientUi: FCNullable = (): JSX.Element | null => {
   const show: boolean = useIdleFlag()
 
-  useEffect((): void => {
-    if (show) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      import('@/lib/sentry-client').then(
-        (module_: { init: () => void }): void => {
-          module_.init()
-        }
-      )
-    }
-  }, [show])
-
   if (!show) {
     return null
   }

@@ -13,7 +13,6 @@ export const BlueprintGrid: FCStrict<BlueprintDecorationProperties> = ({
   <div
     aria-hidden="true"
     className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? ''}`}
-    style={{ transform: 'translateZ(0)', willChange: 'transform' }}
   >
     {/* Deep Background Base */}
     <div className="absolute inset-0 bg-blueprint-bg dark:bg-blueprint-bg" />

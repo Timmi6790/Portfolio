@@ -10,6 +10,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 
 import DeferredClientUi from '@/app/[locale]/deferred-client-ui'
 import { LanguageSwitcher } from '@/components/common/language-switcher'
+import { SentryInitializer } from '@/components/common/sentry-initializer'
 import { ThemeProvider } from '@/components/common/theme-provider'
 import { CloudflareWebAnalytics } from '@/components/features/cloudflare-web-analytics'
 import { DevelopmentServiceWorkerGuard } from '@/components/features/dev-tools/sw-cleanup'
@@ -29,7 +30,6 @@ import type {
 } from '@/types/page'
 
 import type { NextFontWithVariable } from 'next/dist/compiled/@next/font'
-import type { DeepPartial } from 'react-hook-form'
 
 /* ---------- fonts (auto-fetched via next/font/google) ---------- */
 const inter: NextFontWithVariable = Inter({
@@ -188,7 +188,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
   const locale: Locale = await ensureLocaleFromParameters(params)
   setRequestLocale(locale)
 
-  const messages: DeepPartial<Messages> = await getMessages()
+  const messages: Partial<Messages> = await getMessages()
 
   return (
     <html className={`dark ${inter.variable}`} lang={locale}>
@@ -199,6 +199,7 @@ const RootLayout: RoutePageWithChildrenFC<RootLayoutProperties> = async ({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark">
             <LanguageSwitcher />
+            <SentryInitializer />
             {/* Non-critical client UI mounts after idle inside this wrapper */}
             <DeferredClientUi />
 

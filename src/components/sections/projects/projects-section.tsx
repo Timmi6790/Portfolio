@@ -1,38 +1,19 @@
-import { type ComponentType, type JSX } from 'react'
+import { type JSX } from 'react'
 
-import dynamic from 'next/dynamic'
 import { getTranslations } from 'next-intl/server'
 
 import { BlueprintContainer } from '@/components/blueprint/blueprint-container'
 import { BlueprintSectionDivider } from '@/components/blueprint/blueprint-section-divider'
 import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-title'
-import type * as ContributionGraphModule from '@/components/features/contribution-graph/contribution-graph-client'
+import { ContributionGraphClient } from '@/components/features/contribution-graph/contribution-graph-client'
 import { FeaturedProjects } from '@/components/sections/projects/featured-projects'
 import { ProjectStats } from '@/components/sections/projects/project-stats'
 import { ViewAllButton } from '@/components/sections/projects/view-all-button'
 import { getGithubUser, type GitHubData } from '@/lib/github/client'
-import type { AsyncPageFC, FCStrict } from '@/types/fc'
+import type { AsyncPageFC } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
 
 type ProjectsSectionProperties = LocalePageProperties
-
-const ContributionGraph: ComponentType<ContributionGraphModule.ContributionGraphClientProperties> =
-  dynamic(
-    async (): Promise<
-      FCStrict<ContributionGraphModule.ContributionGraphClientProperties>
-    > =>
-      import('@/components/features/contribution-graph/contribution-graph-client').then(
-        (
-          module_: typeof ContributionGraphModule
-        ): FCStrict<ContributionGraphModule.ContributionGraphClientProperties> =>
-          module_.ContributionGraphClient
-      ),
-    {
-      loading: (): JSX.Element => (
-        <div className="h-[180px] w-full animate-pulse rounded-lg bg-blueprint-card-bg/50" />
-      ),
-    }
-  )
 
 export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
   locale,
@@ -67,7 +48,7 @@ export const ProjectsSection: AsyncPageFC<ProjectsSectionProperties> = async ({
         {Object.keys(contributionData).length > 0 && (
           <div className="mt-16 w-full rounded-lg border border-brand/30 bg-blueprint-card-bg/90 p-2 shadow-sm backdrop-blur-md md:p-6">
             <div className="w-full">
-              <ContributionGraph
+              <ContributionGraphClient
                 data={contributionData}
                 locale={locale}
                 variant="blueprint"

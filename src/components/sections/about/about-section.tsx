@@ -52,6 +52,7 @@ export const AboutSection: AsyncPageFC<AboutSectionProperties> = async ({
       dividerLabel="BIO_DATA_END"
       id="about"
       isLazy={true}
+      lazyRootMargin="600px"
       sectionLabel="// PROFILE_CORE"
       title={translations('title')}
     >

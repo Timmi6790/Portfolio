@@ -54,6 +54,7 @@ RUN --mount=type=cache,target=/app/.next/cache \
 
 
 FROM dhi.io/bun:1-alpine3.22@sha256:b069bc30faa0f26582be80117bfb19274538306d752883790f34f285527c3f23 AS runner
+USER nonroot:nonroot
 WORKDIR /app
 
 ENV NODE_ENV=production \

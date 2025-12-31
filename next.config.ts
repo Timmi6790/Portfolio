@@ -149,7 +149,7 @@ const nextConfig: NextConfig = {
         '@xtuc*',
 
         // SWC (compiler) – only needed at build time
-        '@swc*',
+        '@swc/core*',
 
         // esbuild (bundler/minifier)
         '@esbuild*',
@@ -205,9 +205,6 @@ const nextConfig: NextConfig = {
         'on-exit-leak-free*',
         'quick-format-unescaped*',
         'real-require*',
-        'require-in-the-middle*',
-        'import-in-the-middle*',
-        'module-details-from-path*',
         'pino-abstract-transport*',
         'pino-std-serializers*',
         'thread-stream*',
@@ -218,8 +215,6 @@ const nextConfig: NextConfig = {
         'fast-uri*',
         'json-schema-traverse*',
         'buffer-from*',
-        'ms*',
-        'debug*',
         'detect-libc*',
         'semver*',
         'has-flag*',

@@ -28,7 +28,9 @@ function createStandaloneOutputExclusions(dependencies: string[]): string[] {
 }
 
 function createStandaloneOutputExclusion(dependency: string): string {
-  return `node_modules/.pnpm/${dependency}`
+  // Support both flat (bun/npm) and nested (pnpm) node_modules structures
+  // eslint-disable-next-line sonarjs/no-nested-template-literals
+  return String.raw`node_modules/(\.pnpm/)?${dependency.replaceAll('+', String.raw`\+`)}`
 }
 
 function getCspHeader(): string {

@@ -28,6 +28,7 @@ COPY . .
 # Build the Next.js app
 # Use secret mounts for sensitive data during the build
 # Remove source maps after build to reduce image size
+# Remove any stray node_modules that might have been copied
 RUN --mount=type=cache,target=/app/.next/cache \
     --mount=type=secret,id=resume_signing_cert_base64 \
     --mount=type=secret,id=resume_signing_cert_password \
@@ -47,7 +48,8 @@ RUN --mount=type=cache,target=/app/.next/cache \
       export SENTRY_PROJECT; \
     fi && \
     bun run build && \
-    find .next/static -type f -name '*.map' -delete
+    find .next/static -type f -name '*.map' -delete && \
+    rm -rf node_modules
 
 
 

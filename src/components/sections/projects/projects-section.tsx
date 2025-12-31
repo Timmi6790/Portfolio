@@ -31,6 +31,7 @@ const ContributionGraph: ComponentType<ContributionGraphModule.ContributionGraph
       loading: (): JSX.Element => (
         <div className="h-[180px] w-full animate-pulse rounded-lg bg-blueprint-card-bg/50" />
       ),
+      ssr: false,
     }
   )
 

@@ -13,10 +13,8 @@ import {
 import { RadarBackground } from '@/components/sections/tech-radar/radar-background'
 import { RadarDefs } from '@/components/sections/tech-radar/radar-defs'
 import { RadarLabels } from '@/components/sections/tech-radar/radar-labels'
-import {
-  TechRadarInteractiveLoader,
-  TechRadarTooltipLoader,
-} from '@/components/sections/tech-radar/tech-radar-loader'
+import TechRadarInteractive from '@/components/sections/tech-radar/tech-radar-interactive'
+import { TechRadarTooltipLoader } from '@/components/sections/tech-radar/tech-radar-loader'
 import { generateBlipsForCategory } from '@/lib/tech-radar-utilities/generators'
 import type { AsyncPageFC } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
@@ -99,11 +97,11 @@ export const TechRadar: AsyncPageFC<TechRadarProperties> = async ({
           />
           <RadarLabels labels={labels} translations={translations} />
 
-          {/* Interactive blips - Valid inside SVG */}
-          <TechRadarInteractiveLoader blips={allBlips} />
+          {/* Interactive blips - SSR'd for performance */}
+          <TechRadarInteractive blips={allBlips} />
         </svg>
 
-        {/* Tooltip - Must be outside SVG */}
+        {/* Tooltip - Lazy loaded client component */}
         <TechRadarTooltipLoader blips={allBlips} />
 
         {/* Center hub */}

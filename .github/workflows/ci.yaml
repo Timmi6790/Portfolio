@@ -73,6 +73,7 @@ jobs:
               - 'docker-compose.yml'
               - '.dockerignore'
               - *src_path
+              - *config_files 
               - *pkg_json
               - *github_path
 

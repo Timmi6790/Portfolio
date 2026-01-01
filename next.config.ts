@@ -208,7 +208,6 @@ const nextConfig: NextConfig = {
         'thread-stream*',
         'safe-stable-stringify*',
         'split2*',
-        'sonic-boom*',
         'fast-deep-equal*',
         'fast-uri*',
         'json-schema-traverse*',

@@ -38,7 +38,7 @@
         "@react-pdf/renderer": "4.3.2",
         "@signpdf/placeholder-plain": "3.2.5",
         "@signpdf/signer-p12": "3.2.4",
-        "@signpdf/signpdf": "3.2.5",
+        "@signpdf/signpdf": "3.3.0",
         "@tailwindcss/postcss": "4.1.18",
         "@testing-library/dom": "10.4.1",
         "@testing-library/jest-dom": "6.9.1",
@@ -828,7 +828,7 @@
 
     "@signpdf/signer-p12": ["@signpdf/signer-p12@3.2.4", "", { "dependencies": { "@signpdf/utils": "^3.2.4" }, "peerDependencies": { "node-forge": "^1.2.1" } }, "sha512-DTeYMj1DI30VYmaZXp2zZEg9YwVm3NmqjLF3q6ZxUwlOUSLLOUFkVafIs4YibTAGBmgjWKEMfmNCndK2ACLlzQ=="],
 
-    "@signpdf/signpdf": ["@signpdf/signpdf@3.2.5", "", { "dependencies": { "@signpdf/utils": "^3.2.4" } }, "sha512-mxGgVU+VkhCxNZ1eDGCmkE5zWFJExXPXn2myjrLcekHnJNpBKZr6WBrrznGOlLeDVAaiSVXjeysehgpZSJlJIA=="],
+    "@signpdf/signpdf": ["@signpdf/signpdf@3.3.0", "", { "dependencies": { "@signpdf/utils": "^3.3.0" } }, "sha512-/vy3dPTsTbLHdsKRarPQw8++UqN8GXxjEVnl4ZRl+o/zMWFqVb861RM5bxoRMGGMuPSvb1Rgt2lmVobEc0YUpw=="],
 
     "@signpdf/utils": ["@signpdf/utils@3.3.0", "", {}, "sha512-ArOP0MIhCfdChh1oZkog81TPeSY2e5TvHQmXJ682T4+SKb6Z609uAZhqMQZ9xm+YenEf/eNMSE5KVwU+EudXug=="],
 

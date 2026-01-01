@@ -1,0 +1,26 @@
+name: Manual Update Helm Chart
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-tag:
+        description: 'Release Tag (e.g. 1.2.3)'
+        required: true
+      image-digest:
+        description: 'Docker Image Digest (e.g. sha256:...)'
+        required: true
+
+jobs:
+  manual-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Update Helm Chart
+        uses: ./.github/actions/update-helm-chart
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          new-tag: ${{ inputs.release-tag }}
+          image-digest: ${{ inputs.image-digest }}

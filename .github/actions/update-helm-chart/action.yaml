@@ -73,7 +73,6 @@ runs:
       working-directory: ${{ inputs.checkout-path }}/${{ inputs.chart-path }}
       env:
         NEW_TAG: ${{ inputs.new-tag }}
-        IMAGE_DIGEST: ${{ inputs.image-digest }}
       run: |
         # Bump patch version
         # Extract current version
@@ -88,7 +87,13 @@ runs:
         yq -i ".version = \"$NEW_VERSION\"" Chart.yaml
         yq -i ".appVersion = \"$NEW_TAG\"" Chart.yaml
 
-        # Update values.yaml image tag
+    - name: Update Image Tag
+      shell: bash
+      working-directory: ${{ inputs.checkout-path }}/${{ inputs.chart-path }}
+      env:
+        NEW_TAG: ${{ inputs.new-tag }}
+        IMAGE_DIGEST: ${{ inputs.image-digest }}
+      run: |
         # Use yq to get the current value, then grep for the line number
         # This is more robust than yq | line and preserves formatting via sed
         OLD_TAG_VAL=$(yq '.image.tag' values.yaml)

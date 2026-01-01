@@ -1,14 +1,7 @@
 name: Manual Update Helm Chart
 
 on:
-  workflow_dispatch:
-    inputs:
-      release-tag:
-        description: 'Release Tag (e.g. 1.2.3)'
-        required: true
-      image-digest:
-        description: 'Docker Image Digest (e.g. sha256:...)'
-        required: true
+  push:
 
 jobs:
   manual-update:
@@ -22,5 +15,5 @@ jobs:
         with:
           app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
           private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
-          new-tag: ${{ inputs.release-tag }}
-          image-digest: ${{ inputs.image-digest }}
+          new-tag: 'v1.12.2'
+          image-digest: 'sha256:cfddbb27deb7642099200e279019ca2f1c40143f97833b742dbee97d82c28737'

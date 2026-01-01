@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.5](https://github.com/TimSchoenle/Portfolio/compare/v1.12.4...v1.12.5) (2026-01-01)
+
+
+### Bug Fixes
+
+* **deps:** lock file maintenance ([#350](https://github.com/TimSchoenle/Portfolio/issues/350)) ([d7a0fcb](https://github.com/TimSchoenle/Portfolio/commit/d7a0fcb945752f7c1f2c0d5d865fd1009b3e387d))
+* pino logger ([#352](https://github.com/TimSchoenle/Portfolio/issues/352)) ([d5f3aec](https://github.com/TimSchoenle/Portfolio/commit/d5f3aec093bd69247f28b475a2d13c21c9522466))
+
 ## [1.12.4](https://github.com/TimSchoenle/Portfolio/compare/v1.12.3...v1.12.4) (2026-01-01)
 
 

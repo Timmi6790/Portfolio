@@ -164,7 +164,7 @@ jobs:
           git config user.email "${{ env.BOT_EMAIL }}"
 
       - name: Install yq
-        uses: dcarbone/install-yq-action@v1.3.1
+        uses: dcarbone/install-yq-action@4075b4dca348d74bd83f2bf82d30f25d7c54539b # v1.3.1
         with:
           version: 'v4.40.1'
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.4](https://github.com/TimSchoenle/Portfolio/compare/v1.12.3...v1.12.4) (2026-01-01)
+
+
+### Bug Fixes
+
+* remove pnpm leftover ([#348](https://github.com/TimSchoenle/Portfolio/issues/348)) ([44abf0f](https://github.com/TimSchoenle/Portfolio/commit/44abf0f34a32bbaf47d7a28583a207c14b955ab8))
+
 ## [1.12.3](https://github.com/TimSchoenle/Portfolio/compare/v1.12.2...v1.12.3) (2026-01-01)
 
 

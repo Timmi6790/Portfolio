@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.3](https://github.com/TimSchoenle/Portfolio/compare/v1.12.2...v1.12.3) (2026-01-01)
+
+
+### Bug Fixes
+
+* **deps:** lock file maintenance ([#325](https://github.com/TimSchoenle/Portfolio/issues/325)) ([60f27cb](https://github.com/TimSchoenle/Portfolio/commit/60f27cb46827cf4313ce94e4f7996861390dcd1c))
+* include sonic-boom in standalone output ([#345](https://github.com/TimSchoenle/Portfolio/issues/345)) ([de60d08](https://github.com/TimSchoenle/Portfolio/commit/de60d0862f7a57384b005ab3e377b7cd233c6d15))
+
 ## [1.12.2](https://github.com/TimSchoenle/Portfolio/compare/v1.12.1...v1.12.2) (2026-01-01)
 
 

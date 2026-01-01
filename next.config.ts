@@ -203,7 +203,6 @@ const nextConfig: NextConfig = {
         'neo-async*',
         'atomic-sleep*',
         'on-exit-leak-free*',
-        'quick-format-unescaped*',
         'real-require*',
         'pino-abstract-transport*',
         'thread-stream*',

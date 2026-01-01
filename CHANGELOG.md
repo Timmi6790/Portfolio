@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.2](https://github.com/TimSchoenle/Portfolio/compare/v1.12.1...v1.12.2) (2026-01-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency zod to v4.3.4 ([#334](https://github.com/TimSchoenle/Portfolio/issues/334)) ([10448c6](https://github.com/TimSchoenle/Portfolio/commit/10448c63f4f08f17229cfae3795d0a680bf958d4))
+* include quick-format-unescaped in standalone output ([#341](https://github.com/TimSchoenle/Portfolio/issues/341)) ([8f74126](https://github.com/TimSchoenle/Portfolio/commit/8f74126c1f0f4699146986c36a64f36a348c727b))
+
 ## [1.12.1](https://github.com/TimSchoenle/Portfolio/compare/v1.12.0...v1.12.1) (2026-01-01)
 
 

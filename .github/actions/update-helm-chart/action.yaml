@@ -63,13 +63,6 @@ runs:
         GH_TOKEN: ${{ steps.generate_token.outputs.token }}
       run: echo "user-id=$(gh api "/users/${{ steps.generate_token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
 
-    - name: Configure Git
-      shell: bash
-      working-directory: ${{ inputs.checkout-path }}
-      run: |
-        git config user.name '${{ steps.generate_token.outputs.app-slug }}[bot]'
-        git config user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate_token.outputs.app-slug }}[bot]@users.noreply.github.com'
-
     - name: Install yq
       uses: dcarbone/install-yq-action@4075b4dca348d74bd83f2bf82d30f25d7c54539b # v1.3.1
       with:
@@ -111,34 +104,15 @@ runs:
         sed -i "${TAG_LINE}s|tag: .*|tag: $FULL_TAG|" values.yaml
 
     - name: Create Pull Request
-      shell: bash
-      working-directory: ${{ inputs.checkout-path }}
-      env:
-        GH_TOKEN: ${{ steps.generate_token.outputs.token }}
-        NEW_TAG: ${{ inputs.new-tag }}
-        CHART_PATH: ${{ inputs.chart-path }}
-        HELM_REPO: ${{ inputs.helm-repo }}
-      run: |
-        BRANCH_NAME="chore/update-portfolio-${NEW_TAG}"
-
-        # Create branch (force if exists)
-        git checkout -B "$BRANCH_NAME"
-
-        # Commit changes
-        git add ${{ env.CHART_PATH }}/Chart.yaml ${{ env.CHART_PATH }}/values.yaml
-        git commit -m "chore(portfolio): update chart for release ${NEW_TAG}"
-
-        # Push branch (force)
-        git push -f origin "$BRANCH_NAME"
-
-        # Create PR (or update if exists)
-        gh pr create \
-          --title "chore(portfolio): update chart for release ${NEW_TAG}" \
-          --body "Automated update for Portfolio release [${NEW_TAG}](https://github.com/${{ github.repository }}/releases/tag/${NEW_TAG})." \
-          --base main \
-          --head "$BRANCH_NAME" \
-          --repo ${{ env.HELM_REPO }} || \
-        gh pr edit "$BRANCH_NAME" \
-          --title "chore(portfolio): update chart for release ${NEW_TAG}" \
-          --body "Automated update for Portfolio release [${NEW_TAG}](https://github.com/${{ github.repository }}/releases/tag/${NEW_TAG})." \
-          --repo ${{ env.HELM_REPO }}
+      uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7
+      with:
+        token: ${{ steps.generate_token.outputs.token }}
+        path: ${{ inputs.checkout-path }}
+        branch: chore/update-portfolio-${{ inputs.new-tag }}
+        title: 'chore(portfolio): update chart for release ${{ inputs.new-tag }}'
+        body: 'Automated update for Portfolio release [${{ inputs.new-tag }}](https://github.com/${{ github.repository }}/releases/tag/${{ inputs.new-tag }}).'
+        commit-message: 'chore(portfolio): update chart for release ${{ inputs.new-tag }}'
+        committer: '${{ steps.generate_token.outputs.app-slug }}[bot] <${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate_token.outputs.app-slug }}[bot]@users.noreply.github.com>'
+        author: '${{ steps.generate_token.outputs.app-slug }}[bot] <${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate_token.outputs.app-slug }}[bot]@users.noreply.github.com>'
+        signoff: false
+        delete-branch: true

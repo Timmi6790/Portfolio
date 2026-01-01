@@ -12,6 +12,9 @@ permissions:
 
 env:
   DOCKER_REPO: timschoenle/portfolio
+  HELM_REPO: TimSchoenle/helm-charts
+  HELM_CHECKOUT_PATH: helm-charts
+  CHART_PATH: charts/portfolio
 
 jobs:
   release-please:
@@ -37,6 +40,8 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
+    outputs:
+      image_digest: ${{ steps.build-and-push.outputs.digest }}
     permissions:
       contents: read
       id-token: write # Needed for Cosign keyless signing
@@ -121,3 +126,95 @@ jobs:
         with:
           environment: production
           version: ${{ needs.release-please.outputs.tag_name }}
+
+  update-helm-chart:
+    needs: [release-please, publish-docker]
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Bot Token
+        id: generate_token
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+
+      - name: Get Bot User Data
+        id: bot_data
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          # Fetch the bot's user data
+          USER_DATA=$(gh api user)
+          echo "BOT_NAME=$(echo "$USER_DATA" | jq -r .login)" >> $GITHUB_ENV
+          echo "BOT_EMAIL=$(echo "$USER_DATA" | jq -r .id)+$(echo "$USER_DATA" | jq -r .login)@users.noreply.github.com" >> $GITHUB_ENV
+
+      - name: Checkout Helm Charts
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          repository: ${{ env.HELM_REPO }}
+          token: ${{ steps.generate_token.outputs.token }}
+          path: ${{ env.HELM_CHECKOUT_PATH }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        working-directory: ${{ env.HELM_CHECKOUT_PATH }}
+        run: |
+          git config user.name "${{ env.BOT_NAME }}"
+          git config user.email "${{ env.BOT_EMAIL }}"
+
+      - name: Install yq
+        uses: dcarbone/install-yq-action@v1.3.1
+        with:
+          version: 'v4.40.1'
+
+      - name: Update Chart Version
+        working-directory: ${{ env.HELM_CHECKOUT_PATH }}/${{ env.CHART_PATH }}
+        env:
+          NEW_TAG: ${{ needs.release-please.outputs.tag_name }}
+          IMAGE_DIGEST: ${{ needs.publish-docker.outputs.image_digest }}
+        run: |
+          # Bump patch version
+          # Extract current version
+          CURRENT_VERSION=$(yq '.version' Chart.yaml)
+          echo "Current Version: $CURRENT_VERSION"
+
+          # Increment patch
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+          echo "New Version: $NEW_VERSION"
+
+          # Update Chart.yaml
+          yq -i ".version = \"$NEW_VERSION\"" Chart.yaml
+          yq -i ".appVersion = \"$NEW_TAG\"" Chart.yaml
+
+          # Update values.yaml image tag
+          # Format: [TAG]@[DIGEST]
+          FULL_TAG="${NEW_TAG}@${IMAGE_DIGEST}"
+          echo "New Image Tag: $FULL_TAG"
+          yq -i ".image.tag = \"$FULL_TAG\"" values.yaml
+
+      - name: Create Pull Request
+        working-directory: ${{ env.HELM_CHECKOUT_PATH }}
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          NEW_TAG: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          BRANCH_NAME="chore/update-portfolio-${NEW_TAG}"
+
+          # Create branch
+          git checkout -b "$BRANCH_NAME"
+
+          # Commit changes
+          git add ${{ env.CHART_PATH }}/Chart.yaml ${{ env.CHART_PATH }}/values.yaml
+          git commit -m "chore(portfolio): update chart for release ${NEW_TAG}"
+
+          # Push branch
+          git push origin "$BRANCH_NAME"
+
+          # Create PR
+          gh pr create \
+            --title "chore(portfolio): update chart for release ${NEW_TAG}" \
+            --body "Automated update for Portfolio release [${NEW_TAG}](https://github.com/${{ github.repository }}/releases/tag/${NEW_TAG})." \
+            --base main \
+            --head "$BRANCH_NAME" \
+            --repo ${{ env.HELM_REPO }}

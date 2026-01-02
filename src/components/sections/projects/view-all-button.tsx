@@ -1,6 +1,7 @@
 import { type JSX } from 'react'
 
 import { BlueprintCorners } from '@/components/blueprint/blueprint-decoration'
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import { siteConfig } from '@/data/config'
 import type { FCStrict } from '@/types/fc'
 
@@ -24,12 +25,17 @@ export const ViewAllButton: FCStrict<ViewAllButtonProperties> = ({
       <div className="absolute inset-0 rounded-sm bg-brand/20 blur-md transition-all duration-300 group-hover:bg-brand/40" />
 
       {/* Button Content */}
-      <div className="group-hover:shadow-[0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] relative flex items-center gap-2 border border-brand bg-blueprint-bg/90 px-8 py-3 font-mono text-sm tracking-wider text-brand backdrop-blur-sm transition-all duration-300 group-hover:text-blueprint-text hover:bg-brand/10">
+      <BlueprintText
+        as="div"
+        className="group-hover:shadow-[0_0_15px_color-mix(in srgb, var(--brand), transparent 70%)] relative flex items-center gap-2 border border-brand bg-blueprint-bg/90 px-8 py-3 text-sm tracking-wider text-brand backdrop-blur-sm transition-all duration-300 group-hover:text-blueprint-text hover:bg-brand/10"
+        uppercase={true}
+        variant="brand"
+      >
         <span>{label}</span>
         <span className="transition-transform duration-300 group-hover:translate-x-1">
           {VIEW_ALL_ARROW}
         </span>
-      </div>
+      </BlueprintText>
 
       {/* Corner Accents */}
       <BlueprintCorners

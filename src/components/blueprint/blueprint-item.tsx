@@ -1,5 +1,6 @@
 import { type JSX } from 'react'
 
+import { BlueprintCorners } from '@/components/blueprint/blueprint-decoration'
 import type { FCStrict } from '@/types/fc'
 
 interface BlueprintItemProperties {
@@ -38,7 +39,10 @@ export const BlueprintItem: FCStrict<BlueprintItemProperties> = ({
     </div>
 
     {/* Corner Accents */}
-    <div className="absolute top-0 right-0 h-1.5 w-1.5 border-t border-r border-brand" />
-    <div className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b border-l border-brand" />
+    <BlueprintCorners
+      cornerLength={6}
+      corners={['topRight', 'bottomLeft']}
+      strokeWidth={1}
+    />
   </a>
 )

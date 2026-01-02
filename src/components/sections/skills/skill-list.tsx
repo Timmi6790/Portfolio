@@ -1,5 +1,6 @@
 import { type JSX } from 'react'
 
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import { SkillBadge } from '@/components/sections/skills/skill-badge'
 import { shouldShowSkill } from '@/lib/tech-radar-utilities'
 import type { FCStrict } from '@/types/fc'
@@ -26,9 +27,13 @@ export const SkillList: FCStrict<SkillListProperties> = ({
   return (
     <div className="space-y-4 text-center lg:text-left">
       <div className="inline-block border-l-2 border-brand pl-3">
-        <h3 className="font-mono text-sm font-bold tracking-[0.2em] text-blueprint-text uppercase">
+        <BlueprintText
+          as="h3"
+          className="text-sm font-bold text-blueprint-text"
+          uppercase={true}
+        >
           {title}
-        </h3>
+        </BlueprintText>
       </div>
 
       <ul className="flex flex-wrap justify-center gap-2 lg:justify-start">

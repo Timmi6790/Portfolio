@@ -4,6 +4,7 @@ import { type JSX } from 'react'
 
 import { getTranslations } from 'next-intl/server'
 
+import { BlueprintCorners } from '@/components/blueprint/blueprint-decoration'
 import { StatusIndicator } from '@/components/blueprint/status-indicator'
 import { PerformanceMonitor } from '@/components/features/dev-tools/performance-monitor'
 import { GridPattern } from '@/components/ui/grid-pattern'
@@ -80,7 +81,12 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
         {translations('imprint.title').toUpperCase()}
       </span>
       {/* Corner Accent */}
-      <span className="absolute top-0 left-0 h-1 w-1 border-t border-l border-brand opacity-0 transition-opacity group-hover:opacity-100" />
+      <BlueprintCorners
+        className="opacity-0 transition-opacity group-hover:opacity-100"
+        cornerLength={4}
+        corners={['topLeft']}
+        strokeWidth={1}
+      />
     </Link>
 
     <div className="h-4 w-px bg-brand/20" />
@@ -94,7 +100,12 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
         {translations('privacy.title').toUpperCase()}
       </span>
       {/* Corner Accent */}
-      <span className="absolute right-0 bottom-0 h-1 w-1 border-r border-b border-brand opacity-0 transition-opacity group-hover:opacity-100" />
+      <BlueprintCorners
+        className="opacity-0 transition-opacity group-hover:opacity-100"
+        cornerLength={4}
+        corners={['bottomRight']}
+        strokeWidth={1}
+      />
     </Link>
   </nav>
 )

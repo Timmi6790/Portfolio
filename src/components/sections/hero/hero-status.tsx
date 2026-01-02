@@ -1,6 +1,7 @@
 import { type JSX } from 'react'
 
 import { BlueprintLabel } from '@/components/blueprint/blueprint-label'
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import { StatusIndicator } from '@/components/blueprint/status-indicator'
 import type { FCStrict } from '@/types/fc'
 
@@ -22,7 +23,13 @@ export const HeroStatus: FCStrict<HeroStatusProperties> = ({
       <BlueprintLabel as="span" className="text-[10px] font-bold text-brand">
         {LOCATION_LABEL}
       </BlueprintLabel>
-      <span className="text-sm font-bold text-blueprint-text">{location}</span>
+      <BlueprintText
+        as="span"
+        className="text-sm font-bold text-blueprint-text"
+        uppercase={true}
+      >
+        {location}
+      </BlueprintText>
     </div>
 
     <div className="mx-auto hidden h-8 w-8 shrink-0 rotate-45 items-center justify-center border border-brand bg-blueprint-bg sm:flex">
@@ -34,9 +41,13 @@ export const HeroStatus: FCStrict<HeroStatusProperties> = ({
       <BlueprintLabel as="span" className="text-[10px] font-bold text-brand">
         {MISSION_LABEL}
       </BlueprintLabel>
-      <span className="flex items-center justify-end gap-3 text-sm font-bold text-blueprint-text">
+      <BlueprintText
+        as="span"
+        className="flex items-center justify-end gap-3 text-sm font-bold text-blueprint-text"
+        uppercase={true}
+      >
         {tagline}
-      </span>
+      </BlueprintText>
     </div>
   </div>
 )

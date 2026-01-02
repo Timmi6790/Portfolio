@@ -23,7 +23,7 @@ export const LanguageSwitcher: FCStrict = (): JSX.Element => {
 
   return (
     <BlueprintTechButton
-      className="fixed top-[var(--app-padding)] right-[var(--app-padding)]"
+      className="fixed top-[var(--app-padding)] right-[var(--app-padding)] text-xs"
       onClick={switchLanguage}
     >
       <Globe className="mr-2 h-3 w-3" />

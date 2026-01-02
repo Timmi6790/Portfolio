@@ -25,7 +25,7 @@ export const BlueprintLegalLayout: FCWithRequiredChildren<
       id="legal-page"
       overlay={
         <BlueprintTechButton
-          className="fixed top-[var(--app-padding)] left-[var(--app-padding)]"
+          className="fixed top-[var(--app-padding)] left-[var(--app-padding)] text-xs"
           href="/"
         >
           <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />

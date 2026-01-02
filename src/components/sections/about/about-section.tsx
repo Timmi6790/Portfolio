@@ -5,6 +5,7 @@ import { type Locale } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
 
 import { BlueprintSection } from '@/components/blueprint/blueprint-section'
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import { AboutBio } from '@/components/sections/about/about-bio'
 import type { AsyncPageFC } from '@/types/fc'
 import type { LocalePageProperties, Translations } from '@/types/i18n'
@@ -28,9 +29,12 @@ async function getAboutTranslations(
   // Technical highlighting
   const summary: ReactNode = translations.rich('summary', {
     highlight: (chunks: ReactNode): JSX.Element => (
-      <span className="border-b border-brand/30 bg-brand/10 px-1 font-bold text-blueprint-text">
+      <BlueprintText
+        as="span"
+        className="border-b border-brand/30 bg-brand/10 px-1 font-sans font-bold text-blueprint-text"
+      >
         {chunks}
-      </span>
+      </BlueprintText>
     ),
   })
 

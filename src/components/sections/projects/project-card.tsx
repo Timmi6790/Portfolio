@@ -4,6 +4,7 @@ import { Folder, GitFork, Star } from 'lucide-react'
 
 import { BlueprintCard } from '@/components/blueprint/blueprint-card'
 import { BlueprintIcon } from '@/components/blueprint/blueprint-icon'
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import type { FCStrict } from '@/types/fc'
 
 interface ProjectCardProperties {
@@ -17,6 +18,67 @@ interface ProjectCardProperties {
   readonly url: string
   readonly viewProject: string
 }
+
+interface ProjectCardFooterProperties {
+  readonly language: string
+  readonly stats: {
+    readonly forks: number
+    readonly stars: number
+  }
+  readonly url: string
+  readonly viewProject: string
+}
+
+const ProjectCardFooter: FCStrict<ProjectCardFooterProperties> = ({
+  language,
+  stats,
+  url,
+  viewProject,
+}: ProjectCardFooterProperties): JSX.Element => (
+  <div className="mt-auto flex items-center justify-between border-t border-brand/30 pt-4">
+    <div className="flex items-center gap-4">
+      <BlueprintText
+        as="span"
+        className="flex items-center gap-1 text-xs"
+        uppercase={true}
+        variant="brand"
+      >
+        <div className="h-2 w-2 rounded-full bg-brand opacity-70" />
+        {language}
+      </BlueprintText>
+      <BlueprintText
+        as="span"
+        className="flex items-center gap-1 text-xs"
+        uppercase={true}
+        variant="brand"
+      >
+        <Star className="h-3 w-3" />
+        {stats.stars}
+      </BlueprintText>
+      <BlueprintText
+        as="span"
+        className="flex items-center gap-1 text-xs"
+        uppercase={true}
+        variant="brand"
+      >
+        <GitFork className="h-3 w-3" />
+        {stats.forks}
+      </BlueprintText>
+    </div>
+
+    <BlueprintText
+      as="a"
+      className="text-xs decoration-brand underline-offset-4 transition-colors hover:text-blueprint-text hover:underline"
+      href={url}
+      rel="noreferrer"
+      target="_blank"
+      uppercase={true}
+      variant="brand"
+    >
+      {viewProject} {'->'}
+    </BlueprintText>
+  </div>
+)
 
 export const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
   description,
@@ -36,43 +98,32 @@ export const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
           <BlueprintIcon icon={Folder} />
-          <h3 className="font-mono text-lg font-bold tracking-tight text-blueprint-text">
+          <BlueprintText
+            as="h3"
+            className="text-lg font-bold tracking-tight text-blueprint-text"
+            uppercase={true}
+          >
             {name}
-          </h3>
+          </BlueprintText>
         </div>
       </div>
 
       {/* Description */}
-      <p className="mb-6 line-clamp-3 flex-grow font-mono text-xs leading-relaxed text-blueprint-muted">
+      <BlueprintText
+        as="p"
+        className="mb-6 line-clamp-3 flex-grow text-xs leading-relaxed tracking-normal normal-case"
+        variant="muted"
+      >
         {description}
-      </p>
+      </BlueprintText>
 
       {/* Footer / Stats */}
-      <div className="mt-auto flex items-center justify-between border-t border-brand/30 pt-4 font-mono text-xs text-brand/80 uppercase">
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1">
-            <div className="h-2 w-2 rounded-full bg-brand opacity-70" />
-            {language}
-          </span>
-          <span className="flex items-center gap-1">
-            <Star className="h-3 w-3" />
-            {stats.stars}
-          </span>
-          <span className="flex items-center gap-1">
-            <GitFork className="h-3 w-3" />
-            {stats.forks}
-          </span>
-        </div>
-
-        <a
-          className="decoration-brand underline-offset-4 transition-colors hover:text-blueprint-text hover:underline"
-          href={url}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {viewProject} {'->'}
-        </a>
-      </div>
+      <ProjectCardFooter
+        language={language}
+        stats={stats}
+        url={url}
+        viewProject={viewProject}
+      />
     </div>
   </BlueprintCard>
 )

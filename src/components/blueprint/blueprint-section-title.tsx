@@ -39,7 +39,9 @@ export const BlueprintSectionTitle: FCStrict<
     {/* Title Block */}
     <div className="flex flex-col items-center gap-2">
       {Boolean(greeting) && (
-        <BlueprintSubheading>{greeting}</BlueprintSubheading>
+        <BlueprintSubheading className="text-xl md:text-2xl">
+          {greeting}
+        </BlueprintSubheading>
       )}
       <BlueprintHeading as={headingAs}>{title.toUpperCase()}</BlueprintHeading>
       <div className="my-4 h-px w-32 bg-gradient-to-r from-transparent via-brand to-transparent" />

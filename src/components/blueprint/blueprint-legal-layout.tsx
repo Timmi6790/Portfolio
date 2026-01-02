@@ -5,8 +5,7 @@ import { ArrowLeft } from 'lucide-react'
 import { BlueprintContainer } from '@/components/blueprint/blueprint-container'
 import { BlueprintCorners } from '@/components/blueprint/blueprint-decoration'
 import { BlueprintSectionTitle } from '@/components/blueprint/blueprint-section-title'
-import { Button } from '@/components/ui/button'
-import { Link } from '@/i18n/routing'
+import { BlueprintTechButton } from '@/components/blueprint/blueprint-tech-button'
 import type { FCWithRequiredChildren, WithRequiredChildren } from '@/types/fc'
 
 const END_MARKER: string = '// END_OF_FILE'
@@ -25,19 +24,13 @@ export const BlueprintLegalLayout: FCWithRequiredChildren<
       className="min-h-screen"
       id="legal-page"
       overlay={
-        <Button
-          asChild={true}
-          className="clip-path-polygon group fixed top-[var(--app-padding)] left-[var(--app-padding)] z-50 rounded-none border border-brand/30 bg-blueprint-bg/80 px-4 py-2 font-mono text-xs font-bold tracking-widest text-brand uppercase backdrop-blur-sm transition-all hover:border-brand hover:bg-brand/10 hover:text-blueprint-text"
-          size="sm"
-          variant="ghost"
+        <BlueprintTechButton
+          className="fixed top-[var(--app-padding)] left-[var(--app-padding)]"
+          href="/"
         >
-          <Link className="flex items-center gap-2" href="/">
-            {/* Technical Corner Accents */}
-            <BlueprintCorners variant="bracket" />
-            <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
-            {RETURN_TEXT}
-          </Link>
-        </Button>
+          <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
+          {RETURN_TEXT}
+        </BlueprintTechButton>
       }
     >
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center pt-20 pb-12">

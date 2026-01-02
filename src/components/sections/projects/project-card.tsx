@@ -3,6 +3,7 @@ import { type JSX } from 'react'
 import { Folder, GitFork, Star } from 'lucide-react'
 
 import { BlueprintCard } from '@/components/blueprint/blueprint-card'
+import { BlueprintIcon } from '@/components/blueprint/blueprint-icon'
 import type { FCStrict } from '@/types/fc'
 
 interface ProjectCardProperties {
@@ -34,7 +35,7 @@ export const BlueprintProjectCard: FCStrict<ProjectCardProperties> = ({
       {/* Header */}
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <Folder className="h-5 w-5 text-brand" />
+          <BlueprintIcon icon={Folder} />
           <h3 className="font-mono text-lg font-bold tracking-tight text-blueprint-text">
             {name}
           </h3>

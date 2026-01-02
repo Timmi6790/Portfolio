@@ -1,6 +1,7 @@
 import { type JSX } from 'react'
 
 import { BlueprintLabel } from '@/components/blueprint/blueprint-label'
+import { StatusIndicator } from '@/components/blueprint/status-indicator'
 import type { FCStrict } from '@/types/fc'
 
 const LOCATION_LABEL: string = 'LOCATION_VECTOR'
@@ -24,9 +25,8 @@ export const HeroStatus: FCStrict<HeroStatusProperties> = ({
       <span className="text-sm font-bold text-blueprint-text">{location}</span>
     </div>
 
-    {/* Decorative Hex - Centered in Middle Column */}
     <div className="mx-auto hidden h-8 w-8 shrink-0 rotate-45 items-center justify-center border border-brand bg-blueprint-bg sm:flex">
-      <div className="h-3 w-3 animate-pulse bg-brand shadow-[0_0_8px_#60A5FA]" />
+      <StatusIndicator className="h-3 w-3 bg-brand shadow-[0_0_8px_#60A5FA]" />
     </div>
 
     {/* Detail Block B - Aligned to Start (Left) of Right Column */}

@@ -9,6 +9,23 @@ vi.mock('lucide-react', () => ({
   Star: () => <div data-testid="star-icon">Star</div>,
 }))
 
+// Mock BlueprintIcon
+vi.mock('@/components/blueprint/blueprint-icon', () => ({
+  BlueprintIcon: ({ icon: Icon }: any) => (
+    <div data-testid="blueprint-icon">
+      <Icon />
+    </div>
+  ),
+}))
+
+// Mock BlueprintCorners
+vi.mock('@/components/blueprint/blueprint-decoration', () => ({
+  BlueprintCorners: () => <div data-testid="blueprint-corners" />,
+  BlueprintSideDecoration: () => (
+    <div data-testid="blueprint-side-decoration" />
+  ),
+}))
+
 describe('BlueprintProjectCard', () => {
   const mockProps = {
     description: 'A cool project',
@@ -38,6 +55,12 @@ describe('BlueprintProjectCard', () => {
     expect(screen.getByText('5')).toBeDefined() // Forks
     expect(screen.getByTestId('star-icon')).toBeDefined()
     expect(screen.getByTestId('fork-icon')).toBeDefined()
+  })
+
+  it('uses BlueprintIcon for project folder', () => {
+    render(<BlueprintProjectCard {...mockProps} />)
+    expect(screen.getByTestId('blueprint-icon')).toBeDefined()
+    expect(screen.getByTestId('folder-icon')).toBeDefined()
   })
 
   it('renders link with correct href', () => {

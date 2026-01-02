@@ -15,6 +15,12 @@ vi.mock('../tech-radar-tooltip', () => ({
   default: () => <div data-testid="radar-tooltip" />,
 }))
 
+vi.mock('@/components/blueprint/status-indicator', () => ({
+  StatusIndicator: ({ className }: any) => (
+    <div data-testid="status-indicator" className={className} />
+  ),
+}))
+
 const mockSkills = {
   languages: [
     { name: 'TypeScript', confidence: 0.9 },
@@ -82,5 +88,11 @@ describe('TechRadar', () => {
 
     const circles = container.querySelectorAll('circle')
     expect(circles.length).toBeGreaterThan(0)
+  })
+
+  it('renders status indicator', async () => {
+    const Component = await TechRadar({ locale: 'en', ...mockSkills })
+    render(Component)
+    expect(screen.getByTestId('status-indicator')).toBeDefined()
   })
 })

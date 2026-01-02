@@ -4,6 +4,7 @@ import { type JSX } from 'react'
 
 import { getTranslations } from 'next-intl/server'
 
+import { StatusIndicator } from '@/components/blueprint/status-indicator'
 import { PerformanceMonitor } from '@/components/features/dev-tools/performance-monitor'
 import { GridPattern } from '@/components/ui/grid-pattern'
 import { siteConfig } from '@/data/config'
@@ -29,7 +30,7 @@ const SystemStatus: FCStrict<SystemStatusProperties> = ({
   revision,
 }: SystemStatusProperties): JSX.Element => (
   <div className="inline-flex items-center gap-2">
-    <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
+    <StatusIndicator className="h-1.5 w-1.5 bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
     <span className="font-mono text-[10px] text-brand-readable">
       {SYSTEM_PREFIX}
       {revision}

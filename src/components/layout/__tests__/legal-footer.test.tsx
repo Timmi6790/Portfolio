@@ -24,6 +24,12 @@ vi.mock('@/environment', () => ({
   },
 }))
 
+vi.mock('@/components/blueprint/status-indicator', () => ({
+  StatusIndicator: ({ className }: any) => (
+    <div data-testid="status-indicator" className={className} />
+  ),
+}))
+
 describe('LegalFooter', () => {
   it('renders footer', async () => {
     const Component = await LegalFooter({ locale: 'en' })
@@ -53,5 +59,6 @@ describe('LegalFooter', () => {
 
     expect(screen.getByText(/ALL_RIGHTS_RESERVED/i)).toBeDefined()
     expect(screen.getByText(/vabc1234/i)).toBeDefined()
+    expect(screen.getByTestId('status-indicator')).toBeDefined()
   })
 })

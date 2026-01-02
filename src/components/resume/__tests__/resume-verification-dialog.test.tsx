@@ -21,6 +21,15 @@ vi.mock('lucide-react', () => ({
   XIcon: () => <div data-testid="close" />,
 }))
 
+// Mock BlueprintIcon
+vi.mock('@/components/blueprint/blueprint-icon', () => ({
+  BlueprintIcon: ({ icon: Icon }: any) => (
+    <div data-testid="blueprint-icon">
+      <Icon />
+    </div>
+  ),
+}))
+
 // Mock clipboard API
 const mockWriteText = vi.fn()
 Object.defineProperty(navigator, 'clipboard', {
@@ -54,6 +63,10 @@ describe('ResumeVerificationDialog', () => {
     expect(
       screen.getByRole('textbox', { name: 'fingerprintLabel' })
     ).toHaveValue(defaultProps.fingerprint)
+
+    // Check BlueprintIcon usage
+    expect(screen.getByTestId('blueprint-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('shield-check')).toBeInTheDocument()
   })
 
   it('copies fingerprint to clipboard', async () => {

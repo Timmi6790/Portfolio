@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 
 import { Check, Copy, Download, ShieldCheck } from 'lucide-react'
 
+import { BlueprintIcon } from '@/components/blueprint/blueprint-icon'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -96,7 +97,7 @@ export const ResumeVerificationDialog: FCWithRequiredChildren<
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5 text-brand" />
+            <BlueprintIcon icon={ShieldCheck} />
             {translate('title')}
           </DialogTitle>
           <DialogDescription>{translate('description')}</DialogDescription>

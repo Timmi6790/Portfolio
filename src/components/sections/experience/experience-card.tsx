@@ -53,7 +53,7 @@ export const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
   const nodeLabel: string = `EXPERIENCE_NODE_${String(index + 1).padStart(2, '0')}`
 
   return (
-    <div className="relative pl-8 md:pl-16">
+    <div className="relative pl-0 md:pl-16">
       {/* Horizontal Connector Trace (Sleek) */}
       <div className="absolute top-[3.5rem] left-0 hidden h-px w-8 bg-linear-to-r from-brand/60 to-brand/20 md:block md:w-16">
         {/* Subtle glow */}
@@ -72,7 +72,7 @@ export const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
             </h3>
             <div className="font-mono text-sm text-brand">{company}</div>
           </div>
-          <div className="flex flex-col gap-1 font-mono text-xs tracking-widest text-brand/70 uppercase md:items-end">
+          <div className="flex flex-col gap-1 font-mono text-xs tracking-widest text-brand-readable uppercase md:items-end">
             <div className="flex items-center gap-2">
               <Calendar className="h-3 w-3" /> {duration}
             </div>

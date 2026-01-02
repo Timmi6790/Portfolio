@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { TechRadarTooltip } from '../tech-radar-tooltip'
+import TechRadarTooltip from '../tech-radar-tooltip'
 import { TechRadarBlips } from '../tech-radar-blips'
 import * as HoverContextModule from '../hover-context' // Import the module to spy on it
 

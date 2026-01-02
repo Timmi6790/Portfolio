@@ -85,7 +85,7 @@ const CommandDialog: FCWithChildren<CommandDialogProperties> = ({
         <div className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-brand" />
         <div className="absolute right-0 bottom-0 h-2 w-2 border-r-2 border-b-2 border-brand" />
 
-        <Command className="**:data-[slot=command-input-wrapper]:h-14 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-brand/70 [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-14 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+        <Command className="**:data-[slot=command-input-wrapper]:h-14 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-brand-readable [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-14 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
         </Command>
       </DialogContent>
@@ -136,7 +136,7 @@ const CommandEmpty: FCWithChildren<CommandEmptyProperties> = (
 ): JSX.Element => {
   return (
     <CommandPrimitive.Empty
-      className="py-6 text-center text-sm text-brand/60"
+      className="py-6 text-center text-sm text-brand-readable"
       data-slot="command-empty"
       {...properties}
     />
@@ -150,7 +150,7 @@ const CommandGroup: FCWithChildren<CommandGroupProperties> = ({
   return (
     <CommandPrimitive.Group
       className={cn(
-        'overflow-hidden p-1 text-blueprint-text [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-brand/70',
+        'overflow-hidden p-1 text-blueprint-text [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-brand-readable',
         className
       )}
       data-slot="command-group"
@@ -179,7 +179,7 @@ const CommandItem: FCWithChildren<CommandItemProperties> = ({
   return (
     <CommandPrimitive.Item
       className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[selected=true]:bg-brand/10 data-[selected=true]:text-brand [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-brand/70 data-[selected=true]:[&_svg:not([class*='text-'])]:text-brand",
+        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[selected=true]:bg-brand/10 data-[selected=true]:text-brand [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-brand-readable data-[selected=true]:[&_svg:not([class*='text-'])]:text-brand",
         className
       )}
       data-slot="command-item"

@@ -40,7 +40,7 @@ const Loading: PageFC = (): JSX.Element => {
             {LOADING_ELLIPSIS}
           </h1>
           <div className="h-px w-32 bg-gradient-to-r from-transparent via-brand/50 to-transparent" />
-          <span className="font-mono text-[10px] tracking-[0.2em] text-brand/60 uppercase">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-brand-readable uppercase">
             {SYSTEM_INIT_TEXT}
           </span>
         </div>

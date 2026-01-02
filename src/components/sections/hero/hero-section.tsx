@@ -47,7 +47,7 @@ export const HeroSection: AsyncPageFC<HeroSectionProperties> = async ({
       >
         <div className="relative z-10 container flex min-h-[60vh] flex-col items-center justify-center">
           {/* Floating tech markings */}
-          <BlueprintLabel className="writing-vertical-rl absolute top-20 left-20 font-mono text-[10px] text-brand/40 select-none">
+          <BlueprintLabel className="writing-vertical-rl absolute top-20 left-20 hidden font-mono text-[10px] text-brand/40 select-none md:block">
             {GRID_REF}
           </BlueprintLabel>
           <DynamicCommandPaletteHint />

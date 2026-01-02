@@ -13,8 +13,10 @@ export interface TechRadarInteractiveProperties {
 /**
  * Client-side component for rendering interactive blips inside SVG
  */
-export const TechRadarInteractive: React.FC<TechRadarInteractiveProperties> = ({
+const TechRadarInteractive: React.FC<TechRadarInteractiveProperties> = ({
   blips,
 }: TechRadarInteractiveProperties): JSX.Element => {
   return <TechRadarBlips blips={blips} />
 }
+
+export default TechRadarInteractive

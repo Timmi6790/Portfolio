@@ -9,10 +9,27 @@ import type * as ScrollSnapModule from '@/components/features/scroll-snap/scroll
 
 export const DynamicCommandPaletteHint: ComponentType = dynamic(
   async (): Promise<ComponentType> =>
-    import('@/components/features/command-palette/command-palette-hint').then(
-      (module_: typeof CommandPaletteModule): ComponentType =>
-        module_.CommandPaletteHint
-    ),
+    // Delay loading by 500ms to prioritize LCP
+    new Promise((resolve: (value: ComponentType) => void): void => {
+      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+        requestIdleCallback((): void => {
+          void import('@/components/features/command-palette/command-palette-hint').then(
+            (module_: typeof CommandPaletteModule): void => {
+              resolve(module_.CommandPaletteHint)
+            }
+          )
+        })
+      } else {
+        // Fallback to setTimeout
+        setTimeout((): void => {
+          void import('@/components/features/command-palette/command-palette-hint').then(
+            (module_: typeof CommandPaletteModule): void => {
+              resolve(module_.CommandPaletteHint)
+            }
+          )
+        }, 500)
+      }
+    }),
   { ssr: false }
 )
 

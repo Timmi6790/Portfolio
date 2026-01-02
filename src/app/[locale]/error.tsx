@@ -43,7 +43,7 @@ const ErrorActions: FCStrict<ErrorActionsProperties> = ({
       </button>
 
       <button
-        className="flex items-center gap-2 border border-brand/30 bg-transparent px-6 py-3 font-mono text-xs tracking-wider text-brand/70 uppercase transition-all hover:border-brand hover:bg-brand/5 hover:text-blueprint-text"
+        className="flex items-center gap-2 border border-brand/30 bg-transparent px-6 py-3 font-mono text-xs tracking-wider text-brand-readable uppercase transition-all hover:border-brand hover:bg-brand/5 hover:text-blueprint-text"
         onClick={goHome}
       >
         <Home className="h-4 w-4" />

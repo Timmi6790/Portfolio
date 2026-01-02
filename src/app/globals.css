@@ -57,6 +57,8 @@
   --sidebar-accent-foreground: #bfdbfe;
   --sidebar-border: #1e293b;
   --sidebar-ring: #3b82f6;
+  /* High contrast brand color for accessibility (min 4.5:1 on dark) */
+  --brand-readable: color-mix(in srgb, var(--brand), white 15%);
 
   --color-brand: var(--brand);
   --color-blueprint-bg: var(--blueprint-bg);
@@ -75,6 +77,9 @@
 
   /* computed shadow variables */
   --shadow-2xs: var(--shadow-2xs);
+
+  /* Layout Variables */
+  --app-padding: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -133,6 +138,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --color-brand: var(--brand);
+  --color-brand-readable: var(--brand-readable);
   --color-blueprint-bg: var(--blueprint-bg);
   --color-blueprint-card-bg: var(--blueprint-card-bg);
   --color-blueprint-text: var(--blueprint-text);
@@ -161,7 +167,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
-    text-rendering: optimizeLegibility;
   }
 
   /* Custom scrollbar for webkit browsers */
@@ -185,5 +190,11 @@
   .cv-section {
     content-visibility: auto;
     contain-intrinsic-size: auto 900px;
+  }
+
+  /* Performance: Hint browser to composite animated elements */
+  .animate-pulse,
+  .animate-bounce {
+    will-change: transform, opacity;
   }
 }

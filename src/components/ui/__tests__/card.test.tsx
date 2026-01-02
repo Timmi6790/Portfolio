@@ -40,8 +40,9 @@ describe('Card', () => {
 
   it('applies decoration classes', () => {
     render(<Card decorative={CARD_DECORATIONS.PATTERN}>Pattern Card</Card>)
-    const card = screen.getByText('Pattern Card').closest('div')
-    expect(card).toHaveClass('before:absolute', 'before:bg-[size:16px_16px]')
+    const svg = document.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+    expect(svg).toHaveClass('opacity-50')
   })
 
   it('applies hover effect classes', () => {

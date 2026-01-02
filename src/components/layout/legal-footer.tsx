@@ -5,6 +5,7 @@ import { type JSX } from 'react'
 import { getTranslations } from 'next-intl/server'
 
 import { PerformanceMonitor } from '@/components/features/dev-tools/performance-monitor'
+import { GridPattern } from '@/components/ui/grid-pattern'
 import { siteConfig } from '@/data/config'
 import { environment } from '@/environment'
 import { Link } from '@/i18n/routing'
@@ -29,7 +30,7 @@ const SystemStatus: FCStrict<SystemStatusProperties> = ({
 }: SystemStatusProperties): JSX.Element => (
   <div className="inline-flex items-center gap-2">
     <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
-    <span className="font-mono text-[10px] text-brand/60">
+    <span className="font-mono text-[10px] text-brand-readable">
       {SYSTEM_PREFIX}
       {revision}
     </span>
@@ -74,7 +75,7 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
       href="/imprint"
       prefetch={false}
     >
-      <span className="font-mono text-xs tracking-wider text-brand/70 transition-colors group-hover:text-brand">
+      <span className="font-mono text-xs tracking-wider text-brand-readable transition-colors group-hover:text-brand">
         {translations('imprint.title').toUpperCase()}
       </span>
       {/* Corner Accent */}
@@ -88,7 +89,7 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
       href="/privacy"
       prefetch={false}
     >
-      <span className="font-mono text-xs tracking-wider text-brand/70 transition-colors group-hover:text-brand">
+      <span className="font-mono text-xs tracking-wider text-brand-readable transition-colors group-hover:text-brand">
         {translations('privacy.title').toUpperCase()}
       </span>
       {/* Corner Accent */}
@@ -111,13 +112,7 @@ export const LegalFooter: AsyncPageFC<LegalFooterProperties> = async ({
   return (
     <footer className="relative w-full overflow-hidden border-t border-brand/30 bg-blueprint-bg text-blueprint-text">
       {/* Blueprint Grid Background */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(#60A5FA 1px, transparent 1px), linear-gradient(90deg, #60A5FA 1px, transparent 1px)`,
-          backgroundSize: '40px 40px',
-        }}
-      />
+      <GridPattern className="stroke-brand/100 opacity-[0.03]" size={40} />
 
       {/* Technical Top Border Details */}
       <div className="absolute top-0 left-0 h-px w-full bg-brand/30">

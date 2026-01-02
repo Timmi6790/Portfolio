@@ -135,7 +135,7 @@ export interface TechRadarTooltipProperties {
   readonly blips: readonly Blip[]
 }
 
-export const TechRadarTooltip: React.FC<TechRadarTooltipProperties> = ({
+const TechRadarTooltip: React.FC<TechRadarTooltipProperties> = ({
   blips,
 }: TechRadarTooltipProperties): JSX.Element | null => {
   const { hoveredBlip }: HoverContextValue = useHover()
@@ -188,3 +188,5 @@ export const TechRadarTooltip: React.FC<TechRadarTooltipProperties> = ({
     </div>
   )
 }
+
+export default TechRadarTooltip

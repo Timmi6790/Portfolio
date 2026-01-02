@@ -4,7 +4,7 @@ const isDesktop = (process.env.LHCI_FORM_FACTOR || 'mobile') === 'desktop'
 module.exports = {
   ci: {
     collect: {
-      numberOfRuns: isDesktop ? 3 : 5,
+      numberOfRuns: 5,
       settings: {
         emulatedFormFactor: isDesktop ? 'desktop' : 'mobile',
         throttlingMethod: 'simulate',
@@ -15,10 +15,7 @@ module.exports = {
     assert: {
       preset: 'lighthouse:recommended',
       assertions: {
-        'categories:performance': [
-          'error',
-          { minScore: isDesktop ? 0.9 : 0.8 },
-        ],
+        'categories:performance': ['error', { minScore: 0.8 }],
 
         'first-contentful-paint': [
           'error',

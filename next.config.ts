@@ -72,6 +72,9 @@ const nextConfig: NextConfig = {
       'class-variance-authority',
       'clsx',
       'tailwind-merge',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-label',
+      'cmdk',
     ],
     sri: {
       algorithm: 'sha512',

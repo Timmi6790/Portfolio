@@ -8,11 +8,11 @@ vi.mock('next-intl/server', () => ({
 }))
 
 vi.mock('../tech-radar-interactive', () => ({
-  TechRadarInteractive: () => <div data-testid="interactive-components" />,
+  default: () => <div data-testid="interactive-components" />,
 }))
 
 vi.mock('../tech-radar-tooltip', () => ({
-  TechRadarTooltip: () => <div data-testid="radar-tooltip" />,
+  default: () => <div data-testid="radar-tooltip" />,
 }))
 
 const mockSkills = {
@@ -72,8 +72,8 @@ describe('TechRadar', () => {
     const Component = await TechRadar({ locale: 'en', ...mockSkills })
     render(Component)
 
-    expect(screen.getByTestId('interactive-components')).toBeDefined()
-    expect(screen.getByTestId('radar-tooltip')).toBeDefined()
+    expect(await screen.findByTestId('interactive-components')).toBeDefined()
+    expect(await screen.findByTestId('radar-tooltip')).toBeDefined()
   })
 
   it('renders background circles', async () => {

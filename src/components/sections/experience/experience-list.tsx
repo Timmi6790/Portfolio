@@ -33,10 +33,6 @@ export const ExperienceList: FCStrict<ExperienceListProperties> = ({
               <div className="absolute inset-0 animate-pulse rounded-full bg-brand/30" />
             </div>
 
-            {/* Mobile Timeline (Simplified) */}
-            <div className="absolute top-0 bottom-0 left-0 w-px bg-brand/30 md:hidden" />
-            <div className="absolute top-8 -left-[4px] z-10 h-2.5 w-2.5 rounded-full border border-brand bg-blueprint-bg md:hidden" />
-
             {/* Card with Horizontal Connector */}
             <ExperienceCard {...experience} />
           </div>

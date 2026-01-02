@@ -2,6 +2,7 @@ import type { ComponentProps, JSX } from 'react'
 
 import { cva } from 'class-variance-authority'
 
+import { GridPattern } from '@/components/ui/grid-pattern'
 import { cn } from '@/lib/utilities'
 import type { FCWithChildren } from '@/types/fc'
 
@@ -10,7 +11,7 @@ import type { FCWithChildren } from '@/types/fc'
 // eslint-disable-next-line @typescript-eslint/typedef
 const cardVariants = cva(
   // Base styles applied to all cards
-  'flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm',
+  'flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm [contain:layout_style]',
   {
     defaultVariants: {
       decorative: 'none',
@@ -23,8 +24,7 @@ const cardVariants = cva(
         none: '',
         overlay:
           'group relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary/10 before:via-transparent before:to-primary/5 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100',
-        pattern:
-          'relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(to_right,var(--pattern-grid)_1px,transparent_1px),linear-gradient(to_bottom,var(--pattern-grid)_1px,transparent_1px)] before:bg-[size:16px_16px] before:opacity-50',
+        pattern: 'relative overflow-hidden',
         premium:
           'group relative overflow-hidden before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary/10 before:via-transparent before:to-primary/5 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100 after:absolute after:top-0 after:left-0 after:h-1 after:w-0 after:bg-gradient-to-r after:from-primary after:to-primary/40 after:transition-all after:duration-500 group-hover:after:w-full',
         topBar:
@@ -118,6 +118,9 @@ const Card: FCWithChildren<CardProperties> = ({
       data-slot="card"
       {...properties}
     >
+      {decorative === 'pattern' && (
+        <GridPattern className="opacity-50" size={16} />
+      )}
       {children}
     </div>
   )

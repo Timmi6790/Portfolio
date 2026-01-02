@@ -1,11 +1,14 @@
+/* eslint-disable max-lines */
 'use client'
 
 import React, {
   type CSSProperties,
   type Dispatch,
   type JSX,
+  memo,
   type RefObject,
   type SetStateAction,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -171,7 +174,6 @@ interface TooltipReferenceProperties {
 const Tooltip: FCStrict<TooltipReferenceProperties> = ({
   data,
 }: TooltipReferenceProperties): JSX.Element => {
-  // Cast to internal interfaces to avoid 'any'
   const translate: Translations<'projects.contributions'> = useTranslations(
     'projects.contributions'
   )
@@ -203,112 +205,21 @@ const Tooltip: FCStrict<TooltipReferenceProperties> = ({
   )
 }
 
-// Extracted renderGrid function
-const renderGrid: (
-  weeks: readonly WeekModel[],
-  onHover: (data: HoveredData | null, event: React.MouseEvent) => void
-) => JSX.Element = (
-  weeks: readonly WeekModel[],
-  onHover: (data: HoveredData | null, event: React.MouseEvent) => void
-): JSX.Element => (
-  <g
-    transform={`translate(${String(CONSTANTS.WEEK_LABEL_WIDTH)}, ${String(CONSTANTS.LABEL_PADDING_Y)})`}
-  >
-    {weeks.map(
-      (week: WeekModel, wIndex: number): JSX.Element => (
-        <g
-          key={week.key}
-          transform={`translate(${String(
-            wIndex * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP)
-          )}, 0)`}
-        >
-          {week.days.map(
-            (
-              day: ContributionPoint | null,
-              dIndex: number
-            ): JSX.Element | null => {
-              if (day) {
-                const yPos: number =
-                  dIndex * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP)
-                const levelClass: string | undefined =
-                  styles[`level${String(day.level)}`]
-
-                return (
-                  <rect
-                    className={`${styles['rect'] ?? ''} ${levelClass ?? ''}`}
-                    height={CONSTANTS.CELL_SIZE}
-                    key={day.date}
-                    rx={CONSTANTS.CELL_BORDER_RADIUS}
-                    ry={CONSTANTS.CELL_BORDER_RADIUS}
-                    width={CONSTANTS.CELL_SIZE}
-                    x={0}
-                    y={yPos}
-                    onMouseEnter={(event: React.MouseEvent): void => {
-                      onHover(
-                        {
-                          count: day.count,
-                          date: day.date,
-                          xCoord: 0,
-                          yCoord: 0,
-                        },
-                        event
-                      )
-                    }}
-                  />
-                )
-              }
-              return null
-            }
-          )}
-        </g>
-      )
-    )}
-  </g>
-)
+interface ContributionBoardProperties extends ContributionGraphSvgProperties {
+  readonly onHover: (data: HoveredData | null, event: React.MouseEvent) => void
+  readonly onLeave: () => void
+}
 
 // eslint-disable-next-line max-lines-per-function
-export const ContributionGraphSvg: FCStrict<ContributionGraphSvgProperties> = ({
+const ContributionBoardComponent: FCStrict<ContributionBoardProperties> = ({
   dayFive,
   dayOne,
   dayThree,
   locale,
+  onHover,
+  onLeave,
   weeks,
-}: ContributionGraphSvgProperties): JSX.Element => {
-  const containerReference: RefObject<HTMLDivElement | null> =
-    useRef<HTMLDivElement>(null)
-  const [hoveredData, setHoveredData]: [
-    HoveredData | null,
-    Dispatch<SetStateAction<HoveredData | null>>,
-  ] = useState<HoveredData | null>(null)
-  const [portalContainer, setPortalContainer]: [
-    HTMLElement | null,
-    Dispatch<SetStateAction<HTMLElement | null>>,
-  ] = useState<HTMLElement | null>(null)
-
-  useEffect((): void => {
-    setPortalContainer(document.body)
-  }, [])
-
-  const handleHover: (
-    data: HoveredData | null,
-    event?: React.MouseEvent
-  ) => void = (data: HoveredData | null, event?: React.MouseEvent): void => {
-    if (data && event) {
-      const rect: DOMRect = event.currentTarget.getBoundingClientRect()
-      // Calculate center of the cell in viewport coordinates
-      const viewportX: number = rect.left + rect.width / 2
-      const viewportY: number = rect.top
-
-      setHoveredData({
-        ...data,
-        xCoord: viewportX,
-        yCoord: viewportY,
-      })
-    } else {
-      setHoveredData(null)
-    }
-  }
-
+}: ContributionBoardProperties): JSX.Element => {
   // 1. Calculate Dimensions
   const weekCount: number = weeks.length
   // 7 days + gaps
@@ -327,62 +238,166 @@ export const ContributionGraphSvg: FCStrict<ContributionGraphSvgProperties> = ({
   // 2. Render content
   const monthLabels: JSX.Element[] = renderMonthLabels(weeks, locale)
 
-  // 3. Main Render
+  return (
+    <svg
+      className="h-auto w-full overflow-visible"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ contain: 'content', willChange: 'transform' }}
+      viewBox={viewBox}
+      onMouseLeave={onLeave}
+    >
+      {/* Month Labels */}
+      {...monthLabels}
+
+      {/* Weekday Labels (Mon, Wed, Fri) */}
+      <text
+        className="fill-muted-foreground text-[10px]"
+        dominantBaseline="middle"
+        x={0}
+        y={
+          CONSTANTS.LABEL_PADDING_Y +
+          (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP) +
+          CONSTANTS.CELL_SIZE / 2
+        }
+      >
+        {dayOne}
+      </text>
+      <text
+        className="fill-muted-foreground text-[10px]"
+        dominantBaseline="middle"
+        x={0}
+        y={
+          CONSTANTS.LABEL_PADDING_Y +
+          3 * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP) +
+          CONSTANTS.CELL_SIZE / 2
+        }
+      >
+        {dayThree}
+      </text>
+      <text
+        className="fill-muted-foreground text-[10px]"
+        dominantBaseline="middle"
+        x={0}
+        y={
+          CONSTANTS.LABEL_PADDING_Y +
+          5 * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP) +
+          CONSTANTS.CELL_SIZE / 2
+        }
+      >
+        {dayFive}
+      </text>
+
+      {/* Grid */}
+      <g
+        transform={`translate(${String(CONSTANTS.WEEK_LABEL_WIDTH)}, ${String(CONSTANTS.LABEL_PADDING_Y)})`}
+      >
+        {weeks.map(
+          (week: WeekModel, wIndex: number): JSX.Element => (
+            <g
+              key={week.key}
+              transform={`translate(${String(
+                wIndex * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP)
+              )}, 0)`}
+            >
+              {week.days.map(
+                (
+                  day: ContributionPoint | null,
+                  dIndex: number
+                ): JSX.Element | null => {
+                  if (day) {
+                    const yPos: number =
+                      dIndex * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP)
+                    const levelClass: string | undefined =
+                      styles[`level${String(day.level)}`]
+
+                    return (
+                      <rect
+                        className={`${styles['rect'] ?? ''} ${levelClass ?? ''}`}
+                        height={CONSTANTS.CELL_SIZE}
+                        key={day.date}
+                        rx={CONSTANTS.CELL_BORDER_RADIUS}
+                        ry={CONSTANTS.CELL_BORDER_RADIUS}
+                        width={CONSTANTS.CELL_SIZE}
+                        x={0}
+                        y={yPos}
+                        onMouseEnter={(event: React.MouseEvent): void => {
+                          onHover(
+                            {
+                              count: day.count,
+                              date: day.date,
+                              xCoord: 0,
+                              yCoord: 0,
+                            },
+                            event
+                          )
+                        }}
+                      />
+                    )
+                  }
+                  return null
+                }
+              )}
+            </g>
+          )
+        )}
+      </g>
+    </svg>
+  )
+}
+
+// eslint-disable-next-line @typescript-eslint/typedef
+const ContributionBoard = memo(ContributionBoardComponent)
+
+export const ContributionGraphSvg: FCStrict<ContributionGraphSvgProperties> = (
+  properties: ContributionGraphSvgProperties
+): JSX.Element => {
+  const containerReference: RefObject<HTMLDivElement | null> =
+    useRef<HTMLDivElement>(null)
+  const [hoveredData, setHoveredData]: [
+    HoveredData | null,
+    Dispatch<SetStateAction<HoveredData | null>>,
+  ] = useState<HoveredData | null>(null)
+  const [portalContainer, setPortalContainer]: [
+    HTMLElement | null,
+    Dispatch<SetStateAction<HTMLElement | null>>,
+  ] = useState<HTMLElement | null>(null)
+
+  useEffect((): void => {
+    setPortalContainer(document.body)
+  }, [])
+
+  const handleHover: (
+    data: HoveredData | null,
+    event: React.MouseEvent
+  ) => void = useCallback(
+    (data: HoveredData | null, event: React.MouseEvent): void => {
+      if (data) {
+        const rect: DOMRect = event.currentTarget.getBoundingClientRect()
+        const viewportX: number = rect.left + rect.width / 2
+        const viewportY: number = rect.top
+
+        setHoveredData({
+          ...data,
+          xCoord: viewportX,
+          yCoord: viewportY,
+        })
+      }
+    },
+    []
+  )
+
+  const handleLeave: () => void = useCallback((): void => {
+    setHoveredData(null)
+  }, [])
+
   return (
     <div className={styles['graphWrapper'] ?? ''} ref={containerReference}>
       <div className={styles['graphContainer'] ?? ''}>
-        <svg
-          className="h-auto w-full overflow-visible"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox={viewBox}
-          onMouseLeave={(): void => {
-            setHoveredData(null)
-          }}
-        >
-          {/* Month Labels */}
-          {...monthLabels}
-
-          {/* Weekday Labels (Mon, Wed, Fri) */}
-          <text
-            className="fill-muted-foreground text-[10px]"
-            dominantBaseline="middle"
-            x={0}
-            y={
-              CONSTANTS.LABEL_PADDING_Y +
-              (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP) +
-              CONSTANTS.CELL_SIZE / 2
-            }
-          >
-            {dayOne}
-          </text>
-          <text
-            className="fill-muted-foreground text-[10px]"
-            dominantBaseline="middle"
-            x={0}
-            y={
-              CONSTANTS.LABEL_PADDING_Y +
-              3 * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP) +
-              CONSTANTS.CELL_SIZE / 2
-            }
-          >
-            {dayThree}
-          </text>
-          <text
-            className="fill-muted-foreground text-[10px]"
-            dominantBaseline="middle"
-            x={0}
-            y={
-              CONSTANTS.LABEL_PADDING_Y +
-              5 * (CONSTANTS.CELL_SIZE + CONSTANTS.CELL_GAP) +
-              CONSTANTS.CELL_SIZE / 2
-            }
-          >
-            {dayFive}
-          </text>
-
-          {/* Grid */}
-          {renderGrid(weeks, handleHover)}
-        </svg>
+        <ContributionBoard
+          {...properties}
+          onHover={handleHover}
+          onLeave={handleLeave}
+        />
 
         {/* Portal Tooltip Overlay - delegated to sub-component */}
         {hoveredData &&

@@ -1,15 +1,20 @@
-import { type JSX } from 'react'
+import { type JSX, memo, type MemoExoticComponent } from 'react'
 
 import type { FCStrict } from '@/types/fc'
 
 const TRANSMISSION_END: string = ':: END_OF_TRANSMISSION ::'
 
-export const TransmissionEnd: FCStrict = (): JSX.Element => (
+const TransmissionEndComponent: FCStrict = (): JSX.Element => (
   <div className="mt-16 text-center opacity-60 select-none">
     <svg
       aria-hidden="true"
       className="inline-block h-10 w-64 overflow-visible"
       role="img"
+      style={{ contain: 'strict' }}
+      {...{
+        height: 40,
+        width: 256,
+      }}
     >
       <rect
         className="fill-blueprint-bg stroke-brand/30"
@@ -31,4 +36,8 @@ export const TransmissionEnd: FCStrict = (): JSX.Element => (
       </text>
     </svg>
   </div>
+)
+
+export const TransmissionEnd: MemoExoticComponent<FCStrict> = memo(
+  TransmissionEndComponent
 )

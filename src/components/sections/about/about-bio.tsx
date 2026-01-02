@@ -1,6 +1,7 @@
 import { type JSX, type ReactNode } from 'react'
 
 import { BlueprintCard } from '@/components/blueprint/blueprint-card'
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import { CompetencyBadge } from '@/components/sections/about/competency-badge'
 import type { FCStrict } from '@/types/fc'
 import type { Translations } from '@/types/i18n'
@@ -25,9 +26,13 @@ export const AboutBio: FCStrict<AboutBioProperties> = ({
 
       {/* Competencies */}
       <div className="flex flex-col items-center gap-6">
-        <h3 className="border border-brand/30 bg-brand/5 px-4 py-1 font-mono text-xs font-bold tracking-[0.2em] text-blueprint-text uppercase">
+        <BlueprintText
+          as="h3"
+          className="border border-brand/30 bg-brand/5 px-4 py-1 text-xs font-bold text-blueprint-text"
+          uppercase={true}
+        >
           {translations('competenciesLabel')}
-        </h3>
+        </BlueprintText>
 
         <div className="flex max-w-3xl flex-wrap justify-center gap-2">
           {competencies.map(

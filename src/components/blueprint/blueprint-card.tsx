@@ -2,6 +2,10 @@ import { type JSX } from 'react'
 
 import type { FCWithRequiredChildren, WithRequiredChildren } from '@/types/fc'
 
+import {
+  BlueprintCorners,
+  BlueprintSideDecoration,
+} from './blueprint-decoration'
 import { BlueprintLabel } from './blueprint-label'
 import { BlueprintCardBackground } from './blueprint-primitives'
 import { MeasurementLine } from './measurement-line'
@@ -25,14 +29,11 @@ export const BlueprintCard: FCWithRequiredChildren<BlueprintCardProperties> = ({
     <BlueprintCardBackground />
 
     {/* Corner Markers */}
-    <div className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-brand" />
-    <div className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-brand" />
-    <div className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-brand" />
-    <div className="absolute right-0 bottom-0 h-3 w-3 border-r-2 border-b-2 border-brand" />
+    <BlueprintCorners className="p-0" />
 
     {/* Side Decoration */}
-    <div className="absolute top-12 left-0 h-16 w-1 bg-brand/40" />
-    <div className="absolute right-0 bottom-12 h-16 w-1 bg-brand/40" />
+    <BlueprintSideDecoration className="top-12 left-0" />
+    <BlueprintSideDecoration className="right-0 bottom-12" />
 
     {Boolean(label) && (
       <BlueprintLabel className="absolute -top-3 left-[var(--app-padding)] border border-brand/30 bg-blueprint-bg px-2 font-mono text-xs tracking-widest text-brand uppercase">

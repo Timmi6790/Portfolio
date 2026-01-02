@@ -20,6 +20,15 @@ vi.mock('lucide-react', () => ({
   Globe: () => <div data-testid="globe-icon">Globe</div>,
 }))
 
+// Mock BlueprintTechButton
+vi.mock('@/components/blueprint/blueprint-tech-button', () => ({
+  BlueprintTechButton: ({ children, onClick }: any) => (
+    <button data-testid="blueprint-tech-button" onClick={onClick}>
+      {children}
+    </button>
+  ),
+}))
+
 describe('LanguageSwitcher', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -33,6 +42,11 @@ describe('LanguageSwitcher', () => {
   it('renders globe icon', () => {
     render(<LanguageSwitcher />)
     expect(screen.getByTestId('globe-icon')).toBeDefined()
+  })
+
+  it('uses BlueprintTechButton', () => {
+    render(<LanguageSwitcher />)
+    expect(screen.getByTestId('blueprint-tech-button')).toBeInTheDocument()
   })
 
   it('switches language on click', () => {

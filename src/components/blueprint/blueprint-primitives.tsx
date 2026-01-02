@@ -1,5 +1,7 @@
 import { type ElementType, type JSX } from 'react'
 
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
+import { cn } from '@/lib/utilities'
 import type {
   FCStrict,
   FCWithRequiredChildren,
@@ -72,11 +74,14 @@ interface BlueprintSubheadingProperties extends WithRequiredChildren {
 export const BlueprintSubheading: FCWithRequiredChildren<
   BlueprintSubheadingProperties
 > = ({ children, className }: BlueprintSubheadingProperties): JSX.Element => (
-  <span
-    className={`mb-2 block font-mono text-xl tracking-[0.3em] text-brand uppercase sm:text-2xl ${className ?? ''}`}
+  <BlueprintText
+    as="h3"
+    className={cn('text-sm font-bold text-brand', className)}
+    uppercase={true}
+    variant="brand"
   >
     {children}
-  </span>
+  </BlueprintText>
 )
 
 interface BlueprintLabelTextProperties extends WithRequiredChildren {
@@ -86,11 +91,13 @@ interface BlueprintLabelTextProperties extends WithRequiredChildren {
 export const BlueprintLabelText: FCWithRequiredChildren<
   BlueprintLabelTextProperties
 > = ({ children, className }: BlueprintLabelTextProperties): JSX.Element => (
-  <span
-    className={`font-mono text-sm tracking-widest text-blueprint-muted uppercase ${className ?? ''}`}
+  <BlueprintText
+    as="span"
+    className={cn('text-xs font-bold text-blueprint-text', className)}
+    uppercase={true}
   >
     {children}
-  </span>
+  </BlueprintText>
 )
 
 interface BlueprintTinyLabelProperties extends WithRequiredChildren {
@@ -100,10 +107,12 @@ interface BlueprintTinyLabelProperties extends WithRequiredChildren {
 export const BlueprintTinyLabel: FCWithRequiredChildren<
   BlueprintTinyLabelProperties
 > = ({ children, className }: BlueprintTinyLabelProperties): JSX.Element => (
-  <div
-    aria-hidden="true"
-    className={`font-mono text-[10px] tracking-[0.2em] text-brand uppercase ${className ?? ''}`}
+  <BlueprintText
+    as="span"
+    className={cn('text-[10px] text-blueprint-muted', className)}
+    uppercase={true}
+    variant="muted"
   >
     {children}
-  </div>
+  </BlueprintText>
 )

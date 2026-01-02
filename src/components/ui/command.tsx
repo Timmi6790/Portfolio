@@ -3,6 +3,7 @@ import type { ComponentProps, JSX } from 'react'
 import { Command as CommandPrimitive } from 'cmdk'
 import { SearchIcon } from 'lucide-react'
 
+import { BlueprintCorners } from '@/components/blueprint/blueprint-decoration'
 import {
   Dialog,
   DialogContent,
@@ -80,10 +81,7 @@ const CommandDialog: FCWithChildren<CommandDialogProperties> = ({
         showCloseButton={showCloseButton}
       >
         {/* Decorative Corner Markers */}
-        <div className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-brand" />
-        <div className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-brand" />
-        <div className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-brand" />
-        <div className="absolute right-0 bottom-0 h-2 w-2 border-r-2 border-b-2 border-brand" />
+        <BlueprintCorners />
 
         <Command className="**:data-[slot=command-input-wrapper]:h-14 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-brand-readable [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-14 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}

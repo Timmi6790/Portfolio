@@ -6,6 +6,7 @@ import type { Locale } from 'next-intl'
 
 import { getTranslations } from 'next-intl/server'
 
+import { StatusIndicator } from '@/components/blueprint/status-indicator'
 import {
   QUADRANT_ANGLES,
   RADAR_CONFIG,
@@ -107,7 +108,7 @@ export const TechRadar: AsyncPageFC<TechRadarProperties> = async ({
 
         {/* Center hub */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+          <StatusIndicator className="h-2 w-2 bg-primary" />
         </div>
       </div>
     </HoverProvider>

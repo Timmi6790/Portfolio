@@ -6,6 +6,7 @@ import type {
   WithRequiredChildren,
 } from '@/types/fc'
 
+import { BlueprintCorners } from './blueprint-decoration'
 import { BlueprintGrid } from './blueprint-grid'
 
 interface BlueprintFrameProperties extends WithRequiredChildren {
@@ -43,7 +44,6 @@ const BlueprintRuler: MemoExoticComponent<FCStrict<BlueprintRulerProperties>> =
 
 export const BlueprintFrame: FCWithRequiredChildren<
   BlueprintFrameProperties
-  // eslint-disable-next-line max-lines-per-function
 > = ({
   children,
   className,
@@ -58,47 +58,7 @@ export const BlueprintFrame: FCWithRequiredChildren<
       style={{ contain: 'layout style', willChange: 'transform' }}
     >
       {/* Optimized: Single SVG for all 4 corners */}
-      <svg
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full overflow-visible"
-      >
-        {/* Top-left */}
-        <line
-          className="stroke-brand"
-          strokeWidth="1"
-          x1="0"
-          x2="8"
-          y1="0"
-          y2="0"
-        />
-        {/* Top-right */}
-        <line
-          className="stroke-brand"
-          strokeWidth="1"
-          x1="100%"
-          x2="calc(100% - 8px)"
-          y1="0"
-          y2="0"
-        />
-        {/* Bottom-left */}
-        <line
-          className="stroke-brand"
-          strokeWidth="1"
-          x1="0"
-          x2="8"
-          y1="100%"
-          y2="100%"
-        />
-        {/* Bottom-right */}
-        <line
-          className="stroke-brand"
-          strokeWidth="1"
-          x1="100%"
-          x2="calc(100% - 8px)"
-          y1="100%"
-          y2="100%"
-        />
-      </svg>
+      <BlueprintCorners strokeWidth={1} variant="lines" />
 
       <BlueprintRuler className="top-0 left-10" />
       <BlueprintRuler className="right-10 bottom-0 rotate-180" />

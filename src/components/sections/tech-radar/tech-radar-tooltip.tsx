@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react'
 
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import { getSkillIcon } from '@/components/sections/skills/skill-icons'
 import type { Blip } from '@/types/tech-radar'
 
@@ -84,7 +85,7 @@ interface UseTooltipPositionParameters {
   readonly ref: RefObject<HTMLElement | null>
 }
 
-const useTooltipPosition: (
+export const useTooltipPosition: (
   properties: UseTooltipPositionParameters
 ) => TooltipCoordinates | null = ({
   blip,
@@ -179,12 +180,16 @@ const TechRadarTooltip: React.FC<TechRadarTooltipProperties> = ({
       }}
     >
       <Icon className="mb-1 h-4 w-4 text-primary" />
-      <span className="font-semibold text-popover-foreground">
+      <BlueprintText className="font-semibold text-popover-foreground">
         {hoveredBlipData.name}
-      </span>
-      <span className="text-xs text-muted-foreground capitalize">
+      </BlueprintText>
+      <BlueprintText
+        className="text-xs text-muted-foreground"
+        uppercase={true}
+        variant="muted"
+      >
         {hoveredBlipData.quadrant}
-      </span>
+      </BlueprintText>
     </div>
   )
 }

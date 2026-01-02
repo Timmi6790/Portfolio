@@ -4,6 +4,8 @@ import { type JSX } from 'react'
 
 import { getTranslations } from 'next-intl/server'
 
+import { BlueprintCorners } from '@/components/blueprint/blueprint-decoration'
+import { StatusIndicator } from '@/components/blueprint/status-indicator'
 import { PerformanceMonitor } from '@/components/features/dev-tools/performance-monitor'
 import { GridPattern } from '@/components/ui/grid-pattern'
 import { siteConfig } from '@/data/config'
@@ -29,7 +31,7 @@ const SystemStatus: FCStrict<SystemStatusProperties> = ({
   revision,
 }: SystemStatusProperties): JSX.Element => (
   <div className="inline-flex items-center gap-2">
-    <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
+    <StatusIndicator className="h-1.5 w-1.5 bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
     <span className="font-mono text-[10px] text-brand-readable">
       {SYSTEM_PREFIX}
       {revision}
@@ -79,7 +81,12 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
         {translations('imprint.title').toUpperCase()}
       </span>
       {/* Corner Accent */}
-      <span className="absolute top-0 left-0 h-1 w-1 border-t border-l border-brand opacity-0 transition-opacity group-hover:opacity-100" />
+      <BlueprintCorners
+        className="opacity-0 transition-opacity group-hover:opacity-100"
+        cornerLength={4}
+        corners={['topLeft']}
+        strokeWidth={1}
+      />
     </Link>
 
     <div className="h-4 w-px bg-brand/20" />
@@ -93,7 +100,12 @@ const FooterNavigation: FCStrict<FooterNavigationProperties> = ({
         {translations('privacy.title').toUpperCase()}
       </span>
       {/* Corner Accent */}
-      <span className="absolute right-0 bottom-0 h-1 w-1 border-r border-b border-brand opacity-0 transition-opacity group-hover:opacity-100" />
+      <BlueprintCorners
+        className="opacity-0 transition-opacity group-hover:opacity-100"
+        cornerLength={4}
+        corners={['bottomRight']}
+        strokeWidth={1}
+      />
     </Link>
   </nav>
 )

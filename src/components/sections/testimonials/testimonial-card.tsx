@@ -1,15 +1,16 @@
+/* eslint-disable max-lines-per-function */
 import { type JSX } from 'react'
 
 import { Quote } from 'lucide-react'
 import Image from 'next/image'
 
+import { BlueprintText } from '@/components/blueprint/blueprint-text'
 import {
   Card,
   CARD_DECORATIONS,
   CARD_HOVERS,
   CARD_VARIANTS,
 } from '@/components/ui/card'
-import { Heading } from '@/components/ui/heading'
 import type { FCStrict } from '@/types/fc'
 
 export interface TestimonialItem {
@@ -42,9 +43,13 @@ export const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
       </div>
 
       <figure className="relative z-10 flex h-full flex-col">
-        <blockquote className="mb-6 flex-1 leading-relaxed text-muted-foreground italic">
+        <BlueprintText
+          as="blockquote"
+          className="mb-6 flex-1 font-sans leading-relaxed tracking-normal normal-case italic"
+          variant="muted"
+        >
           {`“${item.quote}”`}
-        </blockquote>
+        </BlueprintText>
 
         <figcaption className="flex items-center gap-4">
           <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary/20 transition-all group-hover:ring-primary/50">
@@ -57,11 +62,25 @@ export const TestimonialCard: FCStrict<TestimonialCardProperties> = ({
             />
           </div>
           <div>
-            <Heading as="h3" className="text-lg font-bold">
+            <BlueprintText
+              as="h3"
+              className="text-lg font-bold"
+              uppercase={true}
+              variant="brand"
+            >
               {item.name}
-            </Heading>
-            <p className="text-sm text-foreground">{item.role}</p>
-            <p className="text-sm text-foreground">{item.company}</p>
+            </BlueprintText>
+            <BlueprintText
+              as="p"
+              className="text-sm"
+              uppercase={true}
+              variant="default"
+            >
+              {item.role}
+            </BlueprintText>
+            <BlueprintText as="p" className="text-sm" variant="muted">
+              {item.company}
+            </BlueprintText>
           </div>
         </figcaption>
       </figure>

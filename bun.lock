@@ -51,7 +51,7 @@
         "@vitejs/plugin-react": "5.1.2",
         "@vitest/coverage-v8": "4.0.16",
         "babel-plugin-react-compiler": "1.0.0",
-        "dependency-cruiser": "17.3.5",
+        "dependency-cruiser": "17.3.6",
         "eslint": "9.39.2",
         "eslint-import-resolver-typescript": "4.4.4",
         "eslint-plugin-import": "2.32.0",
@@ -1437,7 +1437,7 @@
 
     "depd": ["depd@2.0.0", "", {}, "sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw=="],
 
-    "dependency-cruiser": ["dependency-cruiser@17.3.5", "", { "dependencies": { "acorn": "8.15.0", "acorn-jsx": "5.3.2", "acorn-jsx-walk": "2.0.0", "acorn-loose": "8.5.2", "acorn-walk": "8.3.4", "commander": "14.0.2", "enhanced-resolve": "5.18.4", "ignore": "7.0.5", "interpret": "3.1.1", "is-installed-globally": "1.0.0", "json5": "2.2.3", "memoize": "10.2.0", "picomatch": "4.0.3", "prompts": "2.4.2", "rechoir": "0.8.0", "safe-regex": "2.1.1", "semver": "7.7.3", "tsconfig-paths-webpack-plugin": "4.2.0", "watskeburt": "5.0.0" }, "bin": { "dependency-cruiser": "bin/dependency-cruise.mjs", "dependency-cruise": "bin/dependency-cruise.mjs", "depcruise": "bin/dependency-cruise.mjs", "depcruise-baseline": "bin/depcruise-baseline.mjs", "depcruise-fmt": "bin/depcruise-fmt.mjs", "depcruise-wrap-stream-in-html": "bin/wrap-stream-in-html.mjs" } }, "sha512-eAkyhfopzKfwes9ZZcuTPtrAJrdSRX1ASnRbgCN5Dvf69XshhGspRDUGhO6ugqKZyyVfEm8IF81UFWMTEzGXCw=="],
+    "dependency-cruiser": ["dependency-cruiser@17.3.6", "", { "dependencies": { "acorn": "8.15.0", "acorn-jsx": "5.3.2", "acorn-jsx-walk": "2.0.0", "acorn-loose": "8.5.2", "acorn-walk": "8.3.4", "commander": "14.0.2", "enhanced-resolve": "5.18.4", "ignore": "7.0.5", "interpret": "3.1.1", "is-installed-globally": "1.0.0", "json5": "2.2.3", "picomatch": "4.0.3", "prompts": "2.4.2", "rechoir": "0.8.0", "safe-regex": "2.1.1", "semver": "7.7.3", "tsconfig-paths-webpack-plugin": "4.2.0", "watskeburt": "5.0.0" }, "bin": { "dependency-cruiser": "bin/dependency-cruise.mjs", "dependency-cruise": "bin/dependency-cruise.mjs", "depcruise": "bin/dependency-cruise.mjs", "depcruise-baseline": "bin/depcruise-baseline.mjs", "depcruise-fmt": "bin/depcruise-fmt.mjs", "depcruise-wrap-stream-in-html": "bin/wrap-stream-in-html.mjs" } }, "sha512-k0mXZaNvR2hZC0Dh2y4NGZZGqWLM6AbxQXmKL0T2m+KRE19nK5gAhm+PdV7f1L+AhdwwSOnebok7C6P27l2xXA=="],
 
     "dequal": ["dequal@2.0.3", "", {}, "sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA=="],
 
@@ -2154,8 +2154,6 @@
     "media-engine": ["media-engine@1.0.3", "", {}, "sha512-aa5tG6sDoK+k70B9iEX1NeyfT8ObCKhNDs6lJVpwF6r8vhUfuKMslIcirq6HIUYuuUYLefcEQOn9bSBOvawtwg=="],
 
     "media-typer": ["media-typer@1.1.0", "", {}, "sha512-aisnrDP4GNe06UcKFnV5bfMNPBUw4jsLGaWwWfnH3v02GnBuXX2MCVn5RbrWo0j3pczUilYblq7fQ7Nw2t5XKw=="],
-
-    "memoize": ["memoize@10.2.0", "", { "dependencies": { "mimic-function": "^5.0.1" } }, "sha512-DeC6b7QBrZsRs3Y02A6A7lQyzFbsQbqgjI6UW0GigGWV+u1s25TycMr0XHZE4cJce7rY/vyw2ctMQqfDkIhUEA=="],
 
     "meow": ["meow@12.1.1", "", {}, "sha512-BhXM0Au22RwUneMPwSCnyhTOizdWoIEPU9sp0Aqa1PnDMR5Wv2FGXYDjuzJEIX+Eo2Rb8xuYe5jrnm5QowQFkw=="],
 

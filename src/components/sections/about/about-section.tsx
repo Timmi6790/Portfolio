@@ -31,7 +31,7 @@ async function getAboutTranslations(
     highlight: (chunks: ReactNode): JSX.Element => (
       <BlueprintText
         as="span"
-        className="border-b border-brand/30 bg-brand/10 px-1 font-sans font-bold text-blueprint-text"
+        className="border-b border-brand/30 bg-brand/10 px-1 font-sans text-xs font-bold text-blueprint-text md:text-sm"
       >
         {chunks}
       </BlueprintText>

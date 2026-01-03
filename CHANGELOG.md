@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.7](https://github.com/TimSchoenle/Portfolio/compare/v1.12.6...v1.12.7) (2026-01-03)
+
+
+### Bug Fixes
+
+* **About:** reduce highlight text size ([#362](https://github.com/TimSchoenle/Portfolio/issues/362)) ([94f8885](https://github.com/TimSchoenle/Portfolio/commit/94f88856dc52b177ffdb86a2d09bbb3b8fdd3563))
+
 ## [1.12.6](https://github.com/TimSchoenle/Portfolio/compare/v1.12.5...v1.12.6) (2026-01-03)
 
 

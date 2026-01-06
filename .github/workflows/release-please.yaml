@@ -13,7 +13,6 @@ permissions:
 env:
   DOCKER_REPO: timschoenle/portfolio
   HELM_REPO: TimSchoenle/helm-charts
-  HELM_CHECKOUT_PATH: helm-charts
   CHART_PATH: charts/portfolio
 
 jobs:
@@ -138,9 +137,11 @@ jobs:
           fetch-depth: 0
 
       - name: Update Helm Chart
-        uses: ./.github/actions/update-helm-chart
+        uses: TimSchoenle/actions/actions/helm/update-chart-version@actions-helm-update-chart-version-v1.2.4
         with:
           app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
           private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          helm-repo: ${{ env.HELM_REPO }}
+          chart-path: ${{ env.CHART_PATH }}
           new-tag: ${{ needs.release-please.outputs.tag_name }}
           image-digest: ${{ needs.publish-docker.outputs.image_digest }}

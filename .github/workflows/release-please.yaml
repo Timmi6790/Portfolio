@@ -137,7 +137,7 @@ jobs:
           fetch-depth: 0
 
       - name: Update Helm Chart
-        uses: TimSchoenle/actions/actions/helm/update-chart-version@actions-helm-update-chart-version-v1.2.4
+        uses: TimSchoenle/actions/actions/helm/update-chart-version@72da5085e39f063c7c620812443681217d0a2ef9 # actions-helm-update-chart-version-v1.2.4
         with:
           app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
           private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}

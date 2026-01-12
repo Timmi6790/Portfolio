@@ -2,12 +2,14 @@ name: Cleanup Caches
 on:
   delete:
 
+permissions: {}
+
 jobs:
   cleanup-caches:
     runs-on: ubuntu-latest
     permissions:
-      actions: write
-      contents: read
+      actions: write # to delete caches
+      contents: read # to list cache keys
     if: github.event.ref_type == 'branch'
     steps:
       - name: Harden Runner

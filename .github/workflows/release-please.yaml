@@ -5,10 +5,7 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+permissions: {}
 
 env:
   DOCKER_REPO: timschoenle/portfolio
@@ -21,6 +18,10 @@ jobs:
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
+    permissions:
+      contents: write # to create release tags/commits
+      issues: write # to comment on release issues
+      pull-requests: write # to create release PRs
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
@@ -47,7 +48,7 @@ jobs:
     outputs:
       image_digest: ${{ steps.build-and-push.outputs.digest }}
     permissions:
-      contents: read
+      contents: read # to fetch code
       id-token: write # Needed for Cosign keyless signing
     steps:
       - name: Harden Runner
@@ -120,6 +121,8 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # to fetch code
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
@@ -145,6 +148,8 @@ jobs:
     needs: [release-please, publish-docker]
     if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # to fetch code
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0

@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.12.9](https://github.com/TimSchoenle/Portfolio/compare/v1.12.8...v1.12.9) (2026-01-12)
+
+
+### Bug Fixes
+
+* update help chart update action to 1.4.1 ([#388](https://github.com/TimSchoenle/Portfolio/issues/388)) ([1953f54](https://github.com/TimSchoenle/Portfolio/commit/1953f54fd6f92f96a3bc8b655fb6671907db7cba))
+
+## [1.12.8](https://github.com/TimSchoenle/Portfolio/compare/v1.12.7...v1.12.8) (2026-01-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @serwist/next to v9.5.0 ([#378](https://github.com/TimSchoenle/Portfolio/issues/378)) ([39f410e](https://github.com/TimSchoenle/Portfolio/commit/39f410e4562cf061800d2c35be4bb8d0298b901b))
+* **deps:** update dependency zod to v4.3.5 ([#373](https://github.com/TimSchoenle/Portfolio/issues/373)) ([867d4a5](https://github.com/TimSchoenle/Portfolio/commit/867d4a50787424bb6993ac0cf8bc7a55b6245575))
+
 ## [1.12.7](https://github.com/TimSchoenle/Portfolio/compare/v1.12.6...v1.12.7) (2026-01-03)
 
 

@@ -531,43 +531,6 @@ jobs:
         env:
           LHCI_FORM_FACTOR: ${{ matrix.formFactor }}
 
-  # Bundle analysis using shared build
-  bundle-analysis:
-    name: Bundle Analysis
-    runs-on: ubuntu-latest
-    needs: [changes, install-deps, build]
-    if: needs.changes.outputs.bundle == 'true' && needs.changes.outputs.source == 'true'
-    permissions:
-      contents: read # to fetch code
-      pull-requests: write # to comment on PRs
-      issues: write # fallback for PR comments
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
-        with:
-          egress-policy: audit
-
-      - name: Checkout repo
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-        with:
-          persist-credentials: false
-
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
-
-      - name: Build for analysis (Webpack)
-        run: bun run analyze
-
-      - name: Analyze bundle sizes
-        uses: transferwise/actions-next-bundle-analyzer@17e96a5dbd1c7a8684964325f160fdee38693929 # v2
-        with:
-          comment-strategy: 'skip-insignificant'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
   # Dockerfile linting
   dockerfile-lint:
     name: Dockerfile Lint
@@ -679,7 +642,7 @@ jobs:
   cleanup-artifacts:
     name: Cleanup Build Artifacts
     runs-on: ubuntu-latest
-    needs: [e2e, lighthouse, bundle-analysis]
+    needs: [e2e, lighthouse]
     if: always()
     permissions:
       actions: write # to delete artifacts

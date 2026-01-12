@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.9](https://github.com/TimSchoenle/Portfolio/compare/v1.12.8...v1.12.9) (2026-01-12)
+
+
+### Bug Fixes
+
+* update help chart update action to 1.4.1 ([#388](https://github.com/TimSchoenle/Portfolio/issues/388)) ([1953f54](https://github.com/TimSchoenle/Portfolio/commit/1953f54fd6f92f96a3bc8b655fb6671907db7cba))
+
 ## [1.12.8](https://github.com/TimSchoenle/Portfolio/compare/v1.12.7...v1.12.8) (2026-01-12)
 
 

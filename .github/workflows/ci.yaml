@@ -119,28 +119,9 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@b7a1c7ccf290d58743029c4f6903da283811b979 # v2
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-
-      - name: Check for existing node_modules cache
-        id: cache-check
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5
-        with:
-          path: node_modules
-          key: &cache_key bun-modules-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          lookup-only: true
-
-      - name: Install dependencies
-        if: steps.cache-check.outputs.cache-hit != 'true'
-        run: bun install --frozen-lockfile
-
-      - name: Save node_modules cache
-        if: steps.cache-check.outputs.cache-hit != 'true'
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5
-        with:
-          path: node_modules
-          key: *cache_key
 
   # Quality checks - run in parallel using cached dependencies
   lint:
@@ -158,12 +139,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run ESLint
         run: bun run lint --max-warnings=0
@@ -183,12 +162,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run Prettier
         run: bun run format:check
@@ -208,12 +185,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run TypeScript
         run: bun run type-check
@@ -233,12 +208,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run i18n check
         run: bun run i18n-check
@@ -258,12 +231,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run Knip
         run: bun run lint:deps
@@ -283,12 +254,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run Dependency Cruiser
         run: bun run dep-cruise
@@ -313,12 +282,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Run tests
         run: bun run test:ci
@@ -362,12 +329,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Restore Next.js cache
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
@@ -418,12 +383,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Restore build artifact
         uses: ./.github/actions/restore-build
@@ -485,12 +448,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup with cache
-        uses: ./.github/actions/setup-bun
+      - name: Setup Bun
+        uses: TimSchoenle/actions/actions/bun/setup-cached@5480c26f4f5c3d5f0c28ed90391410274a67d241 # actions-bun-setup-cached-v1.1.1
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          mode: 'cache'
-          cache-key: *cache_key
 
       - name: Restore build artifact
         uses: ./.github/actions/restore-build

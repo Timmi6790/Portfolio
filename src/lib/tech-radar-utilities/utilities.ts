@@ -23,3 +23,13 @@ export const seededRandom: (seed: number) => number = (
   const temporary: number = Math.sin(seed) * 10_000
   return temporary - Math.floor(temporary)
 }
+
+/**
+ * Normalize an angle to be within the range [-PI, PI]
+ * Handles arbitrarily large angles efficiently.
+ */
+export const normalizeAngle: (angle: number) => number = (
+  angle: number
+): number => {
+  return angle - 2 * Math.PI * Math.floor((angle + Math.PI) / (2 * Math.PI))
+}

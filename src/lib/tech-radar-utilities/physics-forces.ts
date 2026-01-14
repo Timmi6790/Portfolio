@@ -7,7 +7,7 @@ import type {
   MutableBlip,
 } from '@/types/tech-radar'
 
-import { seededRandom } from './utilities'
+import { normalizeAngle, seededRandom } from './utilities'
 
 /**
  * Calculate spring force pulling blip towards target radius
@@ -50,13 +50,7 @@ export const calculateWallRepulsion: (
     RADAR_CONFIG.physics.wallRepulsionStrength
 
   // Force from Start Wall
-  let diffStart: number = currentAngle - startAngle
-  while (diffStart <= -Math.PI) {
-    diffStart += Math.PI * 2
-  }
-  while (diffStart > Math.PI) {
-    diffStart -= Math.PI * 2
-  }
+  const diffStart: number = normalizeAngle(currentAngle - startAngle)
 
   if (Math.abs(diffStart) < 0.5) {
     const distance: number = Math.abs(currentRadius * Math.sin(diffStart))
@@ -66,13 +60,7 @@ export const calculateWallRepulsion: (
   }
 
   // Force from End Wall
-  let diffEnd: number = currentAngle - endAngle
-  while (diffEnd <= -Math.PI) {
-    diffEnd += Math.PI * 2
-  }
-  while (diffEnd > Math.PI) {
-    diffEnd -= Math.PI * 2
-  }
+  const diffEnd: number = normalizeAngle(currentAngle - endAngle)
 
   if (Math.abs(diffEnd) < 0.5) {
     const distance: number = Math.abs(currentRadius * Math.sin(diffEnd))

@@ -53,7 +53,7 @@ RUN --mount=type=cache,target=/app/.next/cache \
 
 
 
-FROM dhi.io/bun:1-alpine3.22@sha256:b069bc30faa0f26582be80117bfb19274538306d752883790f34f285527c3f23 AS runner
+FROM dhi.io/bun:1-alpine3.22@sha256:e43022f3a28136afa9fe9bbc1fb1e99d3c5734107a319eaaebdd3a20746e1d5b AS runner
 WORKDIR /app
 USER nonroot
 

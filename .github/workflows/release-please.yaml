@@ -174,7 +174,7 @@ jobs:
           persist-credentials: false
 
       - name: Update Helm Chart
-        uses: TimSchoenle/actions/actions/helm/update-chart-version@90ccd9ac02262e00d860a6438fd9cf3e709dc2dd # actions-helm-update-chart-version-v1.4.2
+        uses: TimSchoenle/actions/actions/helm/update-chart-version@3681e2577797f39f46a097f92ceafd8c594cf864 # actions-helm-update-chart-version-v1.4.3
         with:
           app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
           private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}

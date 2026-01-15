@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.12.10](https://github.com/TimSchoenle/Portfolio/compare/v1.12.9...v1.12.10) (2026-01-15)
+
+
+### Bug Fixes
+
+* **deps:** update nextjs monorepo to v16.1.2 ([#407](https://github.com/TimSchoenle/Portfolio/issues/407)) ([55c1f29](https://github.com/TimSchoenle/Portfolio/commit/55c1f2972205b44cd4ef72e9ada43550573fbfa6))
+
+
+### Tests
+
+* add fuzzy testing ([#406](https://github.com/TimSchoenle/Portfolio/issues/406)) ([341063c](https://github.com/TimSchoenle/Portfolio/commit/341063cdda9d51aae8034f5500dc7662a51e5923))
+* fix failing fuzzy test ([#410](https://github.com/TimSchoenle/Portfolio/issues/410)) ([6e79104](https://github.com/TimSchoenle/Portfolio/commit/6e79104a8bd027a7d2f287c8f8bdfd8c31140b8a))
+
+
+### Build System
+
+* add actions security scanner ([#370](https://github.com/TimSchoenle/Portfolio/issues/370)) ([9857d73](https://github.com/TimSchoenle/Portfolio/commit/9857d73fef71d43ef8a0ab0e602eca8616e0bbdd))
+* add auto release actions ([#390](https://github.com/TimSchoenle/Portfolio/issues/390)) ([68a1dfe](https://github.com/TimSchoenle/Portfolio/commit/68a1dfe3ff24a5210240b3d54224864b255fef15))
+* centralize bun cached setup ([#389](https://github.com/TimSchoenle/Portfolio/issues/389)) ([f244d3f](https://github.com/TimSchoenle/Portfolio/commit/f244d3f2e00eec7dc817aec1969c93231dd5743e))
+* fix conflicting workflow concurrency settings ([#404](https://github.com/TimSchoenle/Portfolio/issues/404)) ([7ac850a](https://github.com/TimSchoenle/Portfolio/commit/7ac850a2aaf05a829f599ac925b685b2d0337513))
+* improve release please config ([#397](https://github.com/TimSchoenle/Portfolio/issues/397)) ([f431327](https://github.com/TimSchoenle/Portfolio/commit/f431327f2bf073d88a1a7244d3abdcfc9ecfe882))
+* simplify renovate config ([#411](https://github.com/TimSchoenle/Portfolio/issues/411)) ([3f4fdc2](https://github.com/TimSchoenle/Portfolio/commit/3f4fdc23eb97d56b6c9f32018f269a196c7bd79f))
+
+
+### Miscellaneous
+
+* **deps:** pin dependency @fast-check/vitest to 0.2.4 ([#412](https://github.com/TimSchoenle/Portfolio/issues/412)) ([b951fd1](https://github.com/TimSchoenle/Portfolio/commit/b951fd1a8d3904de3546ecf7997cdaab027192ee))
+* **deps:** update ([#405](https://github.com/TimSchoenle/Portfolio/issues/405)) ([5f1435d](https://github.com/TimSchoenle/Portfolio/commit/5f1435d75ef231e7c528286064f36dd9c82ac79f))
+* **deps:** update commitlint monorepo to v20.3.1 ([#383](https://github.com/TimSchoenle/Portfolio/issues/383)) ([e62816b](https://github.com/TimSchoenle/Portfolio/commit/e62816b8708ed22f61552311b72eaa2df5b23579))
+* **deps:** update dependency @types/node to v25.0.6 ([#393](https://github.com/TimSchoenle/Portfolio/issues/393)) ([5d87d14](https://github.com/TimSchoenle/Portfolio/commit/5d87d14919aaf55f27d0d1f29484d8e217274348))
+* **deps:** update dependency @types/node to v25.0.8 ([#399](https://github.com/TimSchoenle/Portfolio/issues/399)) ([f8794e8](https://github.com/TimSchoenle/Portfolio/commit/f8794e8690c40d1d8552b7acd6a6ab539491db79))
+* **deps:** update dependency @types/react to v19.2.8 ([#394](https://github.com/TimSchoenle/Portfolio/issues/394)) ([9c16aa8](https://github.com/TimSchoenle/Portfolio/commit/9c16aa8eb520945e39ae6a6bb4d49a91ef1e9039))
+* **deps:** update dependency happy-dom to v20.3.0 ([#408](https://github.com/TimSchoenle/Portfolio/issues/408)) ([cc0936b](https://github.com/TimSchoenle/Portfolio/commit/cc0936b64867c8ef01746a77f6c1c82a1123bffa))
+* **deps:** update dependency knip to v5.81.0 ([#402](https://github.com/TimSchoenle/Portfolio/issues/402)) ([54146ac](https://github.com/TimSchoenle/Portfolio/commit/54146ac4eaa930e921a535f99536030b31073112))
+* **deps:** update dependency prettier to v3.8.0 ([#409](https://github.com/TimSchoenle/Portfolio/issues/409)) ([b96eebb](https://github.com/TimSchoenle/Portfolio/commit/b96eebb7ba882e0162a11adcfc81161ecb594fe3))
+* **deps:** update dependency typescript-eslint to v8.53.0 ([#403](https://github.com/TimSchoenle/Portfolio/issues/403)) ([ea855b2](https://github.com/TimSchoenle/Portfolio/commit/ea855b251d05c43be7fd687bc3c631bc46310a1e))
+* **deps:** update dependency vite-tsconfig-paths to v6.0.4 ([#395](https://github.com/TimSchoenle/Portfolio/issues/395)) ([e8b0af5](https://github.com/TimSchoenle/Portfolio/commit/e8b0af5748a4f7a64c6e7c7092e3607919f481a5))
+* **deps:** update dhi.io/bun:1-alpine3.22 docker digest to e43022f ([#391](https://github.com/TimSchoenle/Portfolio/issues/391)) ([ba062d4](https://github.com/TimSchoenle/Portfolio/commit/ba062d4df374daa8b3d2372f07b876eb2408b442))
+* **deps:** update dhi.io/bun:1-alpine3.22-dev docker digest to ae0d466 ([#392](https://github.com/TimSchoenle/Portfolio/issues/392)) ([08090de](https://github.com/TimSchoenle/Portfolio/commit/08090de329e82f7741a61ffc2e462e0608116123))
+* **deps:** update to vactions-helm-update-chart-version-v1.4.2 ([#396](https://github.com/TimSchoenle/Portfolio/issues/396)) ([f0ebad4](https://github.com/TimSchoenle/Portfolio/commit/f0ebad43124b04dcc5fd3aaf2c469546e332af55))
+* **deps:** update to vactions-helm-update-chart-version-v1.4.3 ([#400](https://github.com/TimSchoenle/Portfolio/issues/400)) ([14717ed](https://github.com/TimSchoenle/Portfolio/commit/14717ed8d8504f87182296f394808de2f7f94d79))
+* **deps:** update vitest monorepo to v4.0.17 ([#401](https://github.com/TimSchoenle/Portfolio/issues/401)) ([0edc3e4](https://github.com/TimSchoenle/Portfolio/commit/0edc3e42542416ee87636ffd454e8792fceed8cd))
+
 ## [1.12.9](https://github.com/TimSchoenle/Portfolio/compare/v1.12.8...v1.12.9) (2026-01-12)
 
 

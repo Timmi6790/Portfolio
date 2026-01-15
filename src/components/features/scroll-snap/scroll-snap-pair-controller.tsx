@@ -37,7 +37,7 @@ export interface ScrollSnapPairControllerProperties {
 
 /* ---------- internal types ---------- */
 
-interface ResolvedOptions {
+export interface ResolvedOptions {
   readonly minDelta: number
   readonly snapTolerance: number
   readonly topZone: number
@@ -50,7 +50,7 @@ interface ScrollSnapState {
   topElement: HTMLElement
 }
 
-interface GeometrySnapshot {
+export interface GeometrySnapshot {
   bottomRect: DOMRect
   bottomSectionTopY: number
   topRect: DOMRect
@@ -59,7 +59,9 @@ interface GeometrySnapshot {
 
 /* ---------- small helpers ---------- */
 
-function resolveOptions(options?: ScrollSnapPairOptions): ResolvedOptions {
+export function resolveOptions(
+  options?: ScrollSnapPairOptions
+): ResolvedOptions {
   const minDelta: number = options?.minDelta ?? 12
   const topZone: number = options?.topZone ?? 64
   const snapTolerance: number = options?.snapTolerance ?? 2
@@ -129,7 +131,7 @@ function startSmoothScroll(targetY: number, state: ScrollSnapState): void {
   window.scrollTo({ behavior: 'smooth', top: targetY })
 }
 
-function shouldSnapDown(
+export function shouldSnapDown(
   deltaY: number,
   snapshot: GeometrySnapshot,
   options: ResolvedOptions
@@ -148,7 +150,7 @@ function shouldSnapDown(
   return topNearTop && bottomBelowViewportTop
 }
 
-function shouldSnapUp(
+export function shouldSnapUp(
   deltaY: number,
   snapshot: GeometrySnapshot,
   options: ResolvedOptions

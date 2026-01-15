@@ -119,11 +119,24 @@ export const calculateBlipRepulsion: (
     const distance: number = Math.sqrt(distanceSquared)
 
     if (distance < minSeparation * 1.5) {
-      const forceMagnitude: number = repulsionStrength / (distanceSquared + 0.1)
+      // Avoid divide by zero
+      const safeDistanceSquared: number = Math.max(distanceSquared, 0.0001)
+      const forceMagnitude: number =
+        repulsionStrength / (safeDistanceSquared + 0.1)
       const cappedForce: number = Math.min(forceMagnitude, 5)
 
-      const normalizedX: number = deltaX / distance
-      const normalizedY: number = deltaY / distance
+      let normalizedX: number
+      let normalizedY: number
+
+      if (distance < 0.0001) {
+        // If blips are effectively on top of each other, push in a random deterministic direction
+        // or just use arbitrary direction (e.g. X-axis) to separate them
+        normalizedX = 1
+        normalizedY = 0
+      } else {
+        normalizedX = deltaX / distance
+        normalizedY = deltaY / distance
+      }
 
       forceX += normalizedX * cappedForce
       forceY += normalizedY * cappedForce

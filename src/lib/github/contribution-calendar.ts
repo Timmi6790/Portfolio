@@ -72,6 +72,10 @@ export const sundayOfWeekUTC: (date: Date) => Date = (date: Date): Date => {
   const utcDate: Date = new Date(
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
   )
+  // Fix for years 0-99 which Date.UTC interprets as 1900-1999
+  if (date.getUTCFullYear() < 100) {
+    utcDate.setUTCFullYear(date.getUTCFullYear())
+  }
   const day: number = utcDate.getUTCDay() // 0..6 (Sun..Sat)
   utcDate.setUTCDate(utcDate.getUTCDate() - day)
   return utcDate

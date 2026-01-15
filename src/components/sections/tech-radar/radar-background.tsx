@@ -10,15 +10,26 @@ interface RadarBackgroundProperties {
   readonly viewBox: RadarConfigType['viewBox']
 }
 
+export function calculateSweepPath(
+  radius: number,
+  angleDegrees: number
+): string {
+  const angle: number = (angleDegrees * Math.PI) / 180
+  const endX: number = Math.cos(angle) * radius
+  const endY: number = Math.sin(angle) * radius
+
+  return `M 0 0 L ${String(radius)} 0 A ${String(radius)} ${String(radius)} 0 0 1 ${String(endX)} ${String(endY)} Z`
+}
+
 export const RadarBackground: FCStrict<RadarBackgroundProperties> = ({
   animation,
   circles,
   viewBox,
 }: RadarBackgroundProperties): JSX.Element => {
-  const sweepRadius: number = animation.sonarSweepRadius
-  const sweepAngle: number = (animation.sonarSweepAngle * Math.PI) / 180
-  const sweepEndX: number = Math.cos(sweepAngle) * sweepRadius
-  const sweepEndY: number = Math.sin(sweepAngle) * sweepRadius
+  const sweepPath: string = calculateSweepPath(
+    animation.sonarSweepRadius,
+    animation.sonarSweepAngle
+  )
 
   return (
     <>
@@ -44,10 +55,7 @@ export const RadarBackground: FCStrict<RadarBackgroundProperties> = ({
 
       {/* Sonar sweep animation */}
       <g className={styles['radarSpin']}>
-        <path
-          className="fill-primary/20"
-          d={`M 0 0 L ${String(sweepRadius)} 0 A ${String(sweepRadius)} ${String(sweepRadius)} 0 0 1 ${String(sweepEndX)} ${String(sweepEndY)} Z`}
-        />
+        <path className="fill-primary/20" d={sweepPath} />
       </g>
 
       {/* Axes - clipped to circle */}

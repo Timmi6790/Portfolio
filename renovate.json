@@ -1,25 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices",
-    "helpers:pinGitHubActionDigests",
-    "workarounds:all",
-    "github>TimSchoenle/actions//configs/renovate/base"
-  ],
-  "dependencyDashboard": true,
-  "semanticCommits": "enabled",
-  "semanticCommitType": "fix",
-  "labels": ["dependencies"],
-  "rebaseWhen": "behind-base-branch",
-  "timezone": "Europe/Berlin",
-  "minimumReleaseAge": null,
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true
-  },
-  "prHourlyLimit": 0,
-  "prConcurrentLimit": 0,
-  "branchConcurrentLimit": 0,
+  "extends": ["github>TimSchoenle/actions//configs/renovate/default"],
   "registryAliases": {
     "dhi.io": "dhi.io"
   },
@@ -36,44 +17,6 @@
       "description": "Auto-merge safe dev updates",
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["major", "minor", "patch", "digest"],
-      "automerge": true
-    },
-    {
-      "description": "Auto-merge @types/* (non-major)",
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true,
-      "matchPackageNames": ["/^@types//"]
-    },
-    {
-      "description": "Review majors for Next/React",
-      "groupName": "next/react major",
-      "matchPackageNames": ["next", "react", "react-dom"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
-    },
-    {
-      "description": "Review majors for TypeScript",
-      "groupName": "typescript major",
-      "matchPackageNames": ["typescript"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
-    },
-    {
-      "description": "Review majors for Tailwind",
-      "groupName": "tailwind major",
-      "matchUpdateTypes": ["major"],
-      "automerge": false,
-      "matchPackageNames": ["/^tailwindcss$/", "/^@tailwindcss//"]
-    },
-    {
-      "description": "CI actions: safe to auto-merge",
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "major", "pin"],
-      "automerge": true
-    },
-    {
-      "description": "Auto-merge Docker container versions",
-      "matchDatasources": ["docker"],
       "automerge": true
     }
   ]

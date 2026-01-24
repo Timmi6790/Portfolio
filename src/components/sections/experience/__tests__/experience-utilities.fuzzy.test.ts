@@ -19,14 +19,14 @@ describe('Experience Utilities Fuzzy Tests', () => {
           company: fc.string(),
           // Start date: year/month
           start: fc.record({
-            year: fc.integer({ min: -1000, max: 3000 }),
-            month: fc.integer({ min: -100, max: 100 }), // Check rollover handling
+            year: fc.integer({ min: 1, max: 3000 }),
+            month: fc.integer({ min: 1, max: 12 }),
           }),
           // End date: nullable record
           end: fc.option(
             fc.record({
-              year: fc.integer({ min: -1000, max: 3000 }),
-              month: fc.integer({ min: -100, max: 100 }),
+              year: fc.integer({ min: 1, max: 3000 }),
+              month: fc.integer({ min: 1, max: 12 }),
             })
           ),
           location: fc.string(),

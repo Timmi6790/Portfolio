@@ -31,7 +31,7 @@ export const mapExperienceData: (
       })
 
       let end: string = presentLabel
-      if (item.end !== null) {
+      if (item.end !== null && item.end.year > 0 && item.end.month > 0) {
         const endDate: Date = new Date(
           Date.UTC(item.end.year, item.end.month - 1, 1)
         )

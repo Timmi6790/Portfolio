@@ -9,6 +9,53 @@ interface MapExperienceDataProperties {
   readonly raw: readonly ResumeExperience[]
 }
 
+interface DateValue {
+  readonly month: number
+  readonly year: number
+}
+
+interface FormatDurationProperties {
+  readonly end: DateValue | null
+  readonly format: ReturnType<typeof createFormatter>
+  readonly presentLabel: string
+  readonly start: DateValue
+}
+
+const isValidDate: (date: DateValue) => boolean = (
+  date: DateValue
+): boolean => {
+  return date.year > 0 && date.month > 0 && date.month <= 12
+}
+
+const formatDuration: (properties: FormatDurationProperties) => string = ({
+  end,
+  format,
+  presentLabel,
+  start,
+}: FormatDurationProperties): string => {
+  if (end === null || !isValidDate(start)) {
+    return ''
+  }
+
+  const startDate: Date = new Date(Date.UTC(start.year, start.month - 1, 1))
+  const formattedStart: string = format.dateTime(startDate, {
+    month: 'short',
+    year: 'numeric',
+  })
+
+  if (!isValidDate(end)) {
+    return `${formattedStart} - ${presentLabel}`
+  }
+
+  const endDate: Date = new Date(Date.UTC(end.year, end.month - 1, 1))
+  const formattedEnd: string = format.dateTime(endDate, {
+    month: 'short',
+    year: 'numeric',
+  })
+
+  return `${formattedStart} - ${formattedEnd}`
+}
+
 export const mapExperienceData: (
   properties: MapExperienceDataProperties
 ) => ExperienceItemProperties[] = ({
@@ -21,31 +68,18 @@ export const mapExperienceData: (
   }
 
   return raw.map(
-    (item: ResumeExperience, index: number): ExperienceItemProperties => {
-      const startDate: Date = new Date(
-        Date.UTC(item.start.year, item.start.month - 1, 1)
-      )
-      const start: string = format.dateTime(startDate, {
-        month: 'short',
-        year: 'numeric',
-      })
-
-      let end: string = presentLabel
-      if (item.end !== null && item.end.year > 0 && item.end.month > 0) {
-        const endDate: Date = new Date(
-          Date.UTC(item.end.year, item.end.month - 1, 1)
-        )
-        end = format.dateTime(endDate, { month: 'short', year: 'numeric' })
-      }
-
-      return {
-        achievements: item.achievements,
-        company: item.company,
-        duration: `${start} - ${end}`,
-        index,
-        location: item.location,
-        role: item.title,
-      }
-    }
+    (item: ResumeExperience, index: number): ExperienceItemProperties => ({
+      achievements: item.achievements,
+      company: item.company,
+      duration: formatDuration({
+        end: item.end,
+        format,
+        presentLabel,
+        start: item.start,
+      }),
+      index,
+      location: item.location,
+      role: item.title,
+    })
   )
 }

@@ -1,5 +1,55 @@
 # Changelog
 
+## [1.13.0](https://github.com/TimSchoenle/Portfolio/compare/v1.12.10...v1.13.0) (2026-01-26)
+
+
+### Features
+
+* add profile api endpoint ([#441](https://github.com/TimSchoenle/Portfolio/issues/441)) ([75a28a7](https://github.com/TimSchoenle/Portfolio/commit/75a28a7ab0d8ebcde35939337bd798525ae7a1f6))
+
+
+### Bug Fixes
+
+* **deps:** update dependency zod to v4.3.6 ([#436](https://github.com/TimSchoenle/Portfolio/issues/436)) ([5ff45ee](https://github.com/TimSchoenle/Portfolio/commit/5ff45eec2b6c858a757b68d9cb15a502848ea89e))
+* **deps:** update nextjs monorepo to v16.1.3 ([#419](https://github.com/TimSchoenle/Portfolio/issues/419)) ([ee398fe](https://github.com/TimSchoenle/Portfolio/commit/ee398fed9dd31438f31a419a47dca63cd1a7f967))
+* **deps:** update nextjs monorepo to v16.1.4 ([#427](https://github.com/TimSchoenle/Portfolio/issues/427)) ([b3352a1](https://github.com/TimSchoenle/Portfolio/commit/b3352a1da22c7f9daadfa26a8bb82f5e09862e9a))
+
+
+### Tests
+
+* fix fuzzy edge case ([#429](https://github.com/TimSchoenle/Portfolio/issues/429)) ([fb58dbf](https://github.com/TimSchoenle/Portfolio/commit/fb58dbffe6c297a56cfab295825a01f2dfc2dea2))
+
+
+### Miscellaneous
+
+* **deps:** update ([#414](https://github.com/TimSchoenle/Portfolio/issues/414)) ([db7891a](https://github.com/TimSchoenle/Portfolio/commit/db7891a63e20fba0a70ac5e1ec86bea365b8a848))
+* **deps:** update actions/cache digest to 8b402f5 ([#413](https://github.com/TimSchoenle/Portfolio/issues/413)) ([8fdb986](https://github.com/TimSchoenle/Portfolio/commit/8fdb98690612257c5e989bf6f037fc3f4773cb36))
+* **deps:** update dependency @testing-library/react to v16.3.2 ([#423](https://github.com/TimSchoenle/Portfolio/issues/423)) ([afba798](https://github.com/TimSchoenle/Portfolio/commit/afba798ce60c7e8e09418329b2a684732c2dc2e8))
+* **deps:** update dependency @types/node to v25.0.10 ([#432](https://github.com/TimSchoenle/Portfolio/issues/432)) ([f2a1e22](https://github.com/TimSchoenle/Portfolio/commit/f2a1e2202452a708baa80480b75f2aca7c0fa5ec))
+* **deps:** update dependency @types/node to v25.0.9 ([#415](https://github.com/TimSchoenle/Portfolio/issues/415)) ([441306d](https://github.com/TimSchoenle/Portfolio/commit/441306d91033e247eb86edf31a466410bdf3a3ef))
+* **deps:** update dependency @types/react to v19.2.9 ([#428](https://github.com/TimSchoenle/Portfolio/issues/428)) ([78a16aa](https://github.com/TimSchoenle/Portfolio/commit/78a16aa68cba3c3645dee987807633534534e9dc))
+* **deps:** update dependency dependency-cruiser to v17.3.7 ([#435](https://github.com/TimSchoenle/Portfolio/issues/435)) ([3c94c18](https://github.com/TimSchoenle/Portfolio/commit/3c94c18912117f5e4819e3adff167fab9a5d2e17))
+* **deps:** update dependency eslint-plugin-perfectionist to v5.4.0 ([#433](https://github.com/TimSchoenle/Portfolio/issues/433)) ([275cc5a](https://github.com/TimSchoenle/Portfolio/commit/275cc5a7ca4b7ad478222c4ea2c2885f645108dd))
+* **deps:** update dependency globals to v17.1.0 ([#440](https://github.com/TimSchoenle/Portfolio/issues/440)) ([2afeb5f](https://github.com/TimSchoenle/Portfolio/commit/2afeb5f1a7425cd5715163d3d5c61bda168b311b))
+* **deps:** update dependency happy-dom to v20.3.1 ([#416](https://github.com/TimSchoenle/Portfolio/issues/416)) ([839dd72](https://github.com/TimSchoenle/Portfolio/commit/839dd721ff56c088538df575de471babfccd89d3))
+* **deps:** update dependency happy-dom to v20.3.3 ([#421](https://github.com/TimSchoenle/Portfolio/issues/421)) ([5692358](https://github.com/TimSchoenle/Portfolio/commit/56923589f8db4e628d7bee6b79db31d0cafe44b2))
+* **deps:** update dependency happy-dom to v20.3.4 ([#426](https://github.com/TimSchoenle/Portfolio/issues/426)) ([20f6743](https://github.com/TimSchoenle/Portfolio/commit/20f6743a733673473b5221997fce6bfb2c2c644a))
+* **deps:** update dependency happy-dom to v20.3.7 ([#437](https://github.com/TimSchoenle/Portfolio/issues/437)) ([6458ca3](https://github.com/TimSchoenle/Portfolio/commit/6458ca3e6dea6bb4eea7cda33d4ddf78f786e19a))
+* **deps:** update dependency knip to v5.82.0 ([#420](https://github.com/TimSchoenle/Portfolio/issues/420)) ([6035339](https://github.com/TimSchoenle/Portfolio/commit/603533969f0285ff574915c511375c28c8af83c9))
+* **deps:** update dependency knip to v5.82.1 ([#424](https://github.com/TimSchoenle/Portfolio/issues/424)) ([2e51a9a](https://github.com/TimSchoenle/Portfolio/commit/2e51a9afb4c7ec2628edc7a472c8d08f0f7e52c2))
+* **deps:** update dependency prettier to v3.8.1 ([#431](https://github.com/TimSchoenle/Portfolio/issues/431)) ([d45ded4](https://github.com/TimSchoenle/Portfolio/commit/d45ded40db47bac1f6de68db91c60e9567207c87))
+* **deps:** update dependency typescript-eslint to v8.53.1 ([#425](https://github.com/TimSchoenle/Portfolio/issues/425)) ([a74af61](https://github.com/TimSchoenle/Portfolio/commit/a74af61cceed384218ffb6be2767fc914095f280))
+* **deps:** update docker/dockerfile docker tag to v1.21 ([#422](https://github.com/TimSchoenle/Portfolio/issues/422)) ([f8ddc33](https://github.com/TimSchoenle/Portfolio/commit/f8ddc33b71dd1a9c42e295615df582c80dc4e05b))
+* **deps:** update step-security/harden-runner action to v2.14.1 ([#439](https://github.com/TimSchoenle/Portfolio/issues/439)) ([6740bac](https://github.com/TimSchoenle/Portfolio/commit/6740bac4441f14eb29ddf22b93968686e1016262))
+* **deps:** update to vactions-helm-update-chart-version-v1.4.4 ([#430](https://github.com/TimSchoenle/Portfolio/issues/430)) ([14eb8d6](https://github.com/TimSchoenle/Portfolio/commit/14eb8d629c551870663bcaafd53ddbd05971d401))
+* **deps:** update vitest monorepo to v4.0.18 ([#434](https://github.com/TimSchoenle/Portfolio/issues/434)) ([e8f0a67](https://github.com/TimSchoenle/Portfolio/commit/e8f0a67136d4ef63a644782076ba41bb15b2c9c6))
+* **deps:** update zizmorcore/zizmor-action action to v0.4.1 ([#417](https://github.com/TimSchoenle/Portfolio/issues/417)) ([f48efcc](https://github.com/TimSchoenle/Portfolio/commit/f48efcca7e42aacb5d2b680fc3138ea203120b07))
+
+
+### Dependencies
+
+* **deps:** lock file maintenance ([#364](https://github.com/TimSchoenle/Portfolio/issues/364)) ([2e70226](https://github.com/TimSchoenle/Portfolio/commit/2e7022672f0d0d52f09d3f1e1e866b6c3e24da4b))
+
 ## [1.12.10](https://github.com/TimSchoenle/Portfolio/compare/v1.12.9...v1.12.10) (2026-01-15)
 
 

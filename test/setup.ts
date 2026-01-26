@@ -72,11 +72,13 @@ if (!global.PointerEvent) {
 }
 
 // Mock HTMLElement methods
-Object.assign(window.HTMLElement.prototype, {
-  scrollIntoView: vi.fn(),
-  releasePointerCapture: vi.fn(),
-  hasPointerCapture: vi.fn(),
-})
+if (typeof window !== 'undefined') {
+  Object.assign(window.HTMLElement.prototype, {
+    scrollIntoView: vi.fn(),
+    releasePointerCapture: vi.fn(),
+    hasPointerCapture: vi.fn(),
+  })
+}
 
 // Mock next-intl/server
 vi.mock('next-intl/server', () => ({
@@ -164,6 +166,8 @@ const localStorageMock = (function () {
   }
 })()
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-})
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock,
+  })
+}

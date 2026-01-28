@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.14.0](https://github.com/TimSchoenle/Portfolio/compare/v1.13.0...v1.14.0) (2026-01-28)
+
+
+### Features
+
+* re-group some skills ([#449](https://github.com/TimSchoenle/Portfolio/issues/449)) ([d0c62c0](https://github.com/TimSchoenle/Portfolio/commit/d0c62c04ad80c854ae4587bd8865543b92038795))
+
+
+### Bug Fixes
+
+* **deps:** update dependency lucide-react to v0.563.0 ([#445](https://github.com/TimSchoenle/Portfolio/issues/445)) ([bf3a2d8](https://github.com/TimSchoenle/Portfolio/commit/bf3a2d88a977b40f115951c6c6e8f5412c25db39))
+
+
+### Miscellaneous
+
+* **deps:** update dependency @playwright/test to v1.58.0 ([#444](https://github.com/TimSchoenle/Portfolio/issues/444)) ([43a7316](https://github.com/TimSchoenle/Portfolio/commit/43a731601fbea81a897febf7fd3dcb4bd2207a2a))
+* **deps:** update dependency vite-tsconfig-paths to v6.0.5 ([#443](https://github.com/TimSchoenle/Portfolio/issues/443)) ([9dcd62d](https://github.com/TimSchoenle/Portfolio/commit/9dcd62d1b0597612032c047ec3adaba5be8c1aa5))
+* **deps:** update dhi.io/bun:1-alpine3.22 docker digest to a42ee9e ([#447](https://github.com/TimSchoenle/Portfolio/issues/447)) ([d1d2a3b](https://github.com/TimSchoenle/Portfolio/commit/d1d2a3b1764d969cce48448c990789f3d589b5d4))
+* **deps:** update dhi.io/bun:1-alpine3.22-dev docker digest to a58947c ([#448](https://github.com/TimSchoenle/Portfolio/issues/448)) ([35de847](https://github.com/TimSchoenle/Portfolio/commit/35de847e95ba4b82e3a6438c13949955d3748308))
+
+
+### Dependencies
+
+* **deps:** lock file maintenance ([#438](https://github.com/TimSchoenle/Portfolio/issues/438)) ([316bb3f](https://github.com/TimSchoenle/Portfolio/commit/316bb3fa41e75a9aa3018e9c862aede016207e7b))
+
 ## [1.13.0](https://github.com/TimSchoenle/Portfolio/compare/v1.12.10...v1.13.0) (2026-01-26)
 
 

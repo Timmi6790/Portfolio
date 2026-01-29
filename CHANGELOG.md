@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.1](https://github.com/TimSchoenle/Portfolio/compare/v1.14.0...v1.14.1) (2026-01-29)
+
+
+### Miscellaneous
+
+* **deps:** update dependency happy-dom to v20.3.9 ([#442](https://github.com/TimSchoenle/Portfolio/issues/442)) ([d1e1be5](https://github.com/TimSchoenle/Portfolio/commit/d1e1be5706779b1c67e8d43f28356b4a513a039b))
+* **deps:** update docker/login-action digest to c94ce9f ([#450](https://github.com/TimSchoenle/Portfolio/issues/450)) ([a2db54a](https://github.com/TimSchoenle/Portfolio/commit/a2db54adac40ee1b35ba2489f4e16c8609d4f1f2))
+
 ## [1.14.0](https://github.com/TimSchoenle/Portfolio/compare/v1.13.0...v1.14.0) (2026-01-28)
 
 

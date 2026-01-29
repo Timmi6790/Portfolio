@@ -98,7 +98,7 @@
     "eslint-plugin-sonarjs": "3.0.5",
     "eslint-plugin-unicorn": "62.0.0",
     "globals": "17.1.0",
-    "happy-dom": "20.3.7",
+    "happy-dom": "20.3.9",
     "husky": "9.1.7",
     "jsdom": "27.4.0",
     "knip": "5.82.1",

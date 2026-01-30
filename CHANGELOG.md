@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.15.0](https://github.com/TimSchoenle/Portfolio/compare/v1.14.0...v1.15.0) (2026-01-30)
+
+
+### Features
+
+* more cleanup ([#458](https://github.com/TimSchoenle/Portfolio/issues/458)) ([c138059](https://github.com/TimSchoenle/Portfolio/commit/c138059a6342bf9aa51e4bd51d228fce3fa4240a))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @serwist/next to v9.5.3 ([#462](https://github.com/TimSchoenle/Portfolio/issues/462)) ([789f7d3](https://github.com/TimSchoenle/Portfolio/commit/789f7d385dbbdb6dc8562bc3f3dc7595aa83ab64))
+* **deps:** update nextjs monorepo to v16.1.6 ([#452](https://github.com/TimSchoenle/Portfolio/issues/452)) ([e49f056](https://github.com/TimSchoenle/Portfolio/commit/e49f0564e35f6d24392f4a8415846d50fc0e53ff))
+* **deps:** update react monorepo to v19.2.4 ([#456](https://github.com/TimSchoenle/Portfolio/issues/456)) ([876ec20](https://github.com/TimSchoenle/Portfolio/commit/876ec2038f622f4ba608c78bc711cc2354611431))
+* improve handle of invalid dates for experience section ([#467](https://github.com/TimSchoenle/Portfolio/issues/467)) ([1ddded9](https://github.com/TimSchoenle/Portfolio/commit/1ddded90614542c90acba8b97d1a3ccd938bed94))
+
+
+### Miscellaneous
+
+* **deps:** update actions/cache digest to cdf6c1f ([#453](https://github.com/TimSchoenle/Portfolio/issues/453)) ([80f580d](https://github.com/TimSchoenle/Portfolio/commit/80f580d735e73e05f072f76ecf612b03a5d55746))
+* **deps:** update commitlint monorepo to v20.4.0 ([#465](https://github.com/TimSchoenle/Portfolio/issues/465)) ([84682d6](https://github.com/TimSchoenle/Portfolio/commit/84682d69cfa969a30fd98da47c955c958d93987a))
+* **deps:** update dependency @types/node to v25.1.0 ([#466](https://github.com/TimSchoenle/Portfolio/issues/466)) ([d3cce61](https://github.com/TimSchoenle/Portfolio/commit/d3cce6172f899e8fa0f1d17ef51145a8e0abda0b))
+* **deps:** update dependency @types/react to v19.2.10 ([#459](https://github.com/TimSchoenle/Portfolio/issues/459)) ([3c90e86](https://github.com/TimSchoenle/Portfolio/commit/3c90e8644f0e575fd93e84454928e2287b41ba3a))
+* **deps:** update dependency eslint-plugin-sonarjs to v3.0.6 ([#460](https://github.com/TimSchoenle/Portfolio/issues/460)) ([f43177f](https://github.com/TimSchoenle/Portfolio/commit/f43177f487f60b692abb1626c308bf8f0102853a))
+* **deps:** update dependency globals to v17.2.0 ([#463](https://github.com/TimSchoenle/Portfolio/issues/463)) ([a25115c](https://github.com/TimSchoenle/Portfolio/commit/a25115c1e526978776bb65d725052f1108789c74))
+* **deps:** update dependency happy-dom to v20.3.9 ([#442](https://github.com/TimSchoenle/Portfolio/issues/442)) ([d1e1be5](https://github.com/TimSchoenle/Portfolio/commit/d1e1be5706779b1c67e8d43f28356b4a513a039b))
+* **deps:** update dependency happy-dom to v20.4.0 ([#464](https://github.com/TimSchoenle/Portfolio/issues/464)) ([5138d84](https://github.com/TimSchoenle/Portfolio/commit/5138d8452a169df66e9d5967e86d627fe6797f9b))
+* **deps:** update dependency serwist to v9.5.3 ([#461](https://github.com/TimSchoenle/Portfolio/issues/461)) ([128c542](https://github.com/TimSchoenle/Portfolio/commit/128c5422ee1be80e09927f2e099d0b7cad73c241))
+* **deps:** update dependency typescript-eslint to v8.54.0 ([#457](https://github.com/TimSchoenle/Portfolio/issues/457)) ([0b4e7a1](https://github.com/TimSchoenle/Portfolio/commit/0b4e7a1c255f962c4993a042b199b7ee5f0f59a4))
+* **deps:** update dhi.io/bun:1-alpine3.22 docker digest to 94d4826 ([#454](https://github.com/TimSchoenle/Portfolio/issues/454)) ([50695ee](https://github.com/TimSchoenle/Portfolio/commit/50695ee43ddda2d32d2fe0c9cb3da68f75c8ac27))
+* **deps:** update dhi.io/bun:1-alpine3.22-dev docker digest to 0e208a3 ([#455](https://github.com/TimSchoenle/Portfolio/issues/455)) ([0c75181](https://github.com/TimSchoenle/Portfolio/commit/0c751810d1daad743f135336e3f8cf76de3af1ae))
+* **deps:** update docker/login-action digest to c94ce9f ([#450](https://github.com/TimSchoenle/Portfolio/issues/450)) ([a2db54a](https://github.com/TimSchoenle/Portfolio/commit/a2db54adac40ee1b35ba2489f4e16c8609d4f1f2))
+
 ## [1.14.0](https://github.com/TimSchoenle/Portfolio/compare/v1.13.0...v1.14.0) (2026-01-28)
 
 

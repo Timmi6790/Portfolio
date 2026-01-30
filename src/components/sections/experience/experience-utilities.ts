@@ -34,7 +34,7 @@ const formatDuration: (properties: FormatDurationProperties) => string = ({
   start,
 }: FormatDurationProperties): string => {
   if (!isValidDate(start)) {
-    return ''
+    throw new Error('Invalid start date of ' + JSON.stringify(start))
   }
 
   const startDate: Date = new Date(Date.UTC(start.year, start.month - 1, 1))
@@ -43,8 +43,12 @@ const formatDuration: (properties: FormatDurationProperties) => string = ({
     year: 'numeric',
   })
 
-  if (end === null || !isValidDate(end)) {
+  if (end === null) {
     return `${formattedStart} - ${presentLabel}`
+  }
+
+  if (!isValidDate(end)) {
+    throw new Error('Invalid end date of ' + JSON.stringify(end))
   }
 
   const endDate: Date = new Date(Date.UTC(end.year, end.month - 1, 1))

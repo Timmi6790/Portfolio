@@ -334,15 +334,18 @@ function applyBundleAnalyzer(config: NextConfig): NextConfig {
 
   const bundleAnalyzer: (options: {
     enabled: boolean
+    openAnalyzer?: boolean
   }) => (config: NextConfig) => NextConfig =
     // eslint-disable-next-line @typescript-eslint/no-require-imports, unicorn/prefer-module
     require('@next/bundle-analyzer') as (options: {
       enabled: boolean
+      openAnalyzer?: boolean
     }) => (config: NextConfig) => NextConfig
 
   const withBundleAnalyzer: (config: NextConfig) => NextConfig = bundleAnalyzer(
     {
       enabled: true,
+      openAnalyzer: false,
     }
   )
   return withBundleAnalyzer(config)

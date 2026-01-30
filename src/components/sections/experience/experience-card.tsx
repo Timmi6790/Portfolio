@@ -1,6 +1,3 @@
-/* eslint-disable max-lines-per-function */
-'use client'
-
 import { type JSX } from 'react'
 
 import { Calendar, MapPin } from 'lucide-react'
@@ -52,6 +49,7 @@ const AchievementsList: FCStrict<AchievementsListProperties> = ({
   </ul>
 )
 
+// eslint-disable-next-line max-lines-per-function
 export const ExperienceCard: FCStrict<ExperienceItemProperties> = ({
   achievements,
   company,

@@ -119,7 +119,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -140,7 +140,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -163,7 +163,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -186,7 +186,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -209,7 +209,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -232,7 +232,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -255,7 +255,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -283,7 +283,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -330,7 +330,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -384,7 +384,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
@@ -449,7 +449,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bun
-        uses: TimSchoenle/actions/actions/bun/setup-cached@e531be1a898653adee13a3c10b1ae4c1eb6487d0 # actions-bun-setup-cached-v1.1.3
+        uses: TimSchoenle/actions/actions/bun/setup-cached@311fcf1defd1520ad7d4a9abb838114adeba344f # actions-bun-setup-cached-v1.1.4
         with:
           bun-version: ${{ env.BUN_VERSION }}
 

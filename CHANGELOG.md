@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.15.1](https://github.com/TimSchoenle/Portfolio/compare/v1.15.0...v1.15.1) (2026-02-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @serwist/next to v9.5.4 ([#485](https://github.com/TimSchoenle/Portfolio/issues/485)) ([9aa0159](https://github.com/TimSchoenle/Portfolio/commit/9aa0159c8920693e1ebf245e035b540860195eab))
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout digest to de0fac2 ([#472](https://github.com/TimSchoenle/Portfolio/issues/472)) ([120624a](https://github.com/TimSchoenle/Portfolio/commit/120624a15d53edf39ffa3ed02f6b1f0256398662))
+* **deps:** update commitlint monorepo to v20.4.1 ([#477](https://github.com/TimSchoenle/Portfolio/issues/477)) ([344c787](https://github.com/TimSchoenle/Portfolio/commit/344c787cdf1c73df02969654e345dfa7e1527ef8))
+* **deps:** update dependency @playwright/test to v1.58.1 ([#471](https://github.com/TimSchoenle/Portfolio/issues/471)) ([1b551ff](https://github.com/TimSchoenle/Portfolio/commit/1b551ffe594377146412005933faba92be39604a))
+* **deps:** update dependency @types/node to v25.2.0 ([#474](https://github.com/TimSchoenle/Portfolio/issues/474)) ([5a62bd3](https://github.com/TimSchoenle/Portfolio/commit/5a62bd3eab13238e91172da20a955d0d80c14412))
+* **deps:** update dependency @types/node to v25.2.1 ([#492](https://github.com/TimSchoenle/Portfolio/issues/492)) ([6d8c941](https://github.com/TimSchoenle/Portfolio/commit/6d8c941748aad67225101172e0709d63887db9f8))
+* **deps:** update dependency @types/react to v19.2.11 ([#483](https://github.com/TimSchoenle/Portfolio/issues/483)) ([19d4d4d](https://github.com/TimSchoenle/Portfolio/commit/19d4d4df661bfe3d1be279d4578aba5aaf2f5ff6))
+* **deps:** update dependency @types/react to v19.2.12 ([#487](https://github.com/TimSchoenle/Portfolio/issues/487)) ([6aaf805](https://github.com/TimSchoenle/Portfolio/commit/6aaf8056c8363e0147f498557b239cb0f7f37d4a))
+* **deps:** update dependency @types/react to v19.2.13 ([#488](https://github.com/TimSchoenle/Portfolio/issues/488)) ([7e90eab](https://github.com/TimSchoenle/Portfolio/commit/7e90eabb987814227e1b188a0f68a16923fb9b87))
+* **deps:** update dependency @vitejs/plugin-react to v5.1.3 ([#478](https://github.com/TimSchoenle/Portfolio/issues/478)) ([4199b85](https://github.com/TimSchoenle/Portfolio/commit/4199b85a15afc37c5ba7468ab34dd8a246542596))
+* **deps:** update dependency eslint-plugin-perfectionist to v5.5.0 ([#486](https://github.com/TimSchoenle/Portfolio/issues/486)) ([7b080db](https://github.com/TimSchoenle/Portfolio/commit/7b080db2971e5269401c3147b47d1e8851663fbf))
+* **deps:** update dependency globals to v17.3.0 ([#473](https://github.com/TimSchoenle/Portfolio/issues/473)) ([e84c693](https://github.com/TimSchoenle/Portfolio/commit/e84c693cd63ac878bc5026ce68690164617ad85f))
+* **deps:** update dependency happy-dom to v20.5.0 ([#481](https://github.com/TimSchoenle/Portfolio/issues/481)) ([b6816b7](https://github.com/TimSchoenle/Portfolio/commit/b6816b77faf897b20c11730ccb5cc8037b3abbf8))
+* **deps:** update dependency jsdom to v28 ([#476](https://github.com/TimSchoenle/Portfolio/issues/476)) ([5ee4a73](https://github.com/TimSchoenle/Portfolio/commit/5ee4a737304ad534b90fa2e63c0d4d20dbb4966f))
+* **deps:** update dependency knip to v5.83.0 ([#480](https://github.com/TimSchoenle/Portfolio/issues/480)) ([ff8aa10](https://github.com/TimSchoenle/Portfolio/commit/ff8aa100169d80c205491ac8e709b8d04b8351ad))
+* **deps:** update dependency serwist to v9.5.4 ([#484](https://github.com/TimSchoenle/Portfolio/issues/484)) ([16f4840](https://github.com/TimSchoenle/Portfolio/commit/16f4840ce6954f6138895e6882f86a2772c5ab5e))
+* **deps:** update dhi.io/bun:1-alpine3.22 docker digest to d7c3892 ([#490](https://github.com/TimSchoenle/Portfolio/issues/490)) ([dde4694](https://github.com/TimSchoenle/Portfolio/commit/dde4694b6e54ee5fd50a10c2c1e0c44ea9b767fd))
+* **deps:** update dhi.io/bun:1-alpine3.22-dev docker digest to 759a6e7 ([#491](https://github.com/TimSchoenle/Portfolio/issues/491)) ([5b9d933](https://github.com/TimSchoenle/Portfolio/commit/5b9d9331f74e442494a5a61a5cea3635ac81b1ee))
+* **deps:** update step-security/harden-runner action to v2.14.2 ([#482](https://github.com/TimSchoenle/Portfolio/issues/482)) ([09cc85c](https://github.com/TimSchoenle/Portfolio/commit/09cc85cf0ed1b5efb9101719fd247bd6fd5d64a5))
+* **deps:** update to vactions-bun-setup-cached-v1.1.4 ([#479](https://github.com/TimSchoenle/Portfolio/issues/479)) ([8f82bbd](https://github.com/TimSchoenle/Portfolio/commit/8f82bbd149709e49c0a30f9d95ab7baf9ef9e6a8))
+* **deps:** update to vactions-helm-update-chart-version-v1.4.5 ([#489](https://github.com/TimSchoenle/Portfolio/issues/489)) ([eee040a](https://github.com/TimSchoenle/Portfolio/commit/eee040a297150d111ab33710a1d59cd98ea1f7fc))
+* **deps:** update zizmorcore/zizmor-action action to v0.5.0 ([#475](https://github.com/TimSchoenle/Portfolio/issues/475)) ([d44d1dd](https://github.com/TimSchoenle/Portfolio/commit/d44d1ddd36c4cd653acab9d08a8c6d59eee39d51))
+
+
+### Dependencies
+
+* **deps:** lock file maintenance ([#468](https://github.com/TimSchoenle/Portfolio/issues/468)) ([94a9d5e](https://github.com/TimSchoenle/Portfolio/commit/94a9d5e37e025ca21e70379f496d8333d0b23ed2))
+* **deps:** lock file maintenance ([#470](https://github.com/TimSchoenle/Portfolio/issues/470)) ([833c85c](https://github.com/TimSchoenle/Portfolio/commit/833c85cddfca40d0f8976a9f8d0c84f4d6a5b598))
+
 ## [1.15.0](https://github.com/TimSchoenle/Portfolio/compare/v1.14.0...v1.15.0) (2026-01-30)
 
 

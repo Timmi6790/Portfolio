@@ -66,7 +66,7 @@
     "@lingual/i18n-check": "latest",
     "@next/bundle-analyzer": "16.1.6",
     "@next/eslint-plugin-next": "16.1.6",
-    "@playwright/test": "1.58.1",
+    "@playwright/test": "1.58.2",
     "@react-pdf/renderer": "4.3.2",
     "@signpdf/placeholder-plain": "3.3.0",
     "@signpdf/signer-p12": "3.3.0",

@@ -18,93 +18,10 @@ permissions:
   contents: read # to fetch code
 
 jobs:
-  # Detect which files changed to conditionally run jobs
-  changes:
-    name: Detect Changes
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read # to detect changed files in PR
-    outputs:
-      source: ${{ steps.filter.outputs.source }}
-      tests: ${{ steps.filter.outputs.tests }}
-      e2e: ${{ steps.filter.outputs.e2e }}
-      docker: ${{ steps.filter.outputs.docker }}
-      dockerfile-lint: ${{ steps.filter.outputs.dockerfile-lint }}
-      lighthouse: ${{ steps.filter.outputs.lighthouse }}
-      bundle: ${{ steps.filter.outputs.bundle }}
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
-        with:
-          egress-policy: audit
-
-      - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-
-      - name: Check for file changes
-        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
-        id: filter
-        with:
-          filters: |
-            # Common paths used across multiple filters
-            source: &source_files
-              - &src_path 'src/**'
-              - &config_files '*.config.*'
-              - &pkg_json 'package.json'
-              - &github_path '.github/**'
-              - 'bun.lock'
-              - 'messages/**'
-              - 'public/**'
-
-            tests:
-              - *src_path
-              - 'test/**'
-              - 'vitest.config.ts'
-              - *pkg_json
-              - *github_path
-
-            e2e:
-              - *src_path
-              - 'tests/**'
-              - 'playwright.config.ts'
-              - *pkg_json
-              - *github_path
-
-            docker:
-              - 'Dockerfile'
-              - 'docker-compose.yml'
-              - '.dockerignore'
-              - *src_path
-              - *config_files 
-              - *pkg_json
-              - *github_path
-
-            dockerfile-lint:
-              - 'Dockerfile'
-              - '.hadolint.yaml'
-
-            lighthouse:
-              - *src_path
-              - 'public/**'
-              - '.github/lighthouse/**'
-              - *config_files
-              - *pkg_json
-              - *github_path
-
-            bundle:
-              - *src_path
-              - *config_files
-              - *pkg_json
-              - *github_path
-
   # Install dependencies once and cache for all parallel jobs
   install-deps:
     name: Install Dependencies
     runs-on: ubuntu-latest
-    needs: changes
-    if: needs.changes.outputs.source == 'true'
     outputs:
       cache-hit: ${{ steps.cache-check.outputs.cache-hit }}
     steps:
@@ -267,7 +184,6 @@ jobs:
     name: Unit & Component Tests
     runs-on: ubuntu-latest
     needs: install-deps
-    if: needs.changes.outputs.tests == 'true'
     permissions:
       contents: read # to fetch code
       checks: write # to report test results
@@ -305,7 +221,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       [
-        changes,
         install-deps,
         lint,
         format-check,
@@ -314,7 +229,6 @@ jobs:
         knip-check,
         architecture-check,
       ]
-    if: needs.changes.outputs.source == 'true'
     timeout-minutes: 15
     env:
       NEXT_TELEMETRY_DISABLED: 1
@@ -362,8 +276,7 @@ jobs:
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
-    needs: [changes, install-deps, build]
-    if: needs.changes.outputs.e2e == 'true' && needs.changes.outputs.source == 'true'
+    needs: [install-deps, build]
     timeout-minutes: 30
     env:
       PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
@@ -422,8 +335,6 @@ jobs:
   dockerfile-lint:
     name: Dockerfile Lint
     runs-on: ubuntu-latest
-    needs: changes
-    if: needs.changes.outputs.dockerfile-lint == 'true'
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
@@ -446,8 +357,6 @@ jobs:
   docker-pipeline:
     name: Docker Pipeline
     runs-on: ubuntu-latest
-    needs: changes
-    if: needs.changes.outputs.docker == 'true'
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
@@ -529,7 +438,7 @@ jobs:
   cleanup-artifacts:
     name: Cleanup Build Artifacts
     runs-on: ubuntu-latest
-    needs: [e2e, lighthouse]
+    needs: [e2e]
     if: always()
     permissions:
       actions: write # to delete artifacts
